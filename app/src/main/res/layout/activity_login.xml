@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    android:background="@color/white"
+    android:background="@color/md_theme_onPrimary"
     android:fillViewport="true">
 
 <LinearLayout
@@ -18,7 +18,7 @@
     android:layout_height="wrap_content"
     android:text="@string/login"
     android:textSize="24sp"
-    android:textColor="@color/text_dark"
+    android:textColor="@color/md_theme_primary"
     android:textStyle="bold"
     android:layout_marginBottom="32dp" />
 
@@ -48,7 +48,7 @@
     android:layout_height="wrap_content"
     android:text="@string/forgot_password"
     android:textSize="14sp"
-    android:textColor="@color/text_blue"
+    android:textColor="@color/md_theme_primary"
     android:layout_marginBottom="32dp"
     android:layout_gravity="end" />
 
@@ -57,8 +57,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="@string/sign_in"
-    android:backgroundTint="@color/button_blue"
-    android:textColor="@color/white"
+    style="@style/Widget.Material3.Button.Icon"
+    android:textColor="@color/md_theme_onPrimary"
     android:layout_marginBottom="16dp"
     android:padding="12dp" />
 
@@ -68,7 +68,7 @@
     android:layout_height="wrap_content"
     android:text="@string/create_account"
     android:textSize="14sp"
-    android:textColor="@color/text_blue"
+    android:textColor="@color/md_theme_primary"
     android:gravity="center" />
 </LinearLayout>
     </ScrollView>

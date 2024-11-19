@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.bizzagi.daytrip" />
+                  <option name="mobileSdkAppId" value="1:304525226938:android:6ed33cd6441dd53c692383" />
+                  <option name="projectId" value="c242-dt01" />
+                  <option name="projectNumber" value="304525226938" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
