@@ -1,7 +1,26 @@
 <resources>
     <string name="app_name">BizzagiDayTrip</string>
     <string name="login">Login</string>
-    <string name="f_password">Forgot your password?</string>
-    <string name="sign_in">Sign in</string>
-    <string name="account">Create new account</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="sign_in">Sign In</string>
+    <string name="create_account">Create Account</string>
+    <string name="create_account_title">Buat Akun</string>
+    <string name="create_account_subtitle">Buat rencana perjalananmu lebih efisien</string>
+    <string name="hint_confirm_password">Confirm Password</string>
+    <string name="sign_up">Sign up</string>
+    <string name="already_have_account">Already have an account</string>
+    <string name="reset_password_subtitle">Please enter your email to reset the password</string>
+    <string name="your_email">Your Email</string>
+    <string name="enter_your_email">Enter your email</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="back_button">Back</string>
+    <string name="set_new_password">Set a new password</string>
+    <string name="new_password_description">Create a new password. Ensure it differs from previous ones for security</string>
+    <string name="password">Password</string>
+    <string name="enter_new_password">Enter your new password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="reenter_password">Re-enter password</string>
+    <string name="update_password">Update Password</string>
 </resources>
