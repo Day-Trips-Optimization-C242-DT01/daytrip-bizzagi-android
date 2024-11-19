@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">BizzagiDayTrip</string>
+    <string name="login">Login</string>
+    <string name="f_password">Forgot your password?</string>
+    <string name="sign_in">Sign in</string>
+    <string name="account">Create new account</string>
 </resources>
