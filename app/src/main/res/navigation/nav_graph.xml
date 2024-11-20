@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.bizzagi.daytrip.ui.Homepage.HomepageFragment"
+        android:label="Home" />
+
+    <fragment
+        android:id="@+id/navigation_map"
+        android:name="com.bizzagi.daytrip.ui.Maps.MapsFragment"
+        android:label="Maps" />
+
+    <fragment
+        android:id="@+id/navigation_trip"
+        android:name="com.bizzagi.daytrip.ui.Trip.TripFragment"
+        android:label="Trip" />
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.bizzagi.daytrip.ui.Profile.ProfileFragment"
+        android:label="Profile" />
+</navigation>
