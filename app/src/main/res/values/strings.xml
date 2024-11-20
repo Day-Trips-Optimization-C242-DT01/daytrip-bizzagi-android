@@ -30,4 +30,10 @@
     <string name="navbar_4">saya</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="headline_homepage">Explore Indonesia!</string>
+    <string name="searchbar_hint_homepage">Kemana anda ingin bepergian?</string>
+    <string name="destination_image">image_trip</string>
+    <string name="head_trip">Bali</string>
+    <string name="destination_trip">Uluwatu - Pangempu</string>
+    <string name="long_trip">Perjalanan 4 hari</string>
 </resources>
