@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.bizzagi.daytrip.data.retrofit.response.DestinationDummy
 import com.bizzagi.daytrip.databinding.FragmentTripDayBinding
 import com.bizzagi.daytrip.ui.Trip.PlansViewModel
 
@@ -28,25 +30,28 @@ class TripDayFragment : Fragment() {
         viewModel = ViewModelProvider(requireActivity())[PlansViewModel::class.java]
 
         val dayNumber = arguments?.getInt("day") ?: 1
-        binding.dayNumberTextView.text = "Hari $dayNumber"
+
 
         // Ambil destinasi untuk hari ini
         val destinations = viewModel.getDestinationsForDay(dayNumber - 1)
 
         // Setup RecyclerView untuk menampilkan destinasi
-        /*setupDestinationsList(destinations)*/
+        setupDestinationsList(destinations)
 
         return binding.root
     }
 
-   /* private fun setupDestinationsList(destinations: List<DestinationDummy>) {
+    private fun setupDestinationsList(destinations: List<DestinationDummy>) {
         // Buat adapter untuk RecyclerView
-        val adapter = DestinationAdapter(destinations)
-        binding.rvDestinations.apply {
+        val adapter = DestinationAdapter()
+        binding.destinationRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             this.adapter = adapter
         }
-    }*/
+        // Berikan data ke adapter
+        adapter.submitList(destinations)
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
