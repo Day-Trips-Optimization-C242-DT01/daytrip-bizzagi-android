@@ -1,5 +1,6 @@
 package com.bizzagi.daytrip.ui.Trip
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bizzagi.daytrip.R
 import com.bizzagi.daytrip.data.retrofit.repository.PlansDummyRepository
 import com.bizzagi.daytrip.databinding.FragmentTripBinding
+import com.bizzagi.daytrip.ui.Trip.detail.DetailTripActivity
 import com.bizzagi.daytrip.utils.ViewModelFactory
 
 class TripFragment : Fragment() {
@@ -40,9 +42,18 @@ class TripFragment : Fragment() {
 
     private fun setupRecyclerView() {
         binding.rvTripPlan.layoutManager = LinearLayoutManager(requireContext())
-        val adapter = TripAdapter()
+        val adapter = TripAdapter { tripId ->
+            navigateToDetailTrip(tripId)
+        }
         binding.rvTripPlan.adapter = adapter
     }
+
+    private fun navigateToDetailTrip(tripId: String) {
+        val intent = Intent(requireContext(), DetailTripActivity::class.java)
+        intent.putExtra("TRIP_ID", tripId) // Pass the trip ID to DetailTripActivity
+        startActivity(intent)
+    }
+
 
     private fun observeViewModel() {
         viewModel.allTrips.observe(viewLifecycleOwner, Observer { trips ->

@@ -40,7 +40,7 @@ object PlansDummyRepository {
                 id = "plans2",
                 cohort = "Januari",
                 startDate = "2024-11-11",
-                endDate = "2024-11-16",
+                endDate = "2024-11-13",
                 destinations = listOf(
                     DestinationDummy(
                         id = "dest1",

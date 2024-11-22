@@ -26,9 +26,9 @@ class DetailTripActivity : AppCompatActivity() {
 
         val repository = PlansDummyRepository// Replace with your actual repository instance
         val factory = ViewModelFactory(repository)
-        viewModel = ViewModelProvider(this, factory)[PlansViewModel::class.java]
+        viewModel = ViewModelProvider(this, factory).get(PlansViewModel::class.java)
 
-        val tripId = intent.getStringExtra("plan_extra") ?: return
+        val tripId = intent.getStringExtra("TRIP_ID") ?: return
         viewModel.initializeTrip(tripId)
         setupViewPagerAndTabs()
 
@@ -59,9 +59,6 @@ class DetailTripActivity : AppCompatActivity() {
             // Update UI berdasarkan trip data
             binding.viewPager.adapter?.notifyDataSetChanged()
         }
-    }
-    companion object {
-        const val PLAN_EXTRA = "plan_extra"
     }
 
 }

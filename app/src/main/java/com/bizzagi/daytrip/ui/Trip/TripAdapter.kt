@@ -10,16 +10,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bizzagi.daytrip.data.retrofit.response.PlansDummy
 import com.bizzagi.daytrip.databinding.CardMyTripBinding
 import com.bizzagi.daytrip.ui.Trip.detail.DetailTripActivity
-
-class TripAdapter : ListAdapter<PlansDummy, TripAdapter.TripViewHolder>(DiffCallback()) {
+class TripAdapter(private val onItemClick: (String) -> Unit) :
+    ListAdapter<PlansDummy, TripAdapter.TripViewHolder>(DiffCallback()) {
 
     class TripViewHolder(private val binding: CardMyTripBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        @SuppressLint("SetTextI18n")
-        fun bind(trip: PlansDummy) {
+        fun bind(trip: PlansDummy, onItemClick: (String) -> Unit) {
             binding.tvPerjalanan.text = trip.cohort
             binding.tvDate.text = "${trip.startDate} - ${trip.endDate}"
+
+            // Set click listener for the item
+            binding.root.setOnClickListener {
+                onItemClick(trip.id) // Pass trip ID to the callback
+            }
         }
     }
 
@@ -29,14 +33,7 @@ class TripAdapter : ListAdapter<PlansDummy, TripAdapter.TripViewHolder>(DiffCall
     }
 
     override fun onBindViewHolder(holder: TripViewHolder, position: Int) {
-        val planItem = getItem(position)
-
-        holder.itemView.setOnClickListener {
-            val context = holder.itemView.context
-            val intent = Intent(context,DetailTripActivity::class.java)
-            intent.putExtra(DetailTripActivity.PLAN_EXTRA,planItem)
-            context.startActivity(intent)
-        }
+        holder.bind(getItem(position), onItemClick)
     }
 
     class DiffCallback : DiffUtil.ItemCallback<PlansDummy>() {
