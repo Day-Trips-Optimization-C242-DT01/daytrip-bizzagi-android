@@ -1,5 +1,7 @@
 package com.bizzagi.daytrip.data.retrofit.response
-
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+@Parcelize
 data class DestinationDummy(
     val id: String,
     val name: String,
@@ -10,4 +12,4 @@ data class DestinationDummy(
     val type: String,
     val openingHours: String?,
     val closeHours: String?
-)
+) : Parcelable

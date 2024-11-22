@@ -6,22 +6,30 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.bizzagi.daytrip.R
+import com.bizzagi.daytrip.data.retrofit.repository.PlansDummyRepository
 import com.bizzagi.daytrip.databinding.ActivityDetailTripBinding
 import com.bizzagi.daytrip.ui.Trip.PlansViewModel
+import com.bizzagi.daytrip.utils.ViewModelFactory
 import com.google.android.material.tabs.TabLayoutMediator
 
 class DetailTripActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailTripBinding
 
-    private val viewModel: PlansViewModel by viewModels()
+    private lateinit var viewModel: PlansViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailTripBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel.initializeTrip("trip1")
+        val repository = PlansDummyRepository// Replace with your actual repository instance
+        val factory = ViewModelFactory(repository)
+        viewModel = ViewModelProvider(this, factory)[PlansViewModel::class.java]
+
+        val tripId = intent.getStringExtra("plan_extra") ?: return
+        viewModel.initializeTrip(tripId)
         setupViewPagerAndTabs()
 
         // Observe trip data
@@ -52,4 +60,8 @@ class DetailTripActivity : AppCompatActivity() {
             binding.viewPager.adapter?.notifyDataSetChanged()
         }
     }
+    companion object {
+        const val PLAN_EXTRA = "plan_extra"
+    }
+
 }
