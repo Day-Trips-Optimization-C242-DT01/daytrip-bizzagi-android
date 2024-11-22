@@ -12,48 +12,48 @@ import com.google.android.material.tabs.TabLayoutMediator
 
 class DetailTripActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailTripBinding
-
     private lateinit var viewModel: PlansViewModel
+    private lateinit var pagerAdapter: TripDaysPagerAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailTripBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val repository = PlansDummyRepository// Replace with your actual repository instance
+        val repository = PlansDummyRepository
         val factory = ViewModelFactory(repository)
         viewModel = ViewModelProvider(this, factory).get(PlansViewModel::class.java)
 
         val tripId = intent.getStringExtra("TRIP_ID") ?: return
         viewModel.initializeTrip(tripId)
-        setupViewPagerAndTabs()
 
-        // Observe trip data
+        setupViewPagerAndTabs()
         observeTripData()
     }
 
     private fun setupViewPagerAndTabs() {
-        val pagerAdapter = TripDaysPagerAdapter(this, viewModel.getStartDate(), viewModel.getEndDate())
-
+        pagerAdapter = TripDaysPagerAdapter(this, viewModel)
         binding.viewPager.adapter = pagerAdapter
+        binding.viewPager.offscreenPageLimit = 2
 
-        // Link TabLayout dengan ViewPager2
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             tab.text = viewModel.getFormattedDateForPosition(position)
         }.attach()
 
-        // Listen untuk perubahan page
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
-                viewModel.updateCurrentDay(position)
+                // Expand visible range dynamically as user swipes
+                if (position == pagerAdapter.itemCount - 1) {
+                    pagerAdapter.increaseVisibleDays()
+                }
             }
         })
     }
 
     private fun observeTripData() {
-        viewModel.selectedTrip.observe(this) { trip ->
-            // Update UI berdasarkan trip data
-            binding.viewPager.adapter?.notifyDataSetChanged()
+        // Update ViewPager when trip days are updated
+        viewModel.tripDays.observe(this) {
+            pagerAdapter.notifyDataSetChanged()
         }
     }
-
 }

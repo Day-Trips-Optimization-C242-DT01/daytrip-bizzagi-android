@@ -1,44 +1,40 @@
 package com.bizzagi.daytrip.ui.Trip.Detail
 
+import android.annotation.SuppressLint
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import org.threeten.bp.LocalDate
-import org.threeten.bp.temporal.ChronoUnit
+import com.bizzagi.daytrip.ui.Trip.PlansViewModel
 
-class TripDaysPagerAdapter : FragmentStateAdapter {
-    private val startDate: String?
-    private val endDate: String?
+class TripDaysPagerAdapter(
+    fragmentActivity: FragmentActivity,
+    private val viewModel: PlansViewModel
+) : FragmentStateAdapter(fragmentActivity) {
 
-    // Constructor untuk Activity
-    constructor(fragmentActivity: FragmentActivity, startDate: String?, endDate: String?) :
-            super(fragmentActivity) {
-        this.startDate = startDate
-        this.endDate = endDate
-    }
-
-    // Constructor untuk Fragment
-    constructor(fragment: Fragment, startDate: String?, endDate: String?) :
-            super(fragment) {
-        this.startDate = startDate
-        this.endDate = endDate
-    }
+    private var maxVisibleDays = 3 // Default visible days
 
     override fun getItemCount(): Int {
-        startDate?.let { start ->
-            endDate?.let { end ->
-                val startDateTime = LocalDate.parse(start)
-                val endDateTime = LocalDate.parse(end)
-                return ChronoUnit.DAYS.between(startDateTime, endDateTime).toInt() + 1
-            }
-        }
-        return 0
+        // Only load up to maxVisibleDays or all days if less
+        return viewModel.tripDays.value?.let { days ->
+            minOf(days.size, maxVisibleDays)
+        } ?: 0
     }
 
     override fun createFragment(position: Int): Fragment {
         val dayFragment = TripDayFragment()
         dayFragment.arguments = bundleOf("day" to position + 1)
         return dayFragment
+    }
+
+    // Function to expand visible range when paged
+    @SuppressLint("NotifyDataSetChanged")
+    fun increaseVisibleDays() {
+        viewModel.tripDays.value?.size?.let { totalDays ->
+            if (maxVisibleDays < totalDays) {
+                maxVisibleDays += 1 // Expand by 1 day
+                notifyDataSetChanged()
+            }
+        }
     }
 }

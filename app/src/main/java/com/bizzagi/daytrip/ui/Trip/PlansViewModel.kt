@@ -73,7 +73,6 @@ class PlansViewModel (private val TripDummyRepository: PlansDummyRepository): Vi
     fun getDestinationsForDay(dayIndex: Int): List<DestinationDummy> {
         return _selectedTrip.value?.destinations?.filter { destination ->
             // Logic untuk filter destinasi berdasarkan hari
-            // Ini hanya contoh sederhana, sesuaikan dengan kebutuhan
             true
         } ?: emptyList()
     }

@@ -31,7 +31,7 @@ class TripFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //dihapus nnti setelah diinstance
-        val repository = PlansDummyRepository// Replace with your actual repository instance
+        val repository = PlansDummyRepository
         val factory = ViewModelFactory(repository)
         viewModel = ViewModelProvider(this, factory).get(PlansViewModel::class.java)
         setupRecyclerView()
@@ -48,7 +48,7 @@ class TripFragment : Fragment() {
 
     private fun navigateToDetailTrip(tripId: String) {
         val intent = Intent(requireContext(), DetailTripActivity::class.java)
-        intent.putExtra("TRIP_ID", tripId) // Pass the trip ID to DetailTripActivity
+        intent.putExtra("TRIP_ID", tripId)
         startActivity(intent)
     }
 
