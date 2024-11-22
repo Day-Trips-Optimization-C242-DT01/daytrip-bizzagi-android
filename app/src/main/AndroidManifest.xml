@@ -12,7 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BizzagiDayTrip"
         tools:targetApi="31">
-
+        <activity
+            android:name=".ui.Trip.detail.DetailTripActivity"
+            android:exported="false"
+            android:theme="@style/Theme.BizzagiDayTrip" />
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
 
