@@ -1,7 +1,6 @@
-package com.bizzagi.daytrip.ui.Trip.detail
+package com.bizzagi.daytrip.ui.Trip.Detail
 
 import androidx.core.os.bundleOf
-import androidx.core.text.util.LocalePreferences
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter

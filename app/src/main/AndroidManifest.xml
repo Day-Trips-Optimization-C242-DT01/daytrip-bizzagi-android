@@ -13,7 +13,7 @@
         android:theme="@style/Theme.BizzagiDayTrip"
         tools:targetApi="31">
         <activity
-            android:name=".ui.Trip.detail.DetailTripActivity"
+            android:name=".ui.Trip.Detail.DetailTripActivity"
             android:exported="false"
             android:theme="@style/Theme.BizzagiDayTrip" />
         <!--

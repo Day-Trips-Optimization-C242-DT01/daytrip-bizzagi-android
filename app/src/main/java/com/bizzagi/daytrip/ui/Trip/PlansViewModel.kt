@@ -58,7 +58,7 @@ class PlansViewModel (private val TripDummyRepository: PlansDummyRepository): Vi
         _tripDays.value = days
     }
 
-    // Update current day index ketika tab berubah
+    // Update aactivity index ketika tab berubah
     fun updateCurrentDay(position: Int) {
         _currentDayIndex.value = position
     }
@@ -66,12 +66,10 @@ class PlansViewModel (private val TripDummyRepository: PlansDummyRepository): Vi
     // Get formatted date string untuk tab title
     fun getFormattedDateForPosition(position: Int): String {
         return _tripDays.value?.get(position)?.let { date ->
-            // Format: "Day 1 (Nov 11)"
             "Day ${position + 1} (${date.format(DateTimeFormatter.ofPattern("MMM dd"))})"
         } ?: "Day ${position + 1}"
     }
 
-    // Get destinations untuk hari tertentu
     fun getDestinationsForDay(dayIndex: Int): List<DestinationDummy> {
         return _selectedTrip.value?.destinations?.filter { destination ->
             // Logic untuk filter destinasi berdasarkan hari
@@ -80,7 +78,6 @@ class PlansViewModel (private val TripDummyRepository: PlansDummyRepository): Vi
         } ?: emptyList()
     }
 
-    // Ambil tanggal awal dan akhir perjalanan
     fun getStartDate(): String? {
         return _selectedTrip.value?.startDate
     }

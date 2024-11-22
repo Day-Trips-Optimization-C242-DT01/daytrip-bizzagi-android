@@ -6,14 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bizzagi.daytrip.R
 import com.bizzagi.daytrip.data.retrofit.repository.PlansDummyRepository
 import com.bizzagi.daytrip.databinding.FragmentTripBinding
-import com.bizzagi.daytrip.ui.Trip.detail.DetailTripActivity
+import com.bizzagi.daytrip.ui.Trip.Detail.DetailTripActivity
 import com.bizzagi.daytrip.utils.ViewModelFactory
 
 class TripFragment : Fragment() {

@@ -1,14 +1,9 @@
-package com.bizzagi.daytrip.ui.Trip.detail
+package com.bizzagi.daytrip.ui.Trip.Detail
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
-import com.bizzagi.daytrip.R
 import com.bizzagi.daytrip.data.retrofit.repository.PlansDummyRepository
 import com.bizzagi.daytrip.databinding.ActivityDetailTripBinding
 import com.bizzagi.daytrip.ui.Trip.PlansViewModel

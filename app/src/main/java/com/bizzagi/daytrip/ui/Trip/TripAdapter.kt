@@ -1,7 +1,5 @@
 package com.bizzagi.daytrip.ui.Trip
 
-import android.annotation.SuppressLint
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -9,7 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bizzagi.daytrip.data.retrofit.response.PlansDummy
 import com.bizzagi.daytrip.databinding.CardMyTripBinding
-import com.bizzagi.daytrip.ui.Trip.detail.DetailTripActivity
+
 class TripAdapter(private val onItemClick: (String) -> Unit) :
     ListAdapter<PlansDummy, TripAdapter.TripViewHolder>(DiffCallback()) {
 
