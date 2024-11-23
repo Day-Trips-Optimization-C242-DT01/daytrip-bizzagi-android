@@ -56,4 +56,8 @@ dependencies {
 
     implementation (libs.androidx.viewpager2)
     implementation (libs.threetenabp)
+
+    //places detail api
+    implementation (libs.places)
+    implementation (libs.places.ktx)
 }

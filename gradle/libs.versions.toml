@@ -11,6 +11,8 @@ activity = "1.8.0"
 constraintlayout = "2.2.0"
 googleAndroidLibrariesMapsplatformSecretsGradlePlugin = "2.0.1"
 navigationFragmentKtx = "2.8.4"
+places = "4.1.0"
+placesKtx = "3.1.1"
 playServicesMaps = "19.0.0"
 threetenabp = "1.4.7"
 viewpager2 = "1.1.0"
@@ -27,6 +29,8 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+places = { module = "com.google.android.libraries.places:places", version.ref = "places" }
+places-ktx = { module = "com.google.maps.android:places-ktx", version.ref = "placesKtx" }
 play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }
 threetenabp = { module = "com.jakewharton.threetenabp:threetenabp", version.ref = "threetenabp" }
 
