@@ -2,9 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -17,9 +17,8 @@
         android:theme="@style/Theme.BizzagiDayTrip"
         tools:targetApi="31">
         <activity
-            android:name=".ui.Trip.Detail.DetailTripActivity"
-            android:exported="false"
-            android:theme="@style/Theme.BizzagiDayTrip" />
+            android:name=".ui.Maps.AddPlan.AddTripActivity"
+            android:exported="false" />
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
 
@@ -35,6 +34,13 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_api_key" />
 
+        <activity
+            android:name=".ui.Maps.AddPlan.PickRegionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.Trip.Detail.DetailTripActivity"
+            android:exported="false"
+            android:theme="@style/Theme.BizzagiDayTrip" />
         <activity
             android:name=".ui.Maps.MapsFragment"
             android:exported="false"

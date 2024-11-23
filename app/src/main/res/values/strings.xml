@@ -83,4 +83,10 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
+    <string name="pilih_wilayah">Pilih Wilayah</string>
+    <string name="ntb">Nusa Tenggara Barat</string>
+    <string name="bali">Bali</string>
+    <string name="title_activity_maps_pick">MapsPickActivity</string>
+    <string name="clear_markers">Clear markers</string>
+    <string name="hapus_destinasi_fab">Hapus Destinasi</string>
 </resources>
