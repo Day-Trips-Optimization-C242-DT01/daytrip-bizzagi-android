@@ -39,9 +39,8 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search_card"
+        app:layout_constraintTop_toTopOf="parent"
         tools:context=".ui.Maps.MapsFragment" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
