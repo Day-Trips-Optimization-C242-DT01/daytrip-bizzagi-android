@@ -12,7 +12,6 @@ import com.bizzagi.daytrip.databinding.FragmnetProfileBinding
 
 class ProfileFragment : Fragment() {
 
-    // ViewBinding untuk fragment_profile.xml
     private var _binding: FragmnetProfileBinding? = null
     private val binding get() = _binding!!
 
@@ -20,7 +19,6 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate layout menggunakan ViewBinding
         _binding = FragmnetProfileBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -28,24 +26,19 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Handle klik pada nama
         binding.tvName.setOnClickListener {
-            // Navigasi ke EditProfileActivity
             val intent = Intent(requireContext(), EditProfileActivity::class.java)
             startActivity(intent)
         }
 
-        // Handle klik pada Notifikasi
         binding.tvNotification.setOnClickListener {
             Toast.makeText(requireContext(), "Notification clicked!", Toast.LENGTH_SHORT).show()
         }
 
-        // Handle klik pada Bahasa
         binding.tvLanguage.setOnClickListener {
             Toast.makeText(requireContext(), "Language clicked!", Toast.LENGTH_SHORT).show()
         }
 
-        // Handle klik pada Logout
         binding.tvLogout.setOnClickListener {
             Toast.makeText(requireContext(), "Logged out successfully!", Toast.LENGTH_SHORT).show()
         }
@@ -54,16 +47,14 @@ class ProfileFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        // Ambil nama terbaru dari SharedPreferences
         val sharedPreferences = requireActivity().getSharedPreferences("UserPrefs", AppCompatActivity.MODE_PRIVATE)
         val updatedName = sharedPreferences.getString("USER_NAME", "Name")
 
-        // Tampilkan nama terbaru di TextView
         binding.tvName.text = updatedName
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null // Hindari memory leaks
+        _binding = null
     }
 }

@@ -6,7 +6,6 @@
     android:layout_height="wrap_content"
     android:padding="16dp">
 
-    <!-- Simpan Button -->
     <Button
         android:id="@+id/btnSave"
         android:layout_width="wrap_content"
@@ -19,9 +18,6 @@
         android:backgroundTint="@color/md_theme_primary"
         android:textColor="@color/md_theme_onPrimary" />
 
-    <!-- Profile Picture Placeholder -->
-
-    <!-- Name Label -->
     <View
         android:id="@+id/profilePicture"
         android:layout_width="48dp"
@@ -44,7 +40,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/profilePicture" />
 
-    <!-- Name Input -->
     <EditText
         android:id="@+id/etName"
         android:layout_width="0dp"
@@ -56,7 +51,6 @@
         app:layout_constraintTop_toBottomOf="@id/tvLabelName"
         android:layout_marginTop="8dp" />
 
-    <!-- Email Label -->
     <TextView
         android:id="@+id/tvLabelEmail"
         android:layout_width="wrap_content"
@@ -69,7 +63,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/etName" />
 
-    <!-- Email Input -->
     <EditText
         android:id="@+id/etEmail"
         android:layout_width="0dp"
@@ -81,7 +74,6 @@
         app:layout_constraintTop_toBottomOf="@id/tvLabelEmail"
         android:layout_marginTop="8dp" />
 
-    <!-- Password Label -->
     <TextView
         android:id="@+id/tvLabelPassword"
         android:layout_width="wrap_content"
@@ -94,7 +86,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/etEmail" />
 
-    <!-- Password Input -->
     <EditText
         android:id="@+id/etPassword"
         android:layout_width="0dp"
