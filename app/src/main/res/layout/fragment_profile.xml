@@ -30,7 +30,8 @@
             android:text="Name"
             android:textSize="18sp"
             android:textColor="@color/md_theme_onBackground"
-            android:fontFamily="sans-serif-medium"/>
+            android:fontFamily="sans-serif-medium"
+            android:onClick="onNameClicked" />
     </LinearLayout>
 
     <!-- Options Section -->
