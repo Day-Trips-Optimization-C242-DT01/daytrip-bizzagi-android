@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -45,6 +46,7 @@
             android:name=".ui.Maps.MapsFragment"
             android:exported="false"
             android:label="@string/title_activity_maps" />
+        <activity android:name=".ui.Profile.EditProfileActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
