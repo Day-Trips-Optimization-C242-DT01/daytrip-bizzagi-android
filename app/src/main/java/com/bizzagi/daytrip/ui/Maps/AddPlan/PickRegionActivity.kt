@@ -17,7 +17,7 @@ class PickRegionActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.ntb.setOnClickListener {
-            val intent = Intent(this,AddTripActivity::class.java)
+            val intent = Intent(this,AddDestinationsMapsActivity::class.java)
             startActivity(intent)
         }
     }

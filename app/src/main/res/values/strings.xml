@@ -98,4 +98,5 @@
     <string name="label_foto">Profile Picture</string>
     <string name="label_simpan">Simpan</string>
     <string name="day">day</string>
+    <string name="title_activity_add_destinations_maps">AddDestinationsMapsActivity</string>
 </resources>
