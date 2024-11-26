@@ -28,9 +28,13 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Set click listeners for name and profile image
         binding.tvName.setOnClickListener {
-            val intent = Intent(requireContext(), EditProfileActivity::class.java)
-            startActivity(intent)
+            openEditProfile()
+        }
+
+        binding.profileImage.setOnClickListener {
+            openEditProfile()
         }
 
         binding.tvNotification.setOnClickListener {
@@ -46,13 +50,19 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    //Logout
+    // Open EditProfileActivity
+    private fun openEditProfile() {
+        val intent = Intent(requireContext(), EditProfileActivity::class.java)
+        startActivity(intent)
+    }
+
+    // Logout
     private fun showLogoutConfirmationDialog() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setMessage("Are you sure you want to log out?")
             .setCancelable(false)
             .setPositiveButton("Yes") { dialog, id ->
-                // Proses logout
+                // Perform logout
                 logoutUser()
             }
             .setNegativeButton("No") { dialog, id ->
