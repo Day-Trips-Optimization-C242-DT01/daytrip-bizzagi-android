@@ -6,10 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bizzagi.daytrip.data.retrofit.repository.PlansDummyRepository
+import com.bizzagi.daytrip.data.retrofit.repository.DestinationRepository
+import com.bizzagi.daytrip.data.retrofit.repository.PlansRepository
 import com.bizzagi.daytrip.databinding.FragmentTripBinding
 import com.bizzagi.daytrip.ui.Trip.Detail.DetailTripActivity
 import com.bizzagi.daytrip.utils.ViewModelFactory
@@ -19,6 +21,7 @@ class TripFragment : Fragment() {
     private val binding get() = _binding!!
     //ntar dibuat instance di viewmodelfactory ya
     private lateinit var viewModel: PlansViewModel
+    private lateinit var tripAdapter: TripAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,20 +33,30 @@ class TripFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //dihapus nnti setelah diinstance
-        val repository = PlansDummyRepository
+
+        // Create the repository first
+        val repository = PlansRepository(DestinationRepository()) // Create repository instance
+
+        // Create factory with repository
         val factory = ViewModelFactory(repository)
+
+        // Initialize ViewModel
         viewModel = ViewModelProvider(this, factory).get(PlansViewModel::class.java)
+
+        // After ViewModel is initialized, fetch the plans
+        viewModel.fetchPlans()
+
         setupRecyclerView()
         observeViewModel()
     }
-
     private fun setupRecyclerView() {
-        binding.rvTripPlan.layoutManager = LinearLayoutManager(requireContext())
-        val adapter = TripAdapter { tripId ->
+        tripAdapter = TripAdapter { tripId ->
             navigateToDetailTrip(tripId)
         }
-        binding.rvTripPlan.adapter = adapter
+        binding.rvTripPlan.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = tripAdapter
+        }
     }
 
     private fun navigateToDetailTrip(tripId: String) {
@@ -54,10 +67,9 @@ class TripFragment : Fragment() {
 
 
     private fun observeViewModel() {
-        viewModel.allTrips.observe(viewLifecycleOwner, Observer { trips ->
-            val adapter = binding.rvTripPlan.adapter as TripAdapter
-            adapter.submitList(trips)
-        })
+        viewModel.planIds.observe(viewLifecycleOwner) { plans ->
+            tripAdapter.submitList(plans)
+        }
     }
 
     override fun onDestroyView() {

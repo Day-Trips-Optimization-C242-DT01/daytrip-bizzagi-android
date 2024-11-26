@@ -1,10 +1,15 @@
 package com.bizzagi.daytrip.ui.Trip.Detail
 
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
-import com.bizzagi.daytrip.data.retrofit.repository.PlansDummyRepository
+import com.bizzagi.daytrip.data.retrofit.repository.DestinationRepository
+import com.bizzagi.daytrip.data.retrofit.repository.PlansRepository
 import com.bizzagi.daytrip.databinding.ActivityDetailTripBinding
 import com.bizzagi.daytrip.ui.Trip.PlansViewModel
 import com.bizzagi.daytrip.utils.ViewModelFactory
@@ -13,47 +18,74 @@ import com.google.android.material.tabs.TabLayoutMediator
 class DetailTripActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailTripBinding
     private lateinit var viewModel: PlansViewModel
-    private lateinit var pagerAdapter: TripDaysPagerAdapter
+    private lateinit var daysAdapter: DayPagerAdapter
+    private lateinit var destinationsAdapter: DestinationAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailTripBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val repository = PlansDummyRepository
+        val repository = PlansRepository(DestinationRepository()) // Create repository instance
+
+        // Create factory with repository
         val factory = ViewModelFactory(repository)
+
+        // Initialize ViewModel
         viewModel = ViewModelProvider(this, factory).get(PlansViewModel::class.java)
 
-        val tripId = intent.getStringExtra("TRIP_ID") ?: return
-        viewModel.initializeTrip(tripId)
+        val tripId = intent.getStringExtra("TRIP_ID") ?: run {
+            Toast.makeText(this, "Plan ID error", Toast.LENGTH_SHORT).show()
+            finish()
+            return
+        }
 
-        setupViewPagerAndTabs()
-        observeTripData()
+
+        setupRecyclerView(tripId)
+        observeViewModel()
+
+        viewModel.fetchDays(planId = tripId)
     }
 
-    private fun setupViewPagerAndTabs() {
-        pagerAdapter = TripDaysPagerAdapter(this, viewModel)
-        binding.viewPager.adapter = pagerAdapter
-        binding.viewPager.offscreenPageLimit = 2
+    private fun setupRecyclerView(tripId: String) {
+        daysAdapter = DayPagerAdapter { selectedDayIndex ->
+            // Memanggil fetchDestinations ketika hari dipilih
+            Log.d("DetailTripActivity", "Selected day: $selectedDayIndex")
+            viewModel.fetchDestinations(tripId,selectedDayIndex)
+        }
 
-        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
-            tab.text = viewModel.getFormattedDateForPosition(position)
-        }.attach()
+        // Inisialisasi days RecyclerView
+        binding.rvDay.apply {
+            layoutManager = LinearLayoutManager(this@DetailTripActivity, LinearLayoutManager.HORIZONTAL, false)
+            adapter = daysAdapter
+        }
 
-        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                // Expand visible range dynamically as user swipes
-                if (position == pagerAdapter.itemCount - 1) {
-                    pagerAdapter.increaseVisibleDays()
-                }
-            }
-        })
-    }
+        // Inisialisasi destinationsAdapter sebelum digunakan
+        destinationsAdapter = DestinationAdapter()
 
-    private fun observeTripData() {
-        // Update ViewPager when trip days are updated
-        viewModel.tripDays.observe(this) {
-            pagerAdapter.notifyDataSetChanged()
+        // Inisialisasi destinations RecyclerView
+        binding.rvDestination.apply {
+            layoutManager = LinearLayoutManager(this@DetailTripActivity)
+            adapter = destinationsAdapter
         }
     }
+
+
+    private fun observeViewModel() {
+        viewModel.days.observe(this) { days ->
+            daysAdapter.submitList(days)
+            if (days.isNotEmpty()) {
+                val tripId = intent.getStringExtra("TRIP_ID")
+                tripId?.let { id ->
+                    viewModel.fetchDestinations(id, days[0])
+                }
+            }
+        }
+
+        viewModel.destinations.observe(this) { destinations ->
+            Log.d("DetailTripActivity", "New destinations received: ${destinations.size}")
+            destinationsAdapter.submitList(destinations)
+        }
+    }
+
 }

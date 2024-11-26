@@ -39,6 +39,7 @@
     <string name="buat_perjalanan">Buat Perjalanan</string>
     <string name="back_icon">back_icon</string>
     <string name="perjalanan_saya">Perjalanan Saya</string>
+    <string name="detail_perjalanan">Detail Perjalanan</string>
     <string name="headline_perjalanan">Perjalan 1</string>
     <string name="day_trip">November,11 2024 - November, 15 2024</string>
     <!-- Strings used for fragments for navigation -->
@@ -96,4 +97,5 @@
     <string name="label_nama">Nama</string>
     <string name="label_foto">Profile Picture</string>
     <string name="label_simpan">Simpan</string>
+    <string name="day">day</string>
 </resources>
