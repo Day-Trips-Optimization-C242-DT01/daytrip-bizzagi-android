@@ -5,15 +5,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bizzagi.daytrip.data.retrofit.response.DestinationDummy
-import com.bizzagi.daytrip.data.retrofit.response.PlansDummy
+import com.bizzagi.daytrip.data.retrofit.response.DestinationsData
 import com.bizzagi.daytrip.databinding.CardDestinationBinding
 import com.bizzagi.daytrip.ui.Trip.TripAdapter
 
-class DestinationAdapter : ListAdapter<DestinationDummy,DestinationAdapter.DestinationViewHolder>(DestinationAdapter.DiffCallback()) {
+class DestinationAdapter : ListAdapter<DestinationsData,DestinationAdapter.DestinationViewHolder>(
+    DIFF_CALLBACK) {
     class DestinationViewHolder(private val binding: CardDestinationBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(destination: DestinationDummy) {
+        fun bind(destination: DestinationsData) {
             binding.tvDestinasi.text = destination.name
             binding.tvAddress.text = destination.address
         }
@@ -28,14 +28,18 @@ class DestinationAdapter : ListAdapter<DestinationDummy,DestinationAdapter.Desti
         holder.bind(getItem(position))
     }
 
-    class DiffCallback : DiffUtil.ItemCallback<DestinationDummy>() {
-        override fun areItemsTheSame(oldItem: DestinationDummy, newItem: DestinationDummy): Boolean {
-            return oldItem.id == newItem.id
-        }
+    companion object {
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<DestinationsData>() {
+            override fun areItemsTheSame(
+                oldItem: DestinationsData,
+                newItem: DestinationsData
+            ): Boolean {
+                return oldItem == newItem
+            }
 
-        override fun areContentsTheSame(oldItem: DestinationDummy, newItem: DestinationDummy): Boolean {
-            return oldItem == newItem
+            override fun areContentsTheSame(oldItem: DestinationsData, newItem: DestinationsData): Boolean {
+                return oldItem == newItem
+            }
         }
     }
-
 }

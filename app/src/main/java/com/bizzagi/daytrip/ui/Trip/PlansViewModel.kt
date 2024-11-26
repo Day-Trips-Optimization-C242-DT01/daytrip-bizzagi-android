@@ -4,92 +4,34 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bizzagi.daytrip.data.retrofit.repository.PlansDummyRepository
-import com.bizzagi.daytrip.data.retrofit.response.DestinationDummy
-import com.bizzagi.daytrip.data.retrofit.response.PlansDummy
+import com.bizzagi.daytrip.data.retrofit.repository.PlansRepository
+import com.bizzagi.daytrip.data.retrofit.response.DestinationsData
 import kotlinx.coroutines.launch
 import org.threeten.bp.LocalDate
 import org.threeten.bp.format.DateTimeFormatter
 
-class PlansViewModel (private val TripDummyRepository: PlansDummyRepository): ViewModel() {
-    private val _selectedTrip = MutableLiveData<PlansDummy?>()
-    val selectedTrip: MutableLiveData<PlansDummy?> = _selectedTrip
+class PlansViewModel(private val plansRepository: PlansRepository) : ViewModel() {
 
-    private val _currentDayIndex = MutableLiveData<Int>()
-    val currentDayIndex: LiveData<Int> = _currentDayIndex
+    private val _planIds = MutableLiveData<List<String>>()
+    val planIds: LiveData<List<String>> get() = _planIds
 
-    private val _tripDays = MutableLiveData<List<LocalDate>>()
-    val tripDays: LiveData<List<LocalDate>> = _tripDays
+    private val _days = MutableLiveData<List<String>>()
+    val days: LiveData<List<String>> get() = _days
 
-    private val planRepository = PlansDummyRepository
+    private val _destinations = MutableLiveData<List<DestinationsData>>()
+    val destinations : MutableLiveData<List<DestinationsData>> get() = _destinations
 
-    private val _allTrips = MutableLiveData<List<PlansDummy>>()
-    val allTrips: LiveData<List<PlansDummy>> = _allTrips
-
-    init {
-        fetchTrips()
+    fun fetchPlans() {
+        _planIds.value = plansRepository.getPlanIds()
     }
 
-    //ntar ubah livedata waktu fetch api + add result
-
-    fun initializeTrip(tripId: String) {
-        viewModelScope.launch {
-            val trip = planRepository.getTrips().find { it.id == tripId }
-            _selectedTrip.value = trip
-
-            trip?.let {
-                calculateTripDays(it.startDate, it.endDate)
-            }
-        }
+    fun fetchDays(planId: String) {
+        val response = plansRepository.getDays(planId)
+        _days.value = response.data.days.keys.toList()
     }
 
-    private fun calculateTripDays(startDate: String, endDate: String) {
-        val start = LocalDate.parse(startDate)
-        val end = LocalDate.parse(endDate)
-
-        val days = mutableListOf<LocalDate>()
-        var currentDate = start
-
-        while (!currentDate.isAfter(end)) {
-            days.add(currentDate)
-            currentDate = currentDate.plusDays(1)
-        }
-
-        _tripDays.value = days
-    }
-
-    // Update aactivity index ketika tab berubah
-    fun updateCurrentDay(position: Int) {
-        _currentDayIndex.value = position
-    }
-
-    // Get formatted date string untuk tab title
-    fun getFormattedDateForPosition(position: Int): String {
-        return _tripDays.value?.get(position)?.let { date ->
-            "Day ${position + 1} (${date.format(DateTimeFormatter.ofPattern("MMM dd"))})"
-        } ?: "Day ${position + 1}"
-    }
-
-    fun getDestinationsForDay(dayIndex: Int): List<DestinationDummy> {
-        return _selectedTrip.value?.destinations?.filter { destination ->
-            // Logic untuk filter destinasi berdasarkan hari
-            true
-        } ?: emptyList()
-    }
-
-    fun getStartDate(): String? {
-        return _selectedTrip.value?.startDate
-    }
-
-    fun getEndDate(): String? {
-        return _selectedTrip.value?.endDate
-    }
-
-    private fun fetchTrips() {
-        viewModelScope.launch {
-            val trips = planRepository.getTrips()
-            _allTrips.value = trips
-        }
+    fun fetchDestinations(planId: String, day: String) {
+        val destinations = plansRepository.getDestinationsByDay(planId, day)
+        _destinations.value = destinations
     }
 }
-

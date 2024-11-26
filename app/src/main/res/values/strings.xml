@@ -39,6 +39,7 @@
     <string name="buat_perjalanan">Buat Perjalanan</string>
     <string name="back_icon">back_icon</string>
     <string name="perjalanan_saya">Perjalanan Saya</string>
+    <string name="detail_perjalanan">Detail Perjalanan</string>
     <string name="headline_perjalanan">Perjalan 1</string>
     <string name="day_trip">November,11 2024 - November, 15 2024</string>
     <!-- Strings used for fragments for navigation -->
@@ -89,4 +90,5 @@
     <string name="title_activity_maps_pick">MapsPickActivity</string>
     <string name="clear_markers">Clear markers</string>
     <string name="hapus_destinasi_fab">Hapus Destinasi</string>
+    <string name="day">Hari 1</string>
 </resources>
