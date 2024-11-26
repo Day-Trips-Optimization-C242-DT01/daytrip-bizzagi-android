@@ -89,4 +89,11 @@
     <string name="title_activity_maps_pick">MapsPickActivity</string>
     <string name="clear_markers">Clear markers</string>
     <string name="hapus_destinasi_fab">Hapus Destinasi</string>
+    <string name="label_password">Password Baru</string>
+    <string name="isi_password">Masukan Password Baru</string>
+    <string name="isi_email">Masukan Email</string>
+    <string name="isi_nama">Masukan Nama</string>
+    <string name="label_nama">Nama</string>
+    <string name="label_foto">Profile Picture</string>
+    <string name="label_simpan">Simpan</string>
 </resources>
