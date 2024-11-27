@@ -2,7 +2,7 @@ package com.bizzagi.daytrip.ui.Maps.AddPlan
 
 import android.os.Bundle
 import android.util.Log
-import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.bizzagi.daytrip.R
@@ -14,10 +14,12 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.model.RectangularBounds
 import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
@@ -32,15 +34,18 @@ class AddDestinationsMapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityAddDestinationsMapsBinding
     private lateinit var placesClient: PlacesClient
-    private lateinit var autocompleteFragment: AutocompleteSupportFragment
+    private lateinit var selectedRegion: String
+    private lateinit var regionBounds: LatLngBounds
 
-    // Menyimpan list marker
     private val markers = mutableListOf<Marker>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddDestinationsMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        selectedRegion = intent.getStringExtra(EXTRA_REGION) ?: "BALI"
+        regionBounds = REGION_BOUNDS[selectedRegion] ?: REGION_BOUNDS["BALI"]!!
 
         Places.initialize(this, getString(R.string.google_maps_api_key))
         placesClient = Places.createClient(this)
@@ -52,9 +57,18 @@ class AddDestinationsMapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
     }
 
+    private fun isLocationInRegion(latLng: LatLng): Boolean {
+        return regionBounds.contains(latLng)
+    }
+
     private fun setupAutocomplete() {
-        autocompleteFragment = supportFragmentManager
+        val autocompleteFragment = supportFragmentManager
             .findFragmentById(R.id.autocomplete_fragment) as AutocompleteSupportFragment
+
+        val bounds = REGION_BOUNDS[selectedRegion]
+        bounds?.let {
+            autocompleteFragment.setLocationBias(RectangularBounds.newInstance(bounds))
+        }
 
         autocompleteFragment.setPlaceFields(listOf(
             Place.Field.ID,
@@ -65,19 +79,21 @@ class AddDestinationsMapsActivity : AppCompatActivity(), OnMapReadyCallback {
             Place.Field.OPENING_HOURS
         ))
 
-        autocompleteFragment.setHint("Cari lokasi")
+        autocompleteFragment.setHint("Cari lokasi di $selectedRegion")
 
         autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
             override fun onPlaceSelected(place: Place) {
                 place.latLng?.let { latLng ->
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
-                    addMarker(latLng, place.name ?: "", place.address ?: "")
-
-                    lifecycleScope.launch {
-                        getPlaceDetails(place.id)
+                    if (isLocationInRegion(latLng)) {
+                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
+                        addMarker(latLng, place.name ?: "", place.address ?: "")
+                    } else {
+                        Toast.makeText(
+                            this@AddDestinationsMapsActivity,
+                            "Lokasi harus berada di wilayah $selectedRegion",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
-
-                    clearSearchField()
                 }
             }
 
@@ -87,12 +103,39 @@ class AddDestinationsMapsActivity : AppCompatActivity(), OnMapReadyCallback {
         })
     }
 
-    private fun clearSearchField() {
-        autocompleteFragment.setText("")
-    }
-
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+
+        mMap.setLatLngBoundsForCameraTarget(regionBounds)
+
+        when (selectedRegion) {
+            "NTB" -> {
+                mMap.setMinZoomPreference(8f)
+                mMap.setMaxZoomPreference(20f)
+            }
+            "BALI" -> {
+                mMap.setMinZoomPreference(9f)
+                mMap.setMaxZoomPreference(20f)
+            }
+        }
+
+        mMap.setMinZoomPreference(5f)
+        mMap.setMaxZoomPreference(20f)
+
+        val centerPosition = REGION_CENTERS[selectedRegion] ?: REGION_CENTERS["BALI"]!!
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(centerPosition, 9f))
+
+        mMap.setOnCameraMoveListener {
+            val currentPosition = mMap.cameraPosition.target
+            if (!isLocationInRegion(currentPosition)) {
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(centerPosition))
+                Toast.makeText(
+                    this@AddDestinationsMapsActivity,
+                    "Wilayah berada diluar batas wilayah $selectedRegion",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
 
         mMap.setOnPoiClickListener { pointOfInterest ->
             addMarker(
@@ -126,7 +169,6 @@ class AddDestinationsMapsActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
 
-        // Tambahkan listener untuk klik marker
         mMap.setOnMarkerClickListener { marker ->
             marker.showInfoWindow()
             true
@@ -138,7 +180,6 @@ class AddDestinationsMapsActivity : AppCompatActivity(), OnMapReadyCallback {
             isMapToolbarEnabled = true
         }
 
-        // Tambahkan tombol untuk menghapus semua marker
         addClearMarkersButton()
     }
 
@@ -173,15 +214,12 @@ class AddDestinationsMapsActivity : AppCompatActivity(), OnMapReadyCallback {
         return colors[index % colors.size]
     }
 
-    // Tambahkan tombol untuk menghapus semua marker
     private fun addClearMarkersButton() {
-        // Tambahkan ini di layout XML
         binding.btnClearMarkers.setOnClickListener {
             clearAllMarkers()
         }
     }
 
-    // Fungsi untuk menghapus semua marker
     private fun clearAllMarkers() {
         markers.forEach { it.remove() }
         markers.clear()
@@ -215,5 +253,25 @@ class AddDestinationsMapsActivity : AppCompatActivity(), OnMapReadyCallback {
         } catch (e: Exception) {
             Log.e("PlaceDetails", "Error fetching place details: ${e.message}")
         }
+    }
+
+    companion object {
+        const val EXTRA_REGION = "extra_region"
+
+        private val REGION_BOUNDS = mapOf(
+            "NTB" to LatLngBounds(
+                LatLng(-9.219741, 115.667416),
+                LatLng(-8.002291, 119.348972)
+            ),
+            "BALI" to LatLngBounds(
+                LatLng(-8.930736, 114.432539),
+                LatLng(-8.060337, 115.711412)
+            )
+        )
+
+        private val REGION_CENTERS = mapOf(
+            "NTB" to LatLng(-8.611016, 117.508194),
+            "BALI" to LatLng(-8.495537, 115.071976)
+        )
     }
 }

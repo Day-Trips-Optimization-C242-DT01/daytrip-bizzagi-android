@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import com.bizzagi.daytrip.R
 import com.bizzagi.daytrip.databinding.FragmentMapsBinding
 import com.google.android.gms.common.api.Status
@@ -14,19 +13,13 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 
 @Suppress("DEPRECATION")
 class MapsFragment : Fragment(), OnMapReadyCallback {
@@ -37,8 +30,11 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     private lateinit var placesClient: PlacesClient
     private lateinit var autocompleteFragment: AutocompleteSupportFragment
 
-    // Menyimpan list marker
-    private val markers = mutableListOf<Marker>()
+    private val indonesiaBounds = LatLngBounds(
+        LatLng(-11.007375, 95.007307),
+        LatLng(6.076912, 141.019454)
+    )
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -98,9 +94,21 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        mMap.setOnMarkerClickListener { marker ->
-            marker.showInfoWindow()
-            true
+        mMap.setLatLngBoundsForCameraTarget(indonesiaBounds)
+
+        mMap.setMinZoomPreference(5f)
+        mMap.setMaxZoomPreference(20f)
+
+        val indonesiaCenter = LatLng(-2.548926, 118.014863)
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(indonesiaCenter, 5f))
+
+        mMap.setOnCameraMoveStartedListener { reason ->
+            if (reason == GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE) {
+                val bounds = mMap.projection.visibleRegion.latLngBounds
+                if (!indonesiaBounds.contains(bounds.center)) {
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(indonesiaBounds, 0))
+                }
+            }
         }
 
         mMap.uiSettings.apply {
