@@ -2,11 +2,13 @@ package com.bizzagi.daytrip.ui.Trip.Detail
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bizzagi.daytrip.R
 import com.bizzagi.daytrip.databinding.CardDayBinding
 
 class DayPagerAdapter(
@@ -22,7 +24,6 @@ class DayPagerAdapter(
         fun bind(dayIndex: String) {
             binding.tvHari.text = "Day ${dayIndex.replace("day", "")}"
 
-            // Set click listener for the item
             binding.root.setOnClickListener {
                 val position = bindingAdapterPosition
                 if (position != RecyclerView.NO_POSITION) {
@@ -37,14 +38,13 @@ class DayPagerAdapter(
                 }
             }
 
-            // Update the visual state based on selection
             val position = bindingAdapterPosition
+            binding.tvHari.setTextColor(ContextCompat.getColor(binding.root.context, R.color.md_theme_primary))
             if (position != RecyclerView.NO_POSITION && position == selectedPosition) {
-                binding.root.setBackgroundResource(android.R.color.holo_blue_light)
-                binding.tvHari.setTextColor(ContextCompat.getColor(binding.root.context, android.R.color.white))
+                binding.indicator.visibility = View.VISIBLE
             } else {
-                binding.root.setBackgroundResource(android.R.color.white)
-                binding.tvHari.setTextColor(ContextCompat.getColor(binding.root.context, android.R.color.black))
+                binding.indicator.visibility = View.GONE
+                binding.tvHari.setTextColor(ContextCompat.getColor(binding.root.context, android.R.color.darker_gray))
             }
         }
     }

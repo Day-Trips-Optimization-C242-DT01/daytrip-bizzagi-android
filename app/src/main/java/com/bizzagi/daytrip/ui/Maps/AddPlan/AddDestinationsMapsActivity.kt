@@ -239,12 +239,14 @@ class AddDestinationsMapsActivity : AppCompatActivity(), OnMapReadyCallback {
             val placeResponse = placesClient.fetchPlace(request).await()
             val place = placeResponse.place
 
+            val id = place.id
             val name = place.name
             val address = place.address
             val latLng = place.latLng
             val types = place.types
             val openingHours = place.openingHours?.weekdayText?.joinToString(", ")
 
+            Log.d("PlaceDetails", "Id: $id")
             Log.d("PlaceDetails", "Name: $name")
             Log.d("PlaceDetails", "Address: $address")
             Log.d("PlaceDetails", "LatLng: $latLng")

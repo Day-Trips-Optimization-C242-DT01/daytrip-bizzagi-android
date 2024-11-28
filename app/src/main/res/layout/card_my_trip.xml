@@ -1,37 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_my_trip"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent">
 
-   <LinearLayout
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:orientation="vertical"
-       android:padding="20dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
 
-       <TextView
-           android:id="@+id/tvPerjalanan"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           style="@style/TextAppearance.MyApp.HeadlineLarge"
-           android:text="@string/headline_perjalanan"
-        />
-
-       <TextView
-           android:id="@+id/tvDate"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           style="@style/TextAppearance.MyApp.HeadlineSmall"
-           android:text="@string/day_trip"
-           />
-   </LinearLayout>
+        <TextView
+            android:id="@+id/tvPerjalanan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.MyApp.HeadlineMedium"
+            android:text="@string/headline_perjalanan" />
+    </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>

@@ -28,9 +28,10 @@ class DetailTripActivity : AppCompatActivity() {
 
         val apiService = ApiConfig.getApiService()
 
-        val repository = PlansRepository(DestinationRepository(apiService))
+        val repository = PlansRepository(apiService)
+        val repository2 = DestinationRepository(apiService)
 
-        val factory = ViewModelFactory(repository)
+        val factory = ViewModelFactory(repository,repository2)
 
         viewModel = ViewModelProvider(this, factory).get(PlansViewModel::class.java)
 
@@ -50,7 +51,7 @@ class DetailTripActivity : AppCompatActivity() {
         daysAdapter = DayPagerAdapter { selectedDayIndex ->
             lifecycleScope.launch {
                 Log.d("DetailTripActivity", "Selected day: $selectedDayIndex")
-                viewModel.fetchDestinations(tripId, selectedDayIndex)
+                viewModel.fetchDestinationsForDay(tripId, selectedDayIndex)
             }
         }
 
@@ -69,20 +70,24 @@ class DetailTripActivity : AppCompatActivity() {
 
     private fun observeViewModel() {
         viewModel.days.observe(this) { days ->
-            daysAdapter.submitList(days)
             if (days.isNotEmpty()) {
-                val tripId = intent.getStringExtra("TRIP_ID")
-                tripId?.let { id ->
-                    lifecycleScope.launch {
-                        viewModel.fetchDestinations(id, days[0])
-                    }
-                }
+                val dayKeys = days.keys.toList()
+                daysAdapter.submitList(dayKeys)
+
+                val firstDay = dayKeys.first()
+                val tripId = intent.getStringExtra("TRIP_ID") ?: return@observe
+                viewModel.fetchDestinationsForDay(tripId, firstDay)
             }
         }
 
         viewModel.destinations.observe(this) { destinations ->
-            Log.d("DetailTripActivity", "New destinations received: ${destinations.size}")
-            destinationsAdapter.submitList(destinations)
+            if (destinations.isNotEmpty()) {
+                destinationsAdapter.submitList(destinations)
+            } else {
+                Toast.makeText(this, "No destinations available for this day", Toast.LENGTH_SHORT).show()
+            }
         }
     }
+
+
 }

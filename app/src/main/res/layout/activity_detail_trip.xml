@@ -9,13 +9,12 @@
 
     <TextView
         android:id="@+id/textView3"
-        style="@style/TextAppearance.MyApp.HeadlineMedium"
+        style="@style/TextAppearance.MyApp.HeadlineLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="12dp"
         android:foregroundGravity="center_horizontal"
-        android:paddingTop="10dp"
         android:text="@string/detail_perjalanan"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"

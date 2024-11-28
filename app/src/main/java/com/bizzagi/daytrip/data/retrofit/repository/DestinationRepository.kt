@@ -28,31 +28,4 @@ class DestinationRepository (private val apiService: ApiService) {
             }
         }
     }
-
-   /* fun getDestinations(destinationId:String): DestinationsResponse {
-        val destinationData = destinations[destinationId]
-        return if (destinationData != null) {
-            DestinationsResponse(
-                success = true,
-                message = "Destination retrieved successfully",
-                data = destinationData
-            )
-        } else {
-            DestinationsResponse(
-                success = false,
-                message = "Destination not found",
-                data = DestinationsData(
-                    latitude = 0.0,
-                    longitude = 0.0,
-                    name = "Unknown",
-                    types = emptyList(),
-                    primaryType = "unknown",
-                    address = "unknown",
-                    opens = emptyList(),
-                    closes = emptyList(),
-                    photosList = emptyList()
-                )
-            )
-        }
-    }*/
 }
