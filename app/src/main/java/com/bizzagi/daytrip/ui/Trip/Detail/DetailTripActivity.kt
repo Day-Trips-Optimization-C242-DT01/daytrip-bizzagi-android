@@ -4,16 +4,16 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.viewpager2.widget.ViewPager2
+import com.bizzagi.daytrip.data.retrofit.ApiConfig
 import com.bizzagi.daytrip.data.retrofit.repository.DestinationRepository
 import com.bizzagi.daytrip.data.retrofit.repository.PlansRepository
 import com.bizzagi.daytrip.databinding.ActivityDetailTripBinding
 import com.bizzagi.daytrip.ui.Trip.PlansViewModel
 import com.bizzagi.daytrip.utils.ViewModelFactory
-import com.google.android.material.tabs.TabLayoutMediator
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 
 class DetailTripActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailTripBinding
@@ -26,12 +26,12 @@ class DetailTripActivity : AppCompatActivity() {
         binding = ActivityDetailTripBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val repository = PlansRepository(DestinationRepository()) // Create repository instance
+        val apiService = ApiConfig.getApiService()
 
-        // Create factory with repository
+        val repository = PlansRepository(DestinationRepository(apiService))
+
         val factory = ViewModelFactory(repository)
 
-        // Initialize ViewModel
         viewModel = ViewModelProvider(this, factory).get(PlansViewModel::class.java)
 
         val tripId = intent.getStringExtra("TRIP_ID") ?: run {
@@ -39,7 +39,6 @@ class DetailTripActivity : AppCompatActivity() {
             finish()
             return
         }
-
 
         setupRecyclerView(tripId)
         observeViewModel()
@@ -49,27 +48,24 @@ class DetailTripActivity : AppCompatActivity() {
 
     private fun setupRecyclerView(tripId: String) {
         daysAdapter = DayPagerAdapter { selectedDayIndex ->
-            // Memanggil fetchDestinations ketika hari dipilih
-            Log.d("DetailTripActivity", "Selected day: $selectedDayIndex")
-            viewModel.fetchDestinations(tripId,selectedDayIndex)
+            lifecycleScope.launch {
+                Log.d("DetailTripActivity", "Selected day: $selectedDayIndex")
+                viewModel.fetchDestinations(tripId, selectedDayIndex)
+            }
         }
 
-        // Inisialisasi days RecyclerView
         binding.rvDay.apply {
             layoutManager = LinearLayoutManager(this@DetailTripActivity, LinearLayoutManager.HORIZONTAL, false)
             adapter = daysAdapter
         }
 
-        // Inisialisasi destinationsAdapter sebelum digunakan
         destinationsAdapter = DestinationAdapter()
 
-        // Inisialisasi destinations RecyclerView
         binding.rvDestination.apply {
             layoutManager = LinearLayoutManager(this@DetailTripActivity)
             adapter = destinationsAdapter
         }
     }
-
 
     private fun observeViewModel() {
         viewModel.days.observe(this) { days ->
@@ -77,7 +73,9 @@ class DetailTripActivity : AppCompatActivity() {
             if (days.isNotEmpty()) {
                 val tripId = intent.getStringExtra("TRIP_ID")
                 tripId?.let { id ->
-                    viewModel.fetchDestinations(id, days[0])
+                    lifecycleScope.launch {
+                        viewModel.fetchDestinations(id, days[0])
+                    }
                 }
             }
         }
@@ -87,5 +85,4 @@ class DetailTripActivity : AppCompatActivity() {
             destinationsAdapter.submitList(destinations)
         }
     }
-
 }

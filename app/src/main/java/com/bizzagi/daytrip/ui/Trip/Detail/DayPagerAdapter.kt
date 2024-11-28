@@ -1,5 +1,6 @@
 package com.bizzagi.daytrip.ui.Trip.Detail
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -17,6 +18,7 @@ class DayPagerAdapter(
     inner class DayViewHolder(private val binding: CardDayBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
+        @SuppressLint("SetTextI18n")
         fun bind(dayIndex: String) {
             binding.tvHari.text = "Day ${dayIndex.replace("day", "")}"
 
@@ -24,15 +26,14 @@ class DayPagerAdapter(
             binding.root.setOnClickListener {
                 val position = bindingAdapterPosition
                 if (position != RecyclerView.NO_POSITION) {
+                    val dayId = getItem(position)
                     val oldPosition = selectedPosition
                     selectedPosition = position
 
-                    // Notify the items that need to be redrawn
                     notifyItemChanged(oldPosition)
                     notifyItemChanged(selectedPosition)
 
-                    // Trigger the callback with the selected day
-                    onDayClick(dayIndex)
+                    onDayClick(dayId)
                 }
             }
 

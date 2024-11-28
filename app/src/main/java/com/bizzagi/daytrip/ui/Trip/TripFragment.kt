@@ -6,10 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bizzagi.daytrip.data.retrofit.ApiConfig
 import com.bizzagi.daytrip.data.retrofit.repository.DestinationRepository
 import com.bizzagi.daytrip.data.retrofit.repository.PlansRepository
 import com.bizzagi.daytrip.databinding.FragmentTripBinding
@@ -34,16 +33,17 @@ class TripFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val apiService = ApiConfig.getApiService()
+
         // Create the repository first
-        val repository = PlansRepository(DestinationRepository()) // Create repository instance
+        val repository = PlansRepository(DestinationRepository(apiService)) // Create repository instance
 
         // Create factory with repository
+        //change injection soon
         val factory = ViewModelFactory(repository)
 
-        // Initialize ViewModel
         viewModel = ViewModelProvider(this, factory).get(PlansViewModel::class.java)
 
-        // After ViewModel is initialized, fetch the plans
         viewModel.fetchPlans()
 
         setupRecyclerView()

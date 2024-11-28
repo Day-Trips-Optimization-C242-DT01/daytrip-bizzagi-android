@@ -5,10 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bizzagi.daytrip.data.retrofit.repository.PlansRepository
-import com.bizzagi.daytrip.data.retrofit.response.DestinationsData
+import com.bizzagi.daytrip.data.retrofit.response.Destinations.DataItem
 import kotlinx.coroutines.launch
-import org.threeten.bp.LocalDate
-import org.threeten.bp.format.DateTimeFormatter
 
 class PlansViewModel(private val plansRepository: PlansRepository) : ViewModel() {
 
@@ -18,8 +16,8 @@ class PlansViewModel(private val plansRepository: PlansRepository) : ViewModel()
     private val _days = MutableLiveData<List<String>>()
     val days: LiveData<List<String>> get() = _days
 
-    private val _destinations = MutableLiveData<List<DestinationsData>>()
-    val destinations : MutableLiveData<List<DestinationsData>> get() = _destinations
+    private val _destinations = MutableLiveData<List<DataItem>>()
+    val destinations : MutableLiveData<List<DataItem>> get() = _destinations
 
     fun fetchPlans() {
         _planIds.value = plansRepository.getPlanIds()
@@ -31,7 +29,14 @@ class PlansViewModel(private val plansRepository: PlansRepository) : ViewModel()
     }
 
     fun fetchDestinations(planId: String, day: String) {
-        val destinations = plansRepository.getDestinationsByDay(planId, day)
-        _destinations.value = destinations
+        viewModelScope.launch {
+            try {
+                val destinations = plansRepository.getDestinationsByDay(planId, day)
+                _destinations.value = destinations
+            } catch (e: Exception) {
+                // Handle error case
+                _destinations.value = emptyList()
+            }
+        }
     }
 }

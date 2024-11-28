@@ -5,15 +5,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bizzagi.daytrip.data.retrofit.response.DestinationsData
+import com.bizzagi.daytrip.data.retrofit.response.Destinations.DataItem
 import com.bizzagi.daytrip.databinding.CardDestinationBinding
-import com.bizzagi.daytrip.ui.Trip.TripAdapter
 
-class DestinationAdapter : ListAdapter<DestinationsData,DestinationAdapter.DestinationViewHolder>(
+class DestinationAdapter : ListAdapter<DataItem,DestinationAdapter.DestinationViewHolder>(
     DIFF_CALLBACK) {
     class DestinationViewHolder(private val binding: CardDestinationBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(destination: DestinationsData) {
+        fun bind(destination: DataItem) {
             binding.tvDestinasi.text = destination.name
             binding.tvAddress.text = destination.address
         }
@@ -29,15 +28,15 @@ class DestinationAdapter : ListAdapter<DestinationsData,DestinationAdapter.Desti
     }
 
     companion object {
-        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<DestinationsData>() {
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<DataItem>() {
             override fun areItemsTheSame(
-                oldItem: DestinationsData,
-                newItem: DestinationsData
+                oldItem: DataItem,
+                newItem: DataItem
             ): Boolean {
                 return oldItem == newItem
             }
 
-            override fun areContentsTheSame(oldItem: DestinationsData, newItem: DestinationsData): Boolean {
+            override fun areContentsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
                 return oldItem == newItem
             }
         }
