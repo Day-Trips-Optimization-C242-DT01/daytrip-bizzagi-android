@@ -2,10 +2,30 @@ package com.bizzagi.daytrip.data.retrofit.repository
 
 import android.util.Log
 import com.bizzagi.daytrip.data.retrofit.ApiService
+import retrofit2.HttpException
 
 class PlansRepository(
     private val apiService: ApiService
 ) {
+    suspend fun getPlansDestinations(): List<String> {
+        return try {
+            val response = apiService.getPlans()
+            Log.d("getPlanDestinations", "API response: $response")
+            if (!response.success) {
+                Log.e("getPlanDestinations", "API response unsuccessful: ${response.message}")
+                emptyList()
+            } else {
+                val destinationids = response.data.flatMap { plan ->
+                    plan.data.values.flatten()
+                }
+                destinationids.distinct()
+            }
+        } catch (e: HttpException) {
+            Log.e("getPlanDestinations", "Error fetching all destination IDs: ${e.message}")
+            emptyList()
+        }
+    }
+
     suspend fun getPlanIds(): List<String> {
         return try {
             val response = apiService.getPlans()

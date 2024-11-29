@@ -1,13 +1,21 @@
 package com.bizzagi.daytrip.ui.Maps
 
+import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.bizzagi.daytrip.R
+import com.bizzagi.daytrip.data.retrofit.ApiConfig
+import com.bizzagi.daytrip.data.retrofit.repository.DestinationRepository
+import com.bizzagi.daytrip.data.retrofit.repository.PlansRepository
+import com.bizzagi.daytrip.data.retrofit.response.Destinations.DataItem
 import com.bizzagi.daytrip.databinding.FragmentMapsBinding
+import com.bizzagi.daytrip.ui.Trip.PlansViewModel
+import com.bizzagi.daytrip.utils.ViewModelFactory
 import com.google.android.gms.common.api.Status
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -15,6 +23,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.PlacesClient
@@ -29,6 +38,11 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     private val binding get() = _binding!!
     private lateinit var placesClient: PlacesClient
     private lateinit var autocompleteFragment: AutocompleteSupportFragment
+
+    private val boundsBuilder = LatLngBounds.Builder()
+
+    //ntar dibuat instance di viewmodelfactory ya
+    private lateinit var viewModel: PlansViewModel
 
     private val indonesiaBounds = LatLngBounds(
         LatLng(-11.007375, 95.007307),
@@ -46,6 +60,15 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val apiService = ApiConfig.getApiService()
+
+        val repository = PlansRepository(apiService)
+        val repository2 = DestinationRepository(apiService)
+
+        val factory = ViewModelFactory(repository,repository2)
+
+        viewModel = ViewModelProvider(this, factory).get(PlansViewModel::class.java)
 
         Places.initialize(requireContext(), getString(R.string.google_maps_api_key))
         placesClient = Places.createClient(requireContext())
@@ -93,6 +116,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+        getStoriesLocation()
 
         mMap.setLatLngBoundsForCameraTarget(indonesiaBounds)
 
@@ -118,5 +142,59 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
+    private fun getStoriesLocation() {
+        viewModel.fetchAllDestinations()
 
+        viewModel.destinations.observe(viewLifecycleOwner) { destinations ->
+            Log.d("MapsFragment", "Observer triggered with ${destinations?.size} destinations")
+
+            if (destinations == null) {
+                Log.d(TAG, "Loading destinations...")
+            } else if (destinations.isEmpty()) {
+                Log.d(TAG, "No destinations found")
+            } else {
+                Log.d("Map destinations", "Fetched destinations successfully: $destinations")
+                Log.d("MapsFragment", "Calling showMarkers with ${destinations.size} destinations")
+                showMarkers(destinations)
+            }
+        }
+    }
+    private fun showMarkers(plan: List<DataItem>) {
+        if (!::mMap.isInitialized) {
+            Log.e("showMarkers", "Map is not initialized yet")
+            return
+        }
+        Log.d("showMarkers", "Starting to add ${plan.size} markers")
+
+        plan.forEachIndexed { index, result ->
+            Log.d("showMarkers", "Processing marker ${index + 1}: ${result.name}")
+            try {
+                val latLng = LatLng(result.latitude, result.longitude)
+                val marker = mMap.addMarker(
+                    MarkerOptions()
+                        .position(latLng)
+                        .title(result.name)
+                )
+                Log.d("showMarkers", "Marker added successfully: ${marker != null}")
+                boundsBuilder.include(latLng)
+            } catch (e: Exception) {
+                Log.e("showMarkers", "Error adding marker for ${result.name}: ${e.message}")
+            }
+        }
+
+        try {
+            val bounds = boundsBuilder.build()
+            mMap.animateCamera(
+                CameraUpdateFactory.newLatLngBounds(
+                    bounds,
+                    resources.displayMetrics.widthPixels,
+                    resources.displayMetrics.heightPixels,
+                    300
+                )
+            )
+            Log.d("showMarkers", "Camera animation completed")
+        } catch (e: Exception) {
+            Log.e("showMarkers", "Error animating camera: ${e.message}")
+        }
+    }
 }

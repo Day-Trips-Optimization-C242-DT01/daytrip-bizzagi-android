@@ -14,7 +14,7 @@ data class DataItem(
 	val primaryType: String,
 
 	@field:SerializedName("latitude")
-	val latitude: Any,
+	val latitude: Double,
 
 	@field:SerializedName("name")
 	val name: String,
@@ -32,7 +32,7 @@ data class DataItem(
 	val closes: List<String>,
 
 	@field:SerializedName("longitude")
-	val longitude: Any,
+	val longitude: Double,
 
 	@field:SerializedName("rating")
 	val rating: Any
