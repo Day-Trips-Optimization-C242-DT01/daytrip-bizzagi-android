@@ -8,11 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import com.bizzagi.daytrip.R
-import com.bizzagi.daytrip.data.retrofit.ApiConfig
-import com.bizzagi.daytrip.data.retrofit.repository.DestinationRepository
-import com.bizzagi.daytrip.data.retrofit.repository.PlansRepository
 import com.bizzagi.daytrip.data.retrofit.response.Destinations.DataItem
 import com.bizzagi.daytrip.databinding.FragmentMapsBinding
 import com.bizzagi.daytrip.ui.Trip.PlansViewModel
@@ -45,7 +41,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     private val viewModel: PlansViewModel by viewModels {
         ViewModelFactory.getInstance(requireActivity())
     }
-    private lateinit var mapsViewModel: MapsViewModel
 
     private val indonesiaBounds = LatLngBounds(
         LatLng(-11.007375, 95.007307),

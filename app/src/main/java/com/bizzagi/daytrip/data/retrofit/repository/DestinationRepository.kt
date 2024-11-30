@@ -2,12 +2,13 @@ package com.bizzagi.daytrip.data.retrofit.repository
 
 import com.bizzagi.daytrip.data.Result
 import com.bizzagi.daytrip.data.retrofit.ApiService
+import com.bizzagi.daytrip.data.retrofit.response.Destinations.DestinationPostResponse
 import com.bizzagi.daytrip.data.retrofit.response.Destinations.DestinationsResponse
 import com.google.gson.Gson
 import retrofit2.HttpException
 
 class DestinationRepository (private val apiService: ApiService) {
-    suspend fun createDestination(planId: String) : Result<DestinationsResponse> {
+    suspend fun createDestination(planId: String) : Result<DestinationPostResponse> {
         return try {
             val response = apiService.creteDestination(planId)
             if (!response.success) {
