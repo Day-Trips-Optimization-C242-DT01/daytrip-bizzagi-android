@@ -3,12 +3,9 @@ package com.bizzagi.daytrip.ui.Trip.Detail
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bizzagi.daytrip.data.retrofit.ApiConfig
-import com.bizzagi.daytrip.data.retrofit.repository.DestinationRepository
-import com.bizzagi.daytrip.data.retrofit.repository.PlansRepository
 import com.bizzagi.daytrip.databinding.ActivityDetailTripBinding
 import com.bizzagi.daytrip.ui.Trip.PlansViewModel
 import com.bizzagi.daytrip.utils.ViewModelFactory
@@ -17,7 +14,10 @@ import kotlinx.coroutines.launch
 
 class DetailTripActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailTripBinding
-    private lateinit var viewModel: PlansViewModel
+
+    private val viewModel by viewModels <PlansViewModel> {
+        ViewModelFactory.getInstance(this)
+    }
     private lateinit var daysAdapter: DayPagerAdapter
     private lateinit var destinationsAdapter: DestinationAdapter
 
@@ -25,15 +25,6 @@ class DetailTripActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailTripBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        val apiService = ApiConfig.getApiService()
-
-        val repository = PlansRepository(apiService)
-        val repository2 = DestinationRepository(apiService)
-
-        val factory = ViewModelFactory(repository,repository2)
-
-        viewModel = ViewModelProvider(this, factory).get(PlansViewModel::class.java)
 
         val tripId = intent.getStringExtra("TRIP_ID") ?: run {
             Toast.makeText(this, "Plan ID error", Toast.LENGTH_SHORT).show()

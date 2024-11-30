@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.bizzagi.daytrip.R
 import com.bizzagi.daytrip.data.retrofit.ApiConfig
@@ -41,8 +42,10 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
     private val boundsBuilder = LatLngBounds.Builder()
 
-    //ntar dibuat instance di viewmodelfactory ya
-    private lateinit var viewModel: PlansViewModel
+    private val viewModel: PlansViewModel by viewModels {
+        ViewModelFactory.getInstance(requireActivity())
+    }
+    private lateinit var mapsViewModel: MapsViewModel
 
     private val indonesiaBounds = LatLngBounds(
         LatLng(-11.007375, 95.007307),
@@ -60,15 +63,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val apiService = ApiConfig.getApiService()
-
-        val repository = PlansRepository(apiService)
-        val repository2 = DestinationRepository(apiService)
-
-        val factory = ViewModelFactory(repository,repository2)
-
-        viewModel = ViewModelProvider(this, factory).get(PlansViewModel::class.java)
 
         Places.initialize(requireContext(), getString(R.string.google_maps_api_key))
         placesClient = Places.createClient(requireContext())

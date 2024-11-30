@@ -6,12 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bizzagi.daytrip.data.retrofit.ApiConfig
-import com.bizzagi.daytrip.data.retrofit.repository.DestinationRepository
-import com.bizzagi.daytrip.data.retrofit.repository.PlansRepository
 import com.bizzagi.daytrip.databinding.FragmentTripBinding
 import com.bizzagi.daytrip.ui.Trip.Detail.DetailTripActivity
 import com.bizzagi.daytrip.utils.ViewModelFactory
@@ -20,8 +17,10 @@ import kotlinx.coroutines.launch
 class TripFragment : Fragment() {
     private var _binding: FragmentTripBinding? = null
     private val binding get() = _binding!!
-    //ntar dibuat instance di viewmodelfactory ya
-    private lateinit var viewModel: PlansViewModel
+
+    private val viewModel: PlansViewModel by viewModels {
+        ViewModelFactory.getInstance(requireActivity())
+    }
     private lateinit var tripAdapter: TripAdapter
 
     override fun onCreateView(
@@ -34,15 +33,6 @@ class TripFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val apiService = ApiConfig.getApiService()
-
-        val repository = PlansRepository(apiService)
-        val repository2 = DestinationRepository(apiService)
-
-        val factory = ViewModelFactory(repository,repository2)
-
-        viewModel = ViewModelProvider(this, factory).get(PlansViewModel::class.java)
 
         lifecycleScope.launch {
             viewModel.fetchPlanIds()

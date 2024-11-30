@@ -64,4 +64,15 @@ class PlansRepository(
             emptyMap()
         }
     }
+
+    companion object {
+        @Volatile
+        private var instance: PlansRepository? = null
+        fun getInstance(
+            apiService: ApiService
+        ): PlansRepository =
+            instance ?: synchronized(this) {
+                instance?: PlansRepository(apiService)
+            }. also { instance = it }
+    }
 }
