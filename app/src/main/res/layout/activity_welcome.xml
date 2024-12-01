@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/md_theme_onPrimary">
+
+    <ImageView
+        android:id="@+id/logo_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/image_welcome_page"
+        android:layout_marginBottom="30dp"/>
+
+    <TextView
+        android:id="@+id/welcome_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/welcome_message"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        android:textColor="@color/md_theme_primary"
+        android:layout_marginBottom="20dp"/>
+
+    <TextView
+        android:id="@+id/description_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/welcome_description_message"
+        android:textSize="16sp"
+        android:textColor="@color/md_theme_onBackground"
+        android:gravity="center"
+        android:layout_marginBottom="40dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="10dp">
+
+        <Button
+            android:id="@+id/login_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/login_button_text"
+            android:background="@drawable/button_background"
+            android:textColor="@color/md_theme_primaryContainer"
+            android:layout_marginEnd="20dp"
+            android:onClick="onLoginClick"/>
+
+        <Button
+            android:id="@+id/register_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/register_button_text"
+            android:background="@drawable/button_background"
+            android:textColor="@color/md_theme_primaryContainer"
+            android:layout_marginStart="20dp"
+            android:onClick="onRegisterClick"/>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -24,7 +24,7 @@
     android:layout_marginTop="100dp"/>
 
 <EditText
-    android:id="@+id/email"
+    android:id="@+id/email_input"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:hint="@string/hint_email"
@@ -35,7 +35,7 @@
     android:autofillHints="emailAddress" />
 
 <EditText
-    android:id="@+id/password"
+    android:id="@+id/password_input"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:hint="@string/hint_password"
@@ -56,7 +56,7 @@
     android:layout_gravity="end" />
 
 <Button
-    android:id="@+id/btn_sign_in"
+    android:id="@+id/login_button"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="@string/sign_in"
@@ -65,13 +65,15 @@
     android:layout_marginBottom="16dp"
     android:padding="12dp" />
 
-<TextView
-    android:id="@+id/tv_create_account"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="@string/create_account"
-    android:textSize="14sp"
-    android:textColor="@color/md_theme_onSurfaceVariant"
-    android:gravity="center" />
+    <TextView
+        android:id="@+id/create_account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/create_account"
+        android:textSize="14sp"
+        android:textColor="@color/md_theme_primary_highContrast"
+        android:gravity="center"
+        android:clickable="true"
+        android:focusable="true" />
 </LinearLayout>
     </ScrollView>
