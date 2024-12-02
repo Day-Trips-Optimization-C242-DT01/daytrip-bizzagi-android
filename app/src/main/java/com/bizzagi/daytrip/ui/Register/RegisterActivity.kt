@@ -1,66 +1,96 @@
 package com.bizzagi.daytrip.ui.Register
 
-import android.content.Intent
-import android.content.SharedPreferences
+import android.content.Context
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.view.View
+import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.bizzagi.daytrip.MainActivity
-import com.bizzagi.daytrip.R
-import com.bizzagi.daytrip.ui.Login.LoginActivity
+import com.bizzagi.daytrip.data.retrofit.response.auth.AuthenticationViewModel
+import com.bizzagi.daytrip.databinding.ActivityRegisterBinding
+import com.bizzagi.daytrip.utils.ViewModelFactory
+import com.bizzagi.daytrip.data.Result
+import android.content.Intent
 
 class RegisterActivity : AppCompatActivity() {
 
-    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var binding: ActivityRegisterBinding
+    private val viewModel by viewModels<AuthenticationViewModel> {
+        ViewModelFactory.getInstance(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_register)
+        binding = ActivityRegisterBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
+        setupView()
+        setupAction()
+    }
 
-        val emailEditText: EditText = findViewById(R.id.email_input)
-        val passwordEditText: EditText = findViewById(R.id.password_input)
-        val repasswordEditText: EditText = findViewById(R.id.confirm_password_input)
-        val registerButton: Button = findViewById(R.id.register_button)
-        val alreadyHaveAccountTextView: TextView = findViewById(R.id.already_have_account)
+    private fun setupView() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            window.insetsController?.hide(android.view.WindowInsets.Type.statusBars())
+        } else {
+            window.setFlags(
+                android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN
+            )
+        }
+        supportActionBar?.hide()
+    }
 
-        registerButton.setOnClickListener {
-            val email = emailEditText.text.toString()
-            val password = passwordEditText.text.toString()
-            val repassword = repasswordEditText.text.toString()
+    private fun setupAction() {
+        binding.registerButton.setOnClickListener {
+            val name = binding.nameInput.text.toString()
+            val email = binding.emailInput.text.toString()
+            val password = binding.passwordInput.text.toString()
 
-            if (email.isBlank() || password.isBlank() || repassword.isBlank()) {
-                Toast.makeText(this, "All fields are required", Toast.LENGTH_SHORT).show()
-            } else if (password != repassword) {
-                Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
-            } else {
-                sharedPreferences.edit()
-                    .putString("email", email)
-                    .putString("password", password)
-                    .apply()
+            if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
+                showMaterialDialog(this@RegisterActivity, "Error", "All fields are required", "OK")
+                return@setOnClickListener
+            }
 
-                navigateToMainActivity()
+            if (!isValidEmail(email)) {
+                showMaterialDialog(this@RegisterActivity, "Invalid Email", "Please enter a valid email address", "OK")
+                return@setOnClickListener
+            }
+
+            viewModel.register(name, email, password)
+
+            viewModel.registerResult.observe(this) { result ->
+                when (result) {
+                    is Result.Loading -> {
+                        binding.registerLoading.visibility = View.VISIBLE
+                    }
+                    is Result.Error -> {
+                        binding.registerLoading.visibility = View.GONE
+                        showMaterialDialog(this@RegisterActivity, "Register Failed", result.message, "OK")
+                    }
+                    is Result.Success -> {
+                        binding.registerLoading.visibility = View.GONE
+                        showMaterialDialog(this@RegisterActivity, "Register Success", "Registration successful", "OK")
+                        val intent = Intent(this@RegisterActivity, MainActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
+                }
             }
         }
-
-        alreadyHaveAccountTextView.setOnClickListener {
-            navigateToLoginActivity()
-        }
     }
 
-    private fun navigateToMainActivity() {
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        finish()
+    private fun isValidEmail(email: String): Boolean {
+        val emailPattern = "[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"
+        return email.matches(emailPattern.toRegex())
     }
 
-    private fun navigateToLoginActivity() {
-        val intent = Intent(this, LoginActivity::class.java)
-        startActivity(intent)
-        finish() //
+    private fun showMaterialDialog(context: Context, title: String, message: String, buttonText: String) {
+        val dialog = AlertDialog.Builder(context)
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton(buttonText) { dialog, _ -> dialog.dismiss() }
+            .create()
+        dialog.show()
     }
 }

@@ -38,7 +38,7 @@ class PlansViewModel(
                         _destinations.value = result.data.data
                     }
                     is Result.Error -> {
-                        Log.e("PlansViewModel", "Error fetching all destinations: ${result.error}")
+                        Log.e("PlansViewModel", "Error fetching all destinations: $result.error")
                         _destinations.value = emptyList()
                     }
                     is Result.Loading -> {
@@ -74,7 +74,7 @@ class PlansViewModel(
                         _destinations.value = result.data.data
                     }
                     is Result.Error -> {
-                        Log.e("PlansViewModel", "Error fetching destinations: ${result.error}")
+                        Log.e("PlansViewModel", "Error fetching destinations: $result.error")
                         _destinations.value = emptyList()
                     }
                     is Result.Loading -> {

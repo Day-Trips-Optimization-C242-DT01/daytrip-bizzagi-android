@@ -1,57 +1,89 @@
+
 package com.bizzagi.daytrip.ui.Login
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.bizzagi.daytrip.MainActivity
-import com.bizzagi.daytrip.R
-import com.bizzagi.daytrip.ui.Register.RegisterActivity
+import com.bizzagi.daytrip.data.retrofit.response.auth.AuthenticationViewModel
+import com.bizzagi.daytrip.databinding.ActivityLoginBinding
+import com.bizzagi.daytrip.utils.ViewModelFactory
+import android.view.View
+import com.bizzagi.daytrip.data.Result
+import android.app.AlertDialog
+import android.content.Context
+import com.bizzagi.daytrip.data.retrofit.model.LoginRequest
+
 
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var binding: ActivityLoginBinding
+    private val viewModel by viewModels<AuthenticationViewModel> {
+        ViewModelFactory.getInstance(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
 
-        sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val emailEditText: EditText = findViewById(R.id.email_input)
-        val passwordEditText: EditText = findViewById(R.id.password_input)
-        val loginButton: Button = findViewById(R.id.login_button)
-        val createAccountTextView: TextView = findViewById(R.id.create_account)
+        setupAction()
+    }
 
-        loginButton.setOnClickListener {
-            val email = emailEditText.text.toString()
-            val password = passwordEditText.text.toString()
+    private fun setupAction() {
+        binding.loginButton.setOnClickListener {
+            val email = binding.emailInput.text.toString()
+            val password = binding.passwordInput.text.toString()
 
-            if (email == "user" && password == "password") {
-                sharedPreferences.edit().putBoolean("isLoggedIn", true).apply()
+            if (!isValidEmail(email)) {
+                showMaterialDialog(this@LoginActivity, "Invalid Email", "Please enter a valid email address", "OK")
+                return@setOnClickListener
+            }
 
-                navigateToMainActivity()
-            } else {
-                Toast.makeText(this, "Invalid credentials", Toast.LENGTH_SHORT).show()
+            if (password.isEmpty()) {
+                showMaterialDialog(this@LoginActivity, "Error", "Password cannot be empty", "OK")
+                return@setOnClickListener
+            }
+
+            val loginRequest = LoginRequest(
+                email = email,
+                password = password
+            )
+
+            viewModel.login(email, password).observe(this) { result ->
+                when (result) {
+                    is Result.Loading -> {
+                        binding.loginLoading.visibility = View.VISIBLE
+                    }
+                    is Result.Error -> {
+                        binding.loginLoading.visibility = View.GONE
+                        showMaterialDialog(this@LoginActivity, "Login Failed", result.message ?: "An error occurred", "OK")
+                    }
+                    is Result.Success -> {
+                        binding.loginLoading.visibility = View.GONE
+                        showMaterialDialog(this@LoginActivity, "Login Success", "Login successful", "OK")
+                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
+                }
             }
         }
-        createAccountTextView.setOnClickListener {
-            navigateToRegisterActivity()
-        }
     }
 
-    private fun navigateToMainActivity() {
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        finish()
+    private fun isValidEmail(email: String): Boolean {
+        val emailPattern = "[a-zA-Z0-9._-]+@[a-zAZ0-9.-]+\\.[a-zA-Z]{2,}"
+        return email.matches(emailPattern.toRegex())
     }
 
-    private fun navigateToRegisterActivity() {
-        val intent = Intent(this, RegisterActivity::class.java)
-        startActivity(intent)
+    private fun showMaterialDialog(context: Context, title: String, message: String, buttonText: String) {
+        val dialog = AlertDialog.Builder(context)
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton(buttonText) { dialog, _ -> dialog.dismiss() }
+            .create()
+        dialog.show()
     }
 }
