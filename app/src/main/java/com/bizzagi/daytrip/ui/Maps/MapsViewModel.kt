@@ -16,7 +16,7 @@ class MapsViewModel (
     val destinationResult: MutableLiveData<Result<DestinationPostResponse>> get() = _destinationResult
     fun postDestination (planId: String) {
         viewModelScope.launch {
-            _destinationResult.value = Result.Loading
+            _destinationResult.value = Result.Loading(true)
             kotlinx.coroutines.delay(1000)
             val result = destinationRepository.createDestination(planId)
             Log.d("MapViewModel", "destinations received: $result")

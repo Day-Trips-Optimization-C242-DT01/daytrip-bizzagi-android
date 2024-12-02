@@ -9,11 +9,6 @@ import com.bizzagi.daytrip.data.retrofit.response.auth.RegisterResponse
 import com.bizzagi.daytrip.data.Result
 import com.bizzagi.daytrip.data.local.pref.UserPreference
 import kotlinx.coroutines.flow.Flow
-import retrofit2.HttpException
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.liveData
-import com.google.gson.Gson
-import retrofit2.Response
 
 class AuthRepository(
     private val apiService: ApiService,
@@ -40,32 +35,25 @@ class AuthRepository(
         }
     }
 
-    fun loginUser(email: String, password: String): LiveData<Result<LoginResponse>> = liveData {
-        try {
-            emit(Result.Loading)
-            val res = apiService.login(LoginRequest(email, password))
+    suspend fun loginUser(email: String, password: String): Result<LoginResponse> {
+        return try {
+            val loginRequest = LoginRequest(email, password)
 
-            if (res.isSuccessful && res.body() != null) {
-                val responseBody = res.body()!!
+            val response = apiService.login(loginRequest)
 
-                if (responseBody.error == false) {
-                    emit(Result.Success(responseBody))
+            if (response.isSuccessful && response.body() != null) {
+                val responseBody = response.body()!!
+
+                if (responseBody.success) {
+                    Result.Success(responseBody)
                 } else {
-                    emit(Result.Error(responseBody.message ?: "Unknown Error"))
+                    Result.Error(responseBody.message ?: "Unknown error")
                 }
             } else {
-                emit(Result.Error("Error: ${res.message()}"))
+                Result.Error("Error: ${response.message() ?: "Unknown error"}")
             }
-
-        } catch (e: HttpException) {
-            try {
-                val errorRes = e.response()?.errorBody()?.string()
-                val gson = Gson()
-                val parseError = gson.fromJson(errorRes, LoginResponse::class.java)
-                emit(Result.Error(parseError.message ?: "Unknown Error"))
-            } catch (exception: Exception) {
-                emit(Result.Error("Error parsing exception response"))
-            }
+        } catch (e: Exception) {
+            Result.Error("Exception occurred: ${e.message}")
         }
     }
 

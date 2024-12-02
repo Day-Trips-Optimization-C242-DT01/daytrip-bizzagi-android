@@ -1,4 +1,3 @@
-
 package com.bizzagi.daytrip.ui.Login
 
 import android.content.Intent
@@ -13,6 +12,7 @@ import android.view.View
 import com.bizzagi.daytrip.data.Result
 import android.app.AlertDialog
 import android.content.Context
+import com.bizzagi.daytrip.data.local.pref.UserModel
 import com.bizzagi.daytrip.data.retrofit.model.LoginRequest
 
 
@@ -38,7 +38,12 @@ class LoginActivity : AppCompatActivity() {
             val password = binding.passwordInput.text.toString()
 
             if (!isValidEmail(email)) {
-                showMaterialDialog(this@LoginActivity, "Invalid Email", "Please enter a valid email address", "OK")
+                showMaterialDialog(
+                    this@LoginActivity,
+                    "Invalid Email",
+                    "Please enter a valid email address",
+                    "OK"
+                )
                 return@setOnClickListener
             }
 
@@ -52,14 +57,15 @@ class LoginActivity : AppCompatActivity() {
                 password = password
             )
 
-            viewModel.login(email, password).observe(this) { result ->
+            viewModel.login(email, password)  // Memanggil login() untuk mengirim permintaan login
+            viewModel.loginResult.observe(this) { result ->
                 when (result) {
                     is Result.Loading -> {
-                        binding.loginLoading.visibility = View.VISIBLE
+                        binding.loginLoading.visibility = if (result.isLoading) View.VISIBLE else View.GONE
                     }
                     is Result.Error -> {
                         binding.loginLoading.visibility = View.GONE
-                        showMaterialDialog(this@LoginActivity, "Login Failed", result.message ?: "An error occurred", "OK")
+                        showMaterialDialog(this@LoginActivity, "Login Failed", result.message, "OK")
                     }
                     is Result.Success -> {
                         binding.loginLoading.visibility = View.GONE

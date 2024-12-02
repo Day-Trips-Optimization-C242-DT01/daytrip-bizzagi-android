@@ -1,4 +1,3 @@
-
 package com.bizzagi.daytrip.data.retrofit.response.auth
 
 import com.google.gson.annotations.SerializedName
