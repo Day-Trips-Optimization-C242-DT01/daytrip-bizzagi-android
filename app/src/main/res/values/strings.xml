@@ -115,4 +115,7 @@
     <string name="title_activity_login">Login</string>
     <string name="register_success">Register Account Success</string>
     <string name="login_success">Login Success</string>
+    <string name="input_error">Input Error</string>
+    <string name="fill_all_fields">Please fill all fields</string>
+    <string name="register_failed">Register Failed</string>
 </resources>

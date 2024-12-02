@@ -1,3 +1,4 @@
+
 package com.bizzagi.daytrip.ui.Login
 
 import android.content.Intent
@@ -5,15 +6,14 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.bizzagi.daytrip.MainActivity
-import com.bizzagi.daytrip.data.local.pref.UserModel
 import com.bizzagi.daytrip.data.retrofit.response.auth.AuthenticationViewModel
 import com.bizzagi.daytrip.databinding.ActivityLoginBinding
 import com.bizzagi.daytrip.utils.ViewModelFactory
 import android.view.View
-import com.bizzagi.daytrip.utils.Result
+import com.bizzagi.daytrip.data.Result
 import android.app.AlertDialog
 import android.content.Context
-import com.bizzagi.daytrip.ui.Register.RegisterActivity
+import com.bizzagi.daytrip.data.retrofit.model.LoginRequest
 
 
 class LoginActivity : AppCompatActivity() {
@@ -29,17 +29,28 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setupView()
         setupAction()
-    }
-
-    private fun setupView() {
     }
 
     private fun setupAction() {
         binding.loginButton.setOnClickListener {
-            val email = binding.emailEditText.text.toString()
-            val password = binding.passwordEditText.text.toString()
+            val email = binding.emailInput.text.toString()
+            val password = binding.passwordInput.text.toString()
+
+            if (!isValidEmail(email)) {
+                showMaterialDialog(this@LoginActivity, "Invalid Email", "Please enter a valid email address", "OK")
+                return@setOnClickListener
+            }
+
+            if (password.isEmpty()) {
+                showMaterialDialog(this@LoginActivity, "Error", "Password cannot be empty", "OK")
+                return@setOnClickListener
+            }
+
+            val loginRequest = LoginRequest(
+                email = email,
+                password = password
+            )
 
             viewModel.login(email, password).observe(this) { result ->
                 when (result) {
@@ -48,65 +59,31 @@ class LoginActivity : AppCompatActivity() {
                     }
                     is Result.Error -> {
                         binding.loginLoading.visibility = View.GONE
-                        showMaterialDialog(
-                            context = this@LoginActivity,
-                            title = "Login Failed",
-                            message = result.message ?: "Login failed",
-                            positiveButtonText = "Retry"
-                        )
+                        showMaterialDialog(this@LoginActivity, "Login Failed", result.message ?: "An error occurred", "OK")
                     }
                     is Result.Success -> {
                         binding.loginLoading.visibility = View.GONE
-                        if (result.data.success) {
-                            val userData = result.data.data
-
-                            val token = userData?.token ?: ""
-                            val uid = userData?.uid ?: ""
-                            val email = userData?.email ?: ""
-                            val name = userData?.name ?: ""
-
-                            viewModel.saveSessionData(UserModel(
-                                email = email,
-                                token = token,
-                                isLoading = true,
-                                uid = uid,
-                                name = name
-                            ))
-
-                            val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                            startActivity(intent)
-                            finish()
-                        } else {
-                            showMaterialDialog(
-                                this@LoginActivity,
-                                "Login Failed",
-                                result.data.message ?: "Unknown error",
-                                "Retry"
-                            )
-                        }
+                        showMaterialDialog(this@LoginActivity, "Login Success", "Login successful", "OK")
+                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                        startActivity(intent)
+                        finish()
                     }
                 }
             }
         }
-
-        binding.createAccount.setOnClickListener {
-            val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-        }
     }
 
-    private fun showMaterialDialog(
-        context: Context,
-        title: String,
-        message: String,
-        positiveButtonText: String
-    ) {
-        AlertDialog.Builder(context)
+    private fun isValidEmail(email: String): Boolean {
+        val emailPattern = "[a-zA-Z0-9._-]+@[a-zAZ0-9.-]+\\.[a-zA-Z]{2,}"
+        return email.matches(emailPattern.toRegex())
+    }
+
+    private fun showMaterialDialog(context: Context, title: String, message: String, buttonText: String) {
+        val dialog = AlertDialog.Builder(context)
             .setTitle(title)
             .setMessage(message)
-            .setPositiveButton(positiveButtonText) { dialog, _ -> dialog.dismiss() }
-            .show()
+            .setPositiveButton(buttonText) { dialog, _ -> dialog.dismiss() }
+            .create()
+        dialog.show()
     }
 }

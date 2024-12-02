@@ -7,6 +7,7 @@ import com.bizzagi.daytrip.data.retrofit.response.Destinations.DestinationsRespo
 import com.bizzagi.daytrip.data.retrofit.response.Plans.PlansResponse
 import com.bizzagi.daytrip.data.retrofit.response.auth.LoginResponse
 import com.bizzagi.daytrip.data.retrofit.response.auth.RegisterResponse
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -14,9 +15,13 @@ import retrofit2.http.Path
 
 interface ApiService {
     @POST("auth/signup")
-    suspend fun register(@Body requestBody: RegisterRequest): RegisterResponse
+    suspend fun register(
+        @Body request: RegisterRequest
+    ): Response<RegisterResponse>
     @POST("auth/login")
-    suspend fun login(@Body requestBody: LoginRequest): LoginResponse
+    suspend fun login(
+        @Body requestBody: LoginRequest
+    ): Response<LoginResponse>
     @POST("destinations/create/{planId}")
     suspend fun creteDestination (
         @Path("planId") planId:String

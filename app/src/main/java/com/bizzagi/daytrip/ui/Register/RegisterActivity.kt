@@ -1,32 +1,27 @@
 package com.bizzagi.daytrip.ui.Register
 
 import android.content.Context
-import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.view.WindowInsets
-import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.bizzagi.daytrip.R
+import com.bizzagi.daytrip.MainActivity
 import com.bizzagi.daytrip.data.retrofit.response.auth.AuthenticationViewModel
 import com.bizzagi.daytrip.databinding.ActivityRegisterBinding
-import com.bizzagi.daytrip.ui.Homepage.HomepageFragment
-import com.bizzagi.daytrip.ui.Login.LoginActivity
 import com.bizzagi.daytrip.utils.ViewModelFactory
-import com.bizzagi.daytrip.utils.Result
+import com.bizzagi.daytrip.data.Result
+import android.content.Intent
 
 class RegisterActivity : AppCompatActivity() {
-    private lateinit var binding : ActivityRegisterBinding
+
+    private lateinit var binding: ActivityRegisterBinding
     private val viewModel by viewModels<AuthenticationViewModel> {
         ViewModelFactory.getInstance(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -35,13 +30,12 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun setupView() {
-        @Suppress("DEPRECATION")
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.insetsController?.hide(WindowInsets.Type.statusBars())
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            window.insetsController?.hide(android.view.WindowInsets.Type.statusBars())
         } else {
             window.setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN
+                android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN
             )
         }
         supportActionBar?.hide()
@@ -52,20 +46,20 @@ class RegisterActivity : AppCompatActivity() {
             val name = binding.nameInput.text.toString()
             val email = binding.emailInput.text.toString()
             val password = binding.passwordInput.text.toString()
-            val repassword = binding.confirmPasswordInput.text.toString()
 
-            if (password.isEmpty() || repassword.isEmpty()) {
-                showMaterialDialog(this@RegisterActivity, "Error", "Password cannot be empty", "OK")
+            if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
+                showMaterialDialog(this@RegisterActivity, "Error", "All fields are required", "OK")
                 return@setOnClickListener
             }
 
-            if (password != repassword) {
-                showMaterialDialog(this@RegisterActivity, "Error", "Password and Confirm Password do not match", "OK")
+            if (!isValidEmail(email)) {
+                showMaterialDialog(this@RegisterActivity, "Invalid Email", "Please enter a valid email address", "OK")
                 return@setOnClickListener
             }
 
-            // Observe LiveData from ViewModel
-            viewModel.register(name, email, password, repassword).observe(this) { result ->
+            viewModel.register(name, email, password)
+
+            viewModel.registerResult.observe(this) { result ->
                 when (result) {
                     is Result.Loading -> {
                         binding.registerLoading.visibility = View.VISIBLE
@@ -76,21 +70,19 @@ class RegisterActivity : AppCompatActivity() {
                     }
                     is Result.Success -> {
                         binding.registerLoading.visibility = View.GONE
-                        showMaterialDialog(this@RegisterActivity, "Register Success", "Registration successful", "Ok")
-                        val intent = Intent(this@RegisterActivity, HomepageFragment::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        showMaterialDialog(this@RegisterActivity, "Register Success", "Registration successful", "OK")
+                        val intent = Intent(this@RegisterActivity, MainActivity::class.java)
                         startActivity(intent)
                         finish()
                     }
                 }
             }
         }
+    }
 
-        binding.alreadyHaveAccount.setOnClickListener {
-            val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-        }
+    private fun isValidEmail(email: String): Boolean {
+        val emailPattern = "[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"
+        return email.matches(emailPattern.toRegex())
     }
 
     private fun showMaterialDialog(context: Context, title: String, message: String, buttonText: String) {

@@ -1,8 +1,8 @@
 package com.bizzagi.daytrip.data.retrofit.response.auth
 
-data class LoginResult(
-    val token: String?,
+data class RegisterResult(
     val uid: String?,
-    val username: String?,
     val email: String?,
+    val name: String?,
+    val token: String?
 )

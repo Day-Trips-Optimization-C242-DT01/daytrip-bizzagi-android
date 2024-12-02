@@ -232,7 +232,7 @@ class AddDestinationsMapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     Log.d("DestinationAdd","Success $result")
                 }
                 is Result.Error -> {
-                    Log.d("DestinationAdd", "Error: ${result.error}")
+                    Log.d("DestinationAdd", "Error: $result.error")
 
                 }
             }
