@@ -105,6 +105,8 @@
     <string name="end_plan">End Plan</string>
     <string name="end_date_icon">End Date Icon</string>
     <string name="pilih_destinasi">Pilih Destinasi</string>
+    <string name="titik_awal">Pilih titik awal</string>
+    <string name="pilih_lewat_map">Pilih lewat Map</string>
     <string name="welcome_message">Plan Your Perfect Trip</string>
     <string name="welcome_description_message">Explore and plan trips tailored to your interests and destinations</string>
     <string name="login_button_text">Login</string>

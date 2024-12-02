@@ -2,6 +2,8 @@ package com.bizzagi.daytrip.data.retrofit
 
 import com.bizzagi.daytrip.data.retrofit.response.Destinations.DestinationPostResponse
 import com.bizzagi.daytrip.data.retrofit.response.Destinations.DestinationsResponse
+import com.bizzagi.daytrip.data.retrofit.response.Plans.CreatePlanRequest
+import com.bizzagi.daytrip.data.retrofit.response.Plans.PlanPostResponse
 import com.bizzagi.daytrip.data.retrofit.response.Plans.PlansResponse
 import retrofit2.http.*
 
@@ -10,8 +12,13 @@ interface ApiService {
     suspend fun creteDestination (
         @Path("planId") planId:String
     ): DestinationPostResponse
+
     @GET("destinations/list")
     suspend fun getDestinations() : DestinationsResponse
+    @POST("plans/create")
+    suspend fun createPlan (
+       @Body createPlanRequest: CreatePlanRequest
+    ):PlanPostResponse
 
     @GET("plans/list")
     suspend fun getPlans() : PlansResponse

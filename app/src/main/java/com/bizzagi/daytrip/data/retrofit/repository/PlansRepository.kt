@@ -1,12 +1,36 @@
 package com.bizzagi.daytrip.data.retrofit.repository
 
 import android.util.Log
+import com.bizzagi.daytrip.data.Result
 import com.bizzagi.daytrip.data.retrofit.ApiService
+import com.bizzagi.daytrip.data.retrofit.response.Destinations.DestinationsResponse
+import com.bizzagi.daytrip.data.retrofit.response.Plans.CreatePlanRequest
+import com.bizzagi.daytrip.data.retrofit.response.Plans.PlanPostResponse
+import com.bizzagi.daytrip.data.retrofit.response.Plans.PlansResponse
+import com.google.gson.Gson
 import retrofit2.HttpException
 
 class PlansRepository(
     private val apiService: ApiService
 ) {
+    suspend fun createPlan(request: CreatePlanRequest) : Result<PlanPostResponse> {
+        return try {
+            val response = apiService.createPlan(request)
+            if (!response.success) {
+                Result.Error(response.message)
+            } else {
+                Result.Success(response)
+            }
+        } catch (e: HttpException) {
+            try {
+                val errorBody = e.response()?.errorBody()?.string()
+                val errorResponse = Gson().fromJson(errorBody, DestinationsResponse::class.java)
+                Result.Error(errorResponse.message)
+            } catch (e: Exception) {
+                Result.Error(e.message.toString())
+            }
+        }
+    }
     suspend fun getPlansDestinations(): List<String> {
         return try {
             val response = apiService.getPlans()

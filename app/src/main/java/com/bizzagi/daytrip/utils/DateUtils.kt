@@ -6,7 +6,7 @@ import java.util.*
 object DateUtils {
 
     @SuppressLint("ConstantLocale")
-    private val dateFormat = SimpleDateFormat("yyyy/dd/MM", Locale.getDefault())
+    private val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
 
     fun formatDate(calendar: Calendar): String {
         return dateFormat.format(calendar.time)
