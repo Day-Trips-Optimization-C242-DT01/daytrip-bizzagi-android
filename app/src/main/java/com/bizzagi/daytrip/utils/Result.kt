@@ -1,4 +1,4 @@
-package com.bizzagi.daytrip.data
+package com.bizzagi.daytrip.utils
 
 sealed class Result<out T> {
     data class Success<out T>(val data: T) : Result<T>()

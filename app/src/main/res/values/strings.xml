@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">BizzagiDayTrip</string>
     <string name="login">Login</string>
+    <string name="hint_name">Full Name</string>
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
     <string name="forgot_password">Forgot your password?</string>
@@ -112,4 +113,6 @@
     <string name="title_activity_welcome">Welcome</string>
     <string name="title_activity_register">Register</string>
     <string name="title_activity_login">Login</string>
+    <string name="register_success">Register Account Success</string>
+    <string name="login_success">Login Success</string>
 </resources>
