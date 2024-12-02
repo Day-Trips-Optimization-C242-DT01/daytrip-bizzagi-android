@@ -1,14 +1,10 @@
 package com.bizzagi.daytrip.ui.Login
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.view.WindowInsets
-import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.bizzagi.daytrip.MainActivity
-import com.bizzagi.daytrip.R
 import com.bizzagi.daytrip.data.local.pref.UserModel
 import com.bizzagi.daytrip.data.retrofit.response.auth.AuthenticationViewModel
 import com.bizzagi.daytrip.databinding.ActivityLoginBinding
@@ -38,7 +34,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setupView() {
-        // Setup tampilan (misalnya untuk menghilangkan status bar)
     }
 
     private fun setupAction() {
@@ -46,7 +41,6 @@ class LoginActivity : AppCompatActivity() {
             val email = binding.emailEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
 
-            // Mengambil email dan password dari EditText
             viewModel.login(email, password).observe(this) { result ->
                 when (result) {
                     is Result.Loading -> {
@@ -64,24 +58,21 @@ class LoginActivity : AppCompatActivity() {
                     is Result.Success -> {
                         binding.loginLoading.visibility = View.GONE
                         if (result.data.success) {
-                            // Mengambil informasi pengguna dari hasil login
                             val userData = result.data.data
 
-                            // Mendapatkan token, uid, email, dan nama
-                            val token = userData?.token ?: ""  // Jika token kosong, beri nilai default
-                            val uid = userData?.uid ?: ""      // Jika uid kosong, beri nilai default
-                            val email = userData?.email ?: ""  // Jika email kosong, beri nilai default
+                            val token = userData?.token ?: ""
+                            val uid = userData?.uid ?: ""
+                            val email = userData?.email ?: ""
                             val name = userData?.name ?: ""
 
                             viewModel.saveSessionData(UserModel(
                                 email = email,
-                                token = token,  // Pastikan token valid (String)
-                                isLoading = true,  // Set ke true karena login berhasil
+                                token = token,
+                                isLoading = true,
                                 uid = uid,
                                 name = name
                             ))
 
-                            // Berpindah ke MainActivity setelah login berhasil
                             val intent = Intent(this@LoginActivity, MainActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                             startActivity(intent)
@@ -100,7 +91,6 @@ class LoginActivity : AppCompatActivity() {
         }
 
         binding.createAccount.setOnClickListener {
-            // Navigasi ke activity registrasi
             val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
@@ -113,7 +103,6 @@ class LoginActivity : AppCompatActivity() {
         message: String,
         positiveButtonText: String
     ) {
-        // Menampilkan dialog dengan judul dan pesan
         AlertDialog.Builder(context)
             .setTitle(title)
             .setMessage(message)

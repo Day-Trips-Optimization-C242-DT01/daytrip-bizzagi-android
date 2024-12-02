@@ -4,31 +4,31 @@ import com.google.gson.annotations.SerializedName
 
 data class LoginResponse(
     @SerializedName("success")
-    val success: Boolean,          // Status login berhasil atau tidak
+    val success: Boolean,
 
     @SerializedName("message")
-    val message: String,          // Pesan terkait status login
+    val message: String,
 
     @SerializedName("data")
-    val data: UserData?,          // Data pengguna yang berhasil login
+    val data: UserData?,
 
     @SerializedName("error")
-    val error: Boolean?,          // Menyimpan status error (jika ada)
+    val error: Boolean?,
 
     @SerializedName("loginResult")
-    val loginResult: Any?         // Menyimpan informasi lebih lanjut terkait login, bisa berupa objek
+    val loginResult: Any?
 )
 
 data class UserData(
     @SerializedName("uid")
-    val uid: String,              // ID pengguna
+    val uid: String,
 
     @SerializedName("email")
-    val email: String,            // Email pengguna
+    val email: String,
 
     @SerializedName("name")
-    val name: String,             // Nama pengguna
+    val name: String,
 
     @SerializedName("token")
-    val token: String             // Token untuk autentikasi
+    val token: String
 )
