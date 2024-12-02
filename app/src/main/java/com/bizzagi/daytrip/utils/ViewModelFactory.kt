@@ -23,7 +23,7 @@ class ViewModelFactory (
             return PlansViewModel(plansRepository,destinationsRepository) as T
         }
         if (modelClass.isAssignableFrom(MapsViewModel::class.java)) {
-            return MapsViewModel(destinationsRepository) as T
+            return MapsViewModel(plansRepository,destinationsRepository) as T
         }
         if (modelClass.isAssignableFrom(AuthenticationViewModel::class.java)) {
             return AuthenticationViewModel(authRepository) as T

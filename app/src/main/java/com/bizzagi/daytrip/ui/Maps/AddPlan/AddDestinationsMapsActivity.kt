@@ -1,5 +1,6 @@
 package com.bizzagi.daytrip.ui.Maps.AddPlan
 
+import android.content.Intent
 import android.location.Geocoder
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import com.bizzagi.daytrip.R
 import com.bizzagi.daytrip.data.Result
 import com.bizzagi.daytrip.databinding.ActivityAddDestinationsMapsBinding
+import com.bizzagi.daytrip.ui.Homepage.HomepageFragment
 import com.bizzagi.daytrip.ui.Maps.MapsViewModel
 import com.bizzagi.daytrip.utils.ViewModelFactory
 import com.google.android.gms.common.api.Status
@@ -49,8 +51,12 @@ class AddDestinationsMapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var regionBounds: LatLngBounds
 
     private val markers = mutableListOf<Marker>()
+    private val selectedDestinationsDetails = mutableListOf<com.bizzagi.daytrip.data.retrofit.response.Plans.Place>()
+
     private val selectedDestinations = mutableListOf<String>()
     private var mapScope = CoroutineScope(Dispatchers.Main + Job())
+
+    private lateinit var uid: String
 
 
     private val viewModel: MapsViewModel by viewModels {
@@ -61,10 +67,56 @@ class AddDestinationsMapsActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        val startLatitude = intent.getDoubleExtra("EXTRA_START_LATITUDE", 0.0)
+        val startLongitude = intent.getDoubleExtra("EXTRA_START_LONGITUDE", 0.0)
+
+        val startDateString = intent.getStringExtra("EXTRA_START_DATE")
+        val endDateString = intent.getStringExtra("EXTRA_END_DATE")
+
+        val numDays = intent.getIntExtra("EXTRA_NUM_DAYS", 1)
+
+        Log.d("AddDestinationsMaps", "Start Date String: $startDateString")
+        Log.d("AddDestinationsMaps", "End Date String: $endDateString")
+        Log.d("AddDestinationsMaps", "Num Days: $numDays")
+        Log.d("AddDestinationsMaps", "Lat: $startLatitude Lot: $startLongitude")
+
+
         setupDestinationResultObserver()
 
         lifecycleScope.launch(Dispatchers.IO) {
             initializeMap()
+        }
+
+        //disini juga bisa binding push api
+        lifecycleScope.launch {
+            binding.buttonPlan.setOnClickListener {
+                if (selectedDestinationsDetails.isEmpty()) {
+                    showSnackbar("Please select at least one destination")
+                    return@setOnClickListener
+                }
+
+                viewModel.clearPlaces()
+                selectedDestinationsDetails.forEach { place ->
+                    viewModel.addPlace(place)
+                }
+
+                Log.d("PostPlans", "Selected places count: ${selectedDestinationsDetails.size}")
+                Log.d("PostPlans", "Places data: $selectedDestinationsDetails")
+
+                startDateString?.let { startDate ->
+                    endDateString?.let { endDate ->
+                        viewModel.postPlans(
+                            uid = "C352j8tqvHWG6Bqt8pJbOwGP7lB2",
+                            numDays = numDays,
+                            latitude = startLatitude,
+                            longitude = startLongitude,
+                            startDate = startDate,
+                            endDate = endDate
+                        )
+                    }
+                }
+            }
+            setupPlanResultObserver()
         }
     }
 
@@ -143,6 +195,11 @@ class AddDestinationsMapsActivity : AppCompatActivity(), OnMapReadyCallback {
             setupMapConfiguration()
             setupMapListeners()
         }
+      /*  binding.buttonPlan.setOnClickListener {
+            viewModel.postPlans(
+
+            )
+        }*/
     }
 
     private suspend fun setupMapConfiguration() = withContext(Dispatchers.Main) {
@@ -268,6 +325,30 @@ class AddDestinationsMapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
+    private fun setupPlanResultObserver() {
+        viewModel.planResult.observe(this) { result ->
+            when (result) {
+                is Result.Loading -> {
+                    binding.buttonPlan.isEnabled = false
+                    showSnackbar("Creating plan...")
+                }
+                is Result.Success -> {
+                    binding.buttonPlan.isEnabled = true
+                    showSnackbar("Plan created successfully!")
+                    Log.d("PostPlans", "Success response: ${result.data}")
+                    val intent = Intent(this,HomepageFragment::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+                is Result.Error -> {
+                    binding.buttonPlan.isEnabled = true
+                    showSnackbar("Error creating plan")
+                    Log.e("PostPlans", "Error response: ${result.error}")
+                }
+            }
+        }
+    }
+
     private fun getMarkerColor(index: Int): Float {
         val colors = listOf(
             BitmapDescriptorFactory.HUE_RED,
@@ -301,24 +382,17 @@ class AddDestinationsMapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private suspend fun getPlaceDetails(placeId: String) {
         val placeFields = listOf(
             Place.Field.ID,
-            Place.Field.NAME,
-            Place.Field.ADDRESS,
             Place.Field.LAT_LNG,
             Place.Field.RATING,
-            Place.Field.OPENING_HOURS,
-            Place.Field.TYPES
+            Place.Field.OPENING_HOURS
         )
         try {
             val request = FetchPlaceRequest.newInstance(placeId, placeFields)
             val placeResponse = placesClient.fetchPlace(request).await()
             val place = placeResponse.place
 
-            val id = place.id
-            val name = place.name
-            val address = place.address
             val latLng = place.latLng
             val rating = place.rating
-            val type = place.types?.joinToString(", ") ?: ""
             val openingHours = place.openingHours?.weekdayText
 
             val openTime = mutableListOf<String>()
@@ -343,18 +417,38 @@ class AddDestinationsMapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
             }
 
-            Log.d("PlaceDetails", "Id: $id")
-            Log.d("PlaceDetails", "Name: $name")
-            Log.d("PlaceDetails", "Address: $address")
-            Log.d("PlaceDetails", "LatLng: $latLng")
-            Log.d("PlaceDetails", "Rating: $rating")
-            Log.d("PlaceDetails", "Type: $type")
-            Log.d("PlaceDetails", "Open Time: $openTime")
-            Log.d("PlaceDetails", "Close Time: $closeTime")
+            if (latLng != null) {
+                val detail = com.bizzagi.daytrip.data.retrofit.response.Plans.Place(
+                    place_id = place.id ?: "",
+                    latitude = latLng.latitude,
+                    longitude = latLng.longitude,
+                    rating = rating,
+                    open_time = openTime.firstOrNull() ?: "00:00",
+                    close_time = closeTime.firstOrNull() ?: "00:00"
+                )
+                selectedDestinationsDetails.add(detail)
+                Log.d("SelectedDestinationsDetails", "Added: $detail")
+                logSelectedDestinations()
+            }
         } catch (e: Exception) {
             Log.e("PlaceDetails", "Error fetching place details: ${e.message}")
         }
     }
+
+    private fun logSelectedDestinations() {
+        Log.d("SelectedDestinations", "Total selected: ${selectedDestinationsDetails.size}")
+        selectedDestinationsDetails.forEach { placeDetail ->
+            Log.d("SelectedDestinations", """
+            Place ID: ${placeDetail.place_id}
+            Latitude: ${placeDetail.latitude}
+            Longitude: ${placeDetail.longitude}
+            Rating: ${placeDetail.rating ?: "N/A"}
+            Open Time: ${placeDetail.open_time}
+            Close Time: ${placeDetail.close_time}
+        """.trimIndent())
+        }
+    }
+
 
     private fun setupZoomPreferences() {
         when (selectedRegion) {
@@ -380,6 +474,8 @@ class AddDestinationsMapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onDestroy() {
         super.onDestroy()
     }
+
+    
 
     companion object {
         const val EXTRA_REGION = "extra_region"
