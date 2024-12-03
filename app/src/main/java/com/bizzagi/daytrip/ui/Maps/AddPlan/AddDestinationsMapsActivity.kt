@@ -88,10 +88,12 @@ class AddDestinationsMapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val endDateString = intent.getStringExtra("EXTRA_END_DATE")
 
         val numDays = intent.getIntExtra("EXTRA_NUM_DAYS", 1)
+        val planName = intent.getStringExtra("EXTRA_PLAN_NAME")
 
         Log.d("AddDestinationsMaps", "Start Date String: $startDateString")
         Log.d("AddDestinationsMaps", "End Date String: $endDateString")
         Log.d("AddDestinationsMaps", "Num Days: $numDays")
+        Log.d("AddDestinationsMaps", "Plan name: $planName")
         Log.d("AddDestinationsMaps", "Lat: $startLatitude Lot: $startLongitude")
 
 
@@ -119,14 +121,17 @@ class AddDestinationsMapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
                 startDateString?.let { startDate ->
                     endDateString?.let { endDate ->
-                        viewModel.postPlans(
-                            uid = uid,
-                            numDays = numDays,
-                            latitude = startLatitude,
-                            longitude = startLongitude,
-                            startDate = startDate,
-                            endDate = endDate
-                        )
+                        if (planName != null) {
+                            viewModel.postPlans(
+                                uid = uid,
+                                numDays = numDays,
+                                planName = planName,
+                                latitude = startLatitude,
+                                longitude = startLongitude,
+                                startDate = startDate,
+                                endDate = endDate
+                            )
+                        }
                     }
                 }
             }

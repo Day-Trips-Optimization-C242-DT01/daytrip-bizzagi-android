@@ -15,6 +15,8 @@ data class PlanPostResponse(
 )
 
 data class Data(
+ 	@field:SerializedName("plan_name")
+	val planName: String,
 
 	@field:SerializedName("start_date")
 	val startDate: String,

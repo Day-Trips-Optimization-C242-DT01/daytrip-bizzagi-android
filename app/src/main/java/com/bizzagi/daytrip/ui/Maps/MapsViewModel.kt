@@ -57,6 +57,7 @@ class MapsViewModel (
     fun postPlans(
         uid: String,
         numDays: Int,
+        planName: String,
         latitude: Double,
         longitude: Double,
         startDate: String,
@@ -65,6 +66,7 @@ class MapsViewModel (
         val request = CreatePlanRequest(
            uid = uid,
            num_days = numDays,
+           plan_name = planName,
            lokasi_user = LokasiUser(
                latitude = latitude,
                longitude = longitude

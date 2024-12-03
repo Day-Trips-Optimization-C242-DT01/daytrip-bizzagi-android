@@ -37,7 +37,7 @@
     <string name="head_trip">Bali</string>
     <string name="destination_trip">Uluwatu - Pangempu</string>
     <string name="long_trip">Perjalanan 4 hari</string>
-    <string name="buat_perjalanan">Buat Perjalanan</string>
+    <string name="buat_perjalanan">Buat Nama Perjalanan</string>
     <string name="back_icon">back_icon</string>
     <string name="perjalanan_saya">Perjalanan Saya</string>
     <string name="detail_perjalanan">Detail Perjalanan</string>
@@ -120,4 +120,5 @@
     <string name="input_error">Input Error</string>
     <string name="fill_all_fields">Please fill all fields</string>
     <string name="register_failed">Register Failed</string>
+    <string name="masukkan_nama_perjalanan">Masukkan nama perjalanan</string>
 </resources>

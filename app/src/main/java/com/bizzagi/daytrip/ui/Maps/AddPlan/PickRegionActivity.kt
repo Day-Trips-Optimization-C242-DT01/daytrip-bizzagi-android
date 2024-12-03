@@ -4,6 +4,8 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import android.location.Geocoder
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -23,6 +25,7 @@ class PickRegionActivity : AppCompatActivity() {
     private var startDate: Calendar? = null
     private var endDate: Calendar? = null
     private var numDays: Int = 0
+    private var planName: String? = null
     private var startLatitude: Double? = null
     private var startLongitude: Double? = null
 
@@ -31,9 +34,20 @@ class PickRegionActivity : AppCompatActivity() {
         binding = ActivityPickRegionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Initially disable the button
         binding.buttonDestinasi.isEnabled = false
         binding.buttonDestinasi.alpha = 0.5f
+
+        binding.planNameInput.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                planName = s?.toString()?.trim()
+                validateAllFields()
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
 
         binding.ntb.setOnClickListener {
             updateSelectedRegion("NTB", binding.ntb)
@@ -58,6 +72,7 @@ class PickRegionActivity : AppCompatActivity() {
             if (validateAllFields()) {
                 val intent = Intent(this, AddDestinationsMapsActivity::class.java).apply {
                     putExtra(AddDestinationsMapsActivity.EXTRA_REGION, selectedRegion)
+                    putExtra("EXTRA_PLAN_NAME", planName)
                     putExtra("EXTRA_START_DATE", DateUtils.formatDate(startDate!!))
                     putExtra("EXTRA_END_DATE", DateUtils.formatDate(endDate!!))
                     putExtra("EXTRA_NUM_DAYS", numDays)
@@ -148,7 +163,8 @@ class PickRegionActivity : AppCompatActivity() {
     }
 
     private fun validateAllFields(): Boolean {
-        val isValid = selectedRegion != null &&
+        val isValid = !planName.isNullOrEmpty() &&
+                selectedRegion != null &&
                 startDate != null &&
                 endDate != null &&
                 startLatitude != null &&
@@ -160,6 +176,7 @@ class PickRegionActivity : AppCompatActivity() {
 
         return isValid
     }
+
 
     private fun calculateNumDays() {
         val startMillis = startDate!!.timeInMillis
