@@ -13,5 +13,8 @@ data class Plan(
     val startDate: String,
 
     @SerializedName("end_date")
-    val endDate: String
+    val endDate: String,
+
+    @SerializedName("plan_name")
+    val planName : String,
 )

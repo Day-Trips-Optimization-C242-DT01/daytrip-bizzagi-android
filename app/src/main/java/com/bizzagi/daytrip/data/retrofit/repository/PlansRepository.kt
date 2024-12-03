@@ -5,6 +5,7 @@ import com.bizzagi.daytrip.data.Result
 import com.bizzagi.daytrip.data.retrofit.ApiService
 import com.bizzagi.daytrip.data.retrofit.response.Destinations.DestinationsResponse
 import com.bizzagi.daytrip.data.retrofit.response.Plans.CreatePlanRequest
+import com.bizzagi.daytrip.data.retrofit.response.Plans.Plan
 import com.bizzagi.daytrip.data.retrofit.response.Plans.PlanPostResponse
 import com.bizzagi.daytrip.data.retrofit.response.Plans.PlansResponse
 import com.google.gson.Gson
@@ -50,22 +51,31 @@ class PlansRepository(
         }
     }
 
-    suspend fun getPlanIds(): List<String> {
+    suspend fun getPlanIds(): List<Plan> {
         return try {
             val response = apiService.getPlans()
             if (!response.success) {
                 Log.e("getPlanIds", "API response unsuccessful: ${response.message}")
                 emptyList()
             } else {
-                val planIds = response.data.map { it.id }
-                Log.d("getPlanIds", "Fetched Plan IDs: $planIds")
-                planIds
+                val plans = response.data.map { apiResponse ->
+                    Plan(
+                        id = apiResponse.id,
+                        data = apiResponse.data,
+                        startDate = apiResponse.startDate,
+                        endDate = apiResponse.endDate,
+                        planName = apiResponse.planName
+                    )
+                }
+                Log.d("getPlanIds", "Fetched Plans: $plans")
+                plans
             }
         } catch (e: Exception) {
-            Log.e("getPlanIds", "Error fetching Plan IDs: ${e.message}")
+            Log.e("getPlanIds", "Error fetching Plans: ${e.message}")
             emptyList()
         }
     }
+
 
     suspend fun getDays(planId: String): Map<String, List<String>> {
         return try {

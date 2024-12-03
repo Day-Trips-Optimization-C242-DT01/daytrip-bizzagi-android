@@ -5,20 +5,19 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bizzagi.daytrip.data.retrofit.response.Plans.Plan
 import com.bizzagi.daytrip.databinding.CardMyTripBinding
 
 class TripAdapter(private val onItemClick: (String) -> Unit) :
-    ListAdapter<String, TripAdapter.TripViewHolder>(DiffCallback()) {
+    ListAdapter<Plan, TripAdapter.TripViewHolder>(DiffCallback()) {
 
     class TripViewHolder(private val binding: CardMyTripBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(planId: String, onItemClick: (String) -> Unit) {
-            binding.tvPerjalanan.text = planId
-
-            // Set click listener for the item
+        fun bind(plan: Plan, onItemClick: (String) -> Unit) {
+            binding.tvPerjalanan.text = plan.planName
             binding.root.setOnClickListener {
-                onItemClick(planId) // Pass the Plan ID to the callback
+                onItemClick(plan.id)
             }
         }
     }
@@ -32,12 +31,12 @@ class TripAdapter(private val onItemClick: (String) -> Unit) :
         holder.bind(getItem(position), onItemClick)
     }
 
-    class DiffCallback : DiffUtil.ItemCallback<String>() {
-        override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
-            return oldItem == newItem
+    class DiffCallback : DiffUtil.ItemCallback<Plan>() {
+        override fun areItemsTheSame(oldItem: Plan, newItem: Plan): Boolean {
+            return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
+        override fun areContentsTheSame(oldItem: Plan, newItem: Plan): Boolean {
             return oldItem == newItem
         }
     }
