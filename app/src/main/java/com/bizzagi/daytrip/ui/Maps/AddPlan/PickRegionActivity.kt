@@ -4,6 +4,8 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import android.location.Geocoder
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -23,6 +25,7 @@ class PickRegionActivity : AppCompatActivity() {
     private var startDate: Calendar? = null
     private var endDate: Calendar? = null
     private var numDays: Int = 0
+    private var planName: String? = null
     private var startLatitude: Double? = null
     private var startLongitude: Double? = null
 
@@ -31,12 +34,29 @@ class PickRegionActivity : AppCompatActivity() {
         binding = ActivityPickRegionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.buttonDestinasi.isEnabled = false
+        binding.buttonDestinasi.alpha = 0.5f
+
+        binding.planNameInput.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                planName = s?.toString()?.trim()
+                validateAllFields()
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
+
         binding.ntb.setOnClickListener {
             updateSelectedRegion("NTB", binding.ntb)
+            validateAllFields()
         }
 
         binding.bali.setOnClickListener {
             updateSelectedRegion("BALI", binding.bali)
+            validateAllFields()
         }
 
         binding.lokasiUSerCard.setOnClickListener {
@@ -49,20 +69,17 @@ class PickRegionActivity : AppCompatActivity() {
         }
 
         binding.buttonDestinasi.setOnClickListener {
-            if (selectedRegion != null) {
-                if (validateDates()) {
-                    val intent = Intent(this, AddDestinationsMapsActivity::class.java).apply {
-                        putExtra(AddDestinationsMapsActivity.EXTRA_REGION, selectedRegion)
-                        putExtra("EXTRA_START_DATE", DateUtils.formatDate(startDate!!))
-                        putExtra("EXTRA_END_DATE", DateUtils.formatDate(endDate!!))
-                        putExtra("EXTRA_NUM_DAYS", numDays )
-                        putExtra("EXTRA_START_LATITUDE", startLatitude)
-                        putExtra("EXTRA_START_LONGITUDE", startLongitude)
-                    }
-                    startActivity(intent)
+            if (validateAllFields()) {
+                val intent = Intent(this, AddDestinationsMapsActivity::class.java).apply {
+                    putExtra(AddDestinationsMapsActivity.EXTRA_REGION, selectedRegion)
+                    putExtra("EXTRA_PLAN_NAME", planName)
+                    putExtra("EXTRA_START_DATE", DateUtils.formatDate(startDate!!))
+                    putExtra("EXTRA_END_DATE", DateUtils.formatDate(endDate!!))
+                    putExtra("EXTRA_NUM_DAYS", numDays)
+                    putExtra("EXTRA_START_LATITUDE", startLatitude)
+                    putExtra("EXTRA_START_LONGITUDE", startLongitude)
                 }
-            } else {
-                Toast.makeText(this, "Pilih region terlebih dahulu", Toast.LENGTH_SHORT).show()
+                startActivity(intent)
             }
         }
 
@@ -70,6 +87,7 @@ class PickRegionActivity : AppCompatActivity() {
             showDatePicker { date ->
                 startDate = date
                 binding.startDateText.text = DateUtils.formatDate(date)
+                validateAllFields()
             }
         }
 
@@ -77,6 +95,7 @@ class PickRegionActivity : AppCompatActivity() {
             showDatePicker { date ->
                 endDate = date
                 binding.endDateText.text = DateUtils.formatDate(date)
+                validateAllFields()
             }
         }
     }
@@ -98,8 +117,8 @@ class PickRegionActivity : AppCompatActivity() {
 
         binding.lokasiUserText2.text = addressText
         binding.fragmentContainer.visibility = View.GONE
+        validateAllFields()
     }
-
 
     private fun updateSelectedRegion(region: String, selectedCard: MaterialCardView) {
         selectedRegion = region
@@ -133,7 +152,6 @@ class PickRegionActivity : AppCompatActivity() {
 
     private fun validateDates(): Boolean {
         if (startDate == null || endDate == null) {
-            Toast.makeText(this, "Pilih start date dan end date", Toast.LENGTH_SHORT).show()
             return false
         }
         if (endDate!!.before(startDate)) {
@@ -143,6 +161,22 @@ class PickRegionActivity : AppCompatActivity() {
         calculateNumDays()
         return true
     }
+
+    private fun validateAllFields(): Boolean {
+        val isValid = !planName.isNullOrEmpty() &&
+                selectedRegion != null &&
+                startDate != null &&
+                endDate != null &&
+                startLatitude != null &&
+                startLongitude != null &&
+                validateDates()
+
+        binding.buttonDestinasi.isEnabled = isValid
+        binding.buttonDestinasi.alpha = if (isValid) 1.0f else 0.5f
+
+        return isValid
+    }
+
 
     private fun calculateNumDays() {
         val startMillis = startDate!!.timeInMillis

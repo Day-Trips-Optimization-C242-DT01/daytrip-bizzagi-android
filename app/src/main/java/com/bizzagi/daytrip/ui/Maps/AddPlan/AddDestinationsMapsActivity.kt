@@ -8,8 +8,11 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import com.bizzagi.daytrip.MainActivity
 import com.bizzagi.daytrip.R
 import com.bizzagi.daytrip.data.Result
+import com.bizzagi.daytrip.data.local.pref.UserPreference
+import com.bizzagi.daytrip.data.local.pref.dataStore
 import com.bizzagi.daytrip.databinding.ActivityAddDestinationsMapsBinding
 import com.bizzagi.daytrip.ui.Homepage.HomepageFragment
 import com.bizzagi.daytrip.ui.Maps.MapsViewModel
@@ -56,7 +59,8 @@ class AddDestinationsMapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private val selectedDestinations = mutableListOf<String>()
     private var mapScope = CoroutineScope(Dispatchers.Main + Job())
 
-    private lateinit var uid: String
+    private lateinit var userPreference: UserPreference
+    private var uid =  ""
 
 
     private val viewModel: MapsViewModel by viewModels {
@@ -67,6 +71,16 @@ class AddDestinationsMapsActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        userPreference = UserPreference.getInstance(dataStore)
+
+        lifecycleScope.launch {
+            userPreference.getSession().collect { userData ->
+                uid = userData.uid
+                Log.d("UIDTracking", "UID from UserPreference: $uid")
+            }
+        }
+
+
         val startLatitude = intent.getDoubleExtra("EXTRA_START_LATITUDE", 0.0)
         val startLongitude = intent.getDoubleExtra("EXTRA_START_LONGITUDE", 0.0)
 
@@ -74,10 +88,12 @@ class AddDestinationsMapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val endDateString = intent.getStringExtra("EXTRA_END_DATE")
 
         val numDays = intent.getIntExtra("EXTRA_NUM_DAYS", 1)
+        val planName = intent.getStringExtra("EXTRA_PLAN_NAME")
 
         Log.d("AddDestinationsMaps", "Start Date String: $startDateString")
         Log.d("AddDestinationsMaps", "End Date String: $endDateString")
         Log.d("AddDestinationsMaps", "Num Days: $numDays")
+        Log.d("AddDestinationsMaps", "Plan name: $planName")
         Log.d("AddDestinationsMaps", "Lat: $startLatitude Lot: $startLongitude")
 
 
@@ -105,14 +121,17 @@ class AddDestinationsMapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
                 startDateString?.let { startDate ->
                     endDateString?.let { endDate ->
-                        viewModel.postPlans(
-                            uid = "C352j8tqvHWG6Bqt8pJbOwGP7lB2",
-                            numDays = numDays,
-                            latitude = startLatitude,
-                            longitude = startLongitude,
-                            startDate = startDate,
-                            endDate = endDate
-                        )
+                        if (planName != null) {
+                            viewModel.postPlans(
+                                uid = uid,
+                                numDays = numDays,
+                                planName = planName,
+                                latitude = startLatitude,
+                                longitude = startLongitude,
+                                startDate = startDate,
+                                endDate = endDate
+                            )
+                        }
                     }
                 }
             }
@@ -334,9 +353,9 @@ class AddDestinationsMapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
                 is Result.Success -> {
                     binding.buttonPlan.isEnabled = true
-                    showSnackbar("Plan created successfully!")
+                    showSnackbar("Berhasil membuat plan!")
                     Log.d("PostPlans", "Success response: ${result.data}")
-                    val intent = Intent(this,HomepageFragment::class.java)
+                    val intent = Intent(this,MainActivity::class.java)
                     startActivity(intent)
                     finish()
                 }

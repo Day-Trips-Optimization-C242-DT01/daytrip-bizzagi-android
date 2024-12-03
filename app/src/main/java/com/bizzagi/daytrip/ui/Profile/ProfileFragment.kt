@@ -6,15 +6,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import com.bizzagi.daytrip.data.retrofit.response.auth.AuthenticationViewModel
 import com.bizzagi.daytrip.databinding.FragmentProfileBinding
+import com.bizzagi.daytrip.ui.Welcome.WelcomeActivity
+import com.bizzagi.daytrip.utils.ViewModelFactory
 
 class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
+
+    private val viewModel by viewModels<AuthenticationViewModel> {
+        ViewModelFactory.getInstance(requireContext())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,7 +37,12 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Set click listeners for name and profile image
+        viewModel.getSession().observe(viewLifecycleOwner) { result ->
+            if (result != null) {
+                binding.tvName.text = result.name
+            }
+        }
+
         binding.tvName.setOnClickListener {
             openEditProfile()
         }
@@ -50,19 +64,16 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    // Open EditProfileActivity
     private fun openEditProfile() {
         val intent = Intent(requireContext(), EditProfileActivity::class.java)
         startActivity(intent)
     }
 
-    // Logout
     private fun showLogoutConfirmationDialog() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setMessage("Are you sure you want to log out?")
             .setCancelable(false)
             .setPositiveButton("Yes") { dialog, id ->
-                // Perform logout
                 logoutUser()
             }
             .setNegativeButton("No") { dialog, id ->
@@ -73,12 +84,11 @@ class ProfileFragment : Fragment() {
     }
 
     private fun logoutUser() {
-        val sharedPreferences = requireActivity().getSharedPreferences("UserPrefs", AppCompatActivity.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.clear()
-        editor.apply()
-
+        viewModel.logout()
         Toast.makeText(requireContext(), "Logged out successfully!", Toast.LENGTH_SHORT).show()
+        val intent = Intent(requireContext(), WelcomeActivity::class.java)
+        startActivity(intent)
+        requireActivity().finishAffinity()
     }
 
     override fun onResume() {

@@ -12,6 +12,7 @@ import com.bizzagi.daytrip.databinding.ActivityRegisterBinding
 import com.bizzagi.daytrip.utils.ViewModelFactory
 import com.bizzagi.daytrip.data.Result
 import android.content.Intent
+import com.bizzagi.daytrip.ui.Login.LoginActivity
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -24,6 +25,12 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.alreadyHaveAccount.setOnClickListener {
+            val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
         setupView()
         setupAction()
@@ -71,7 +78,7 @@ class RegisterActivity : AppCompatActivity() {
                     is Result.Success -> {
                         binding.registerLoading.visibility = View.GONE
                         showMaterialDialog(this@RegisterActivity, "Register Success", "Registration successful", "OK")
-                        val intent = Intent(this@RegisterActivity, MainActivity::class.java)
+                        val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
                         startActivity(intent)
                         finish()
                     }

@@ -12,7 +12,10 @@ import android.view.View
 import com.bizzagi.daytrip.data.Result
 import android.app.AlertDialog
 import android.content.Context
+import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import com.bizzagi.daytrip.data.retrofit.model.LoginRequest
+import com.bizzagi.daytrip.ui.Register.RegisterActivity
 
 
 class LoginActivity : AppCompatActivity() {
@@ -27,6 +30,12 @@ class LoginActivity : AppCompatActivity() {
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.createAccount.setOnClickListener {
+            val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
         setupAction()
     }
@@ -68,10 +77,11 @@ class LoginActivity : AppCompatActivity() {
                     }
                     is Result.Success -> {
                         binding.loginLoading.visibility = View.GONE
-                        showMaterialDialog(this@LoginActivity, "Login Success", "Login successful", "OK")
+                        Toast.makeText(this, "Login success!", Toast.LENGTH_SHORT).show()
                         val loginResponse = result.data
                         viewModel.saveSessionData(loginResponse.data)
                         val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
                         finish()
                     }

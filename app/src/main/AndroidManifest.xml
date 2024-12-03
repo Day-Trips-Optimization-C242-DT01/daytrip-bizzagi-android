@@ -53,9 +53,6 @@
             android:exported="false"
             android:label="@string/title_activity_add_destinations_maps" />
         <activity
-            android:name=".ui.Maps.AddPlan.AddTripActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.Maps.AddPlan.PickRegionActivity"
             android:exported="false" />
         <activity

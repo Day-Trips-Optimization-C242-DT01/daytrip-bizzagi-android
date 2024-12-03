@@ -3,6 +3,7 @@ package com.bizzagi.daytrip.data.retrofit.response.Plans
 data class CreatePlanRequest (
     val uid: String,
     val num_days: Int,
+    val plan_name: String,
     val lokasi_user: LokasiUser,
     val places: List<Place>,
     val start_date: String,
