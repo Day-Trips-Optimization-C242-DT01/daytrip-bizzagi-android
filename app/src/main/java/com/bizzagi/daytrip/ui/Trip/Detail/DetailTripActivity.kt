@@ -80,5 +80,8 @@ class DetailTripActivity : AppCompatActivity() {
         }
     }
 
+    companion object {
+        const val PLAN_EXTRA = "plan_extra"
+    }
 
 }

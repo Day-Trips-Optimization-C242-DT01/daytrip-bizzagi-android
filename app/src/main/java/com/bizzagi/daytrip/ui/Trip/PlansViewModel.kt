@@ -9,14 +9,15 @@ import com.bizzagi.daytrip.data.Result
 import com.bizzagi.daytrip.data.retrofit.repository.DestinationRepository
 import com.bizzagi.daytrip.data.retrofit.repository.PlansRepository
 import com.bizzagi.daytrip.data.retrofit.response.Destinations.DataItem
+import com.bizzagi.daytrip.data.retrofit.response.Plans.Plan
 import kotlinx.coroutines.launch
 
 class PlansViewModel(
     private val plansRepository: PlansRepository,
     private val destinationRepository: DestinationRepository
 ) : ViewModel() {
-    private val _planIds = MutableLiveData<List<String>>()
-    val planIds: LiveData<List<String>> get() = _planIds
+    private val _planIds = MutableLiveData<List<Plan>>()
+    val planIds: LiveData<List<Plan>> get() = _planIds
 
     private val _days = MutableLiveData<Map<String, List<String>>>()
     val days: LiveData<Map<String, List<String>>> get() = _days
