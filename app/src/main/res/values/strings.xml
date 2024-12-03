@@ -124,14 +124,14 @@
 
     <!-- Article -->
     <!-- Artikel 1 -->
-    <string name="article_title_1">5 Tips Menikmati Destinasi Wisata yang Ramai Pengunjung</string>
+    <string name="articles_title_1">5 Tips Menikmati Destinasi Wisata yang Ramai Pengunjung</string>
     <string name="article_content_1">Ingin menikmati destinasi wisata yang ramai? Temukan 5 tips jitu untuk menikmati liburan tanpa terjebak keramaian!</string>
 
     <!-- Artikel 2 -->
-    <string name="article_title_2">Tips Berwisata Aman di Pantai</string>
+    <string name="articles_title_2">Tips Berwisata Aman di Pantai</string>
     <string name="article_content_2">Nikmati liburan pantai dengan aman! Temukan tips penting untuk berwisata dengan nyaman dan tanpa khawatir.</string>
 
     <!-- Artikel 3 -->
-    <string name="article_title_3">10 Tempat Wisata Tersembunyi di Bali yang Harus Dikunjungi</string>
+    <string name="articles_title_3">10 Tempat Wisata Tersembunyi di Bali yang Harus Dikunjungi</string>
     <string name="article_content_3">Temukan keindahan Bali yang tersembunyi! Simak 10 tempat wisata rahasia yang wajib Anda kunjungi untuk pengalaman berbeda.</string>
 </resources>

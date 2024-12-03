@@ -22,10 +22,10 @@ class ArticleAdapter(private val articles: List<Article>) : RecyclerView.Adapter
     inner class ArticleViewHolder(private val binding: ItemArticleBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(article: Article) {
 
-            binding.tvTitle.text = binding.root.context.getString(article.titleResId)
-            binding.tvContent.text = binding.root.context.getString(article.contentResId)
+            binding.tvTitle.text = binding.root.context.getString(article.titlearticleResId)
+            binding.tvContent.text = binding.root.context.getString(article.contentarticleResId)
 
-            binding.ivArticleImage.setImageResource(article.imageResId)
+            binding.ivArticleImage.setImageResource(article.imagearticleResId)
         }
     }
 }

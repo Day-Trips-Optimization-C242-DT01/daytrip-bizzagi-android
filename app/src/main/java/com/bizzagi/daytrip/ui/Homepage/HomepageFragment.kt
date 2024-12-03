@@ -30,9 +30,9 @@ class HomepageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val articles = listOf(
-            Article(R.string.article_title_1, R.string.article_content_1, R.drawable.image_article_1),
-            Article(R.string.article_title_2, R.string.article_content_2, R.drawable.image_article_2),
-            Article(R.string.article_title_3, R.string.article_content_3, R.drawable.image_article_3)
+            Article(R.string.articles_title_1, R.string.article_content_1, R.drawable.image_article_1),
+            Article(R.string.articles_title_2, R.string.article_content_2, R.drawable.image_article_2),
+            Article(R.string.articles_title_3, R.string.article_content_3, R.drawable.image_article_3)
         )
 
         Log.d("HomepageFragment", "Articles: $articles")
