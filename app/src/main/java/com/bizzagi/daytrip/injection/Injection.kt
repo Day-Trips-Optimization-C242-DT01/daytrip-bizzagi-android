@@ -9,12 +9,14 @@ import com.bizzagi.daytrip.data.retrofit.repository.DestinationRepository
 import com.bizzagi.daytrip.data.retrofit.repository.PlansRepository
 
 object Injection {
-    fun provideDestinationsRepository () : DestinationRepository {
-        val apiService = ApiConfig.getApiService()
+    fun provideDestinationsRepository (context: Context) : DestinationRepository {
+        val pref = UserPreference.getInstance(context.dataStore)
+        val apiService = ApiConfig.getApiService(pref)
         return DestinationRepository.getInstance(apiService)
     }
-    fun providePlansRepository() : PlansRepository {
-        val apiService = ApiConfig.getApiService()
+    fun providePlansRepository(context: Context) : PlansRepository {
+        val pref = UserPreference.getInstance(context.dataStore)
+        val apiService = ApiConfig.getApiService(pref)
         return PlansRepository.getInstance(apiService)
     }
     fun provideAuthRepository(context: Context): AuthRepository {

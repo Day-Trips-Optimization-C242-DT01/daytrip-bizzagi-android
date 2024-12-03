@@ -38,10 +38,6 @@
             android:name=".ui.Welcome.WelcomeActivity"
             android:exported="true"
             android:label="@string/title_activity_welcome">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <activity
@@ -73,7 +69,12 @@
         <activity android:name=".ui.Profile.EditProfileActivity" />
         <activity
             android:name=".MainActivity"
-            android:exported="true" />
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

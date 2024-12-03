@@ -1,6 +1,7 @@
 package com.bizzagi.daytrip.data.retrofit
 
 import com.bizzagi.daytrip.BuildConfig
+import com.bizzagi.daytrip.data.local.pref.UserPreference
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -10,7 +11,7 @@ class ApiConfig {
     companion object {
         val BASE_URL = BuildConfig.BASE_URL
 
-        fun getApiService(): ApiService {
+        fun getApiService(userPreference: UserPreference? = null): ApiService {
             val loggingInterceptor = if (BuildConfig.DEBUG) {
                 HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
             } else {
@@ -19,12 +20,9 @@ class ApiConfig {
 
             val client = OkHttpClient.Builder()
                 .addInterceptor(loggingInterceptor)
-                .addInterceptor {chain ->
-                    val request = chain.request().newBuilder()
-                        .addHeader("Authorization","Bearer token")
-                        .build()
-                    chain.proceed(request)
-                }
+                .apply { userPreference?.let { pref ->
+                    addInterceptor(AuthInterceptor(pref))
+                } }
                 .build()
 
             val retrofit = Retrofit.Builder()

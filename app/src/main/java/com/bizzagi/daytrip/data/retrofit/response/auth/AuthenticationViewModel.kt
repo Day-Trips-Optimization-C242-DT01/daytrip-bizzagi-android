@@ -4,8 +4,8 @@ package com.bizzagi.daytrip.data.retrofit.response.auth
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.bizzagi.daytrip.data.local.pref.UserModel
 import com.bizzagi.daytrip.data.retrofit.repository.AuthRepository
 import kotlinx.coroutines.launch
 
@@ -31,19 +31,11 @@ class AuthenticationViewModel(private val authRepository: AuthRepository) : View
         }
     }
 
-    fun saveSessionData(userData: UserModel) = viewModelScope.launch {
+    fun saveSessionData(userData: UserData) = viewModelScope.launch {
         authRepository.saveSession(userData)
     }
 
-    fun getUserSession(): LiveData<UserModel?> {
-        val result = MutableLiveData<UserModel?>()
-
-        viewModelScope.launch {
-            authRepository.getSession().collect { userModel ->
-                result.postValue(userModel)
-            }
-        }
-
-        return result
+    fun getSession(): LiveData<UserData> {
+        return authRepository.getSession().asLiveData()
     }
 }

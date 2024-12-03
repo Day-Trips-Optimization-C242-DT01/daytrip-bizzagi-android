@@ -12,7 +12,6 @@ import android.view.View
 import com.bizzagi.daytrip.data.Result
 import android.app.AlertDialog
 import android.content.Context
-import com.bizzagi.daytrip.data.local.pref.UserModel
 import com.bizzagi.daytrip.data.retrofit.model.LoginRequest
 
 
@@ -57,7 +56,7 @@ class LoginActivity : AppCompatActivity() {
                 password = password
             )
 
-            viewModel.login(email, password)  // Memanggil login() untuk mengirim permintaan login
+            viewModel.login(email, password)
             viewModel.loginResult.observe(this) { result ->
                 when (result) {
                     is Result.Loading -> {
@@ -70,6 +69,8 @@ class LoginActivity : AppCompatActivity() {
                     is Result.Success -> {
                         binding.loginLoading.visibility = View.GONE
                         showMaterialDialog(this@LoginActivity, "Login Success", "Login successful", "OK")
+                        val loginResponse = result.data
+                        viewModel.saveSessionData(loginResponse.data)
                         val intent = Intent(this@LoginActivity, MainActivity::class.java)
                         startActivity(intent)
                         finish()

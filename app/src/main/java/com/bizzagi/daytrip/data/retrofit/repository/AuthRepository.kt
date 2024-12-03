@@ -1,6 +1,5 @@
 package com.bizzagi.daytrip.data.retrofit.repository
 
-import com.bizzagi.daytrip.data.local.pref.UserModel
 import com.bizzagi.daytrip.data.retrofit.ApiService
 import com.bizzagi.daytrip.data.retrofit.model.LoginRequest
 import com.bizzagi.daytrip.data.retrofit.model.RegisterRequest
@@ -8,6 +7,7 @@ import com.bizzagi.daytrip.data.retrofit.response.auth.LoginResponse
 import com.bizzagi.daytrip.data.retrofit.response.auth.RegisterResponse
 import com.bizzagi.daytrip.data.Result
 import com.bizzagi.daytrip.data.local.pref.UserPreference
+import com.bizzagi.daytrip.data.retrofit.response.auth.UserData
 import kotlinx.coroutines.flow.Flow
 
 class AuthRepository(
@@ -57,11 +57,11 @@ class AuthRepository(
         }
     }
 
-    suspend fun saveSession(user: UserModel) {
+    suspend fun saveSession(user: UserData) {
         userPreference.saveSession(user)
     }
 
-    fun getSession(): Flow<UserModel> {
+    fun getSession(): Flow<UserData> {
         return userPreference.getSession()
     }
 

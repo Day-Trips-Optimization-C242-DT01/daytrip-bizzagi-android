@@ -74,7 +74,7 @@ class MapsViewModel (
            end_date = endDate
         )
         viewModelScope.launch {
-            _planResult.value = Result.Loading
+
             val result = plansRepository.createPlan(request)
             _planResult.value = result
         }

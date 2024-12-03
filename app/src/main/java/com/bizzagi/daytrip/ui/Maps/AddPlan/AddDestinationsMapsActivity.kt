@@ -343,7 +343,7 @@ class AddDestinationsMapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 is Result.Error -> {
                     binding.buttonPlan.isEnabled = true
                     showSnackbar("Error creating plan")
-                    Log.e("PostPlans", "Error response: ${result.error}")
+                    Log.e("PostPlans", "Error response: ${result}")
                 }
             }
         }

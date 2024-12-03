@@ -10,13 +10,10 @@ data class LoginResponse(
     val message: String,
 
     @SerializedName("data")
-    val data: UserData?,
+    val data: UserData,
 
     @SerializedName("error")
     val error: Boolean?,
-
-    @SerializedName("loginResult")
-    val loginResult: Any?
 )
 
 data class UserData(
