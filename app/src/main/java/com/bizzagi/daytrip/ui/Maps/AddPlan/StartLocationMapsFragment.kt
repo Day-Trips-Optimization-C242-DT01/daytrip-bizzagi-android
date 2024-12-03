@@ -21,6 +21,8 @@ import com.bizzagi.daytrip.ui.Maps.MapsViewModel
 import com.bizzagi.daytrip.ui.Trip.PlansViewModel
 import com.bizzagi.daytrip.utils.ViewModelFactory
 import com.google.android.gms.common.api.Status
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -50,6 +52,8 @@ class StartLocationMapsFragment : Fragment(), OnMapReadyCallback {
     private lateinit var placesClient: PlacesClient
     private lateinit var autocompleteFragment: AutocompleteSupportFragment
 
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
     private val viewModel: MapsViewModel by viewModels {
         ViewModelFactory.getInstance(requireActivity())
     }
@@ -68,6 +72,11 @@ class StartLocationMapsFragment : Fragment(), OnMapReadyCallback {
         return binding.root
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -76,7 +85,6 @@ class StartLocationMapsFragment : Fragment(), OnMapReadyCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Initialize Places API
         Places.initialize(requireContext(), getString(R.string.google_maps_api_key))
         placesClient = Places.createClient(requireContext())
 
@@ -86,23 +94,32 @@ class StartLocationMapsFragment : Fragment(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
     }
 
+    @SuppressLint("MissingPermission")
+    private fun focusOnUserLocation() {
+        if (::mMap.isInitialized) {
+            fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+                location?.let {
+                    val userLatLng = LatLng(it.latitude, it.longitude)
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(userLatLng, 15f))
+                }
+            }
+        }
+    }
+
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        // Aktifkan lokasi pengguna jika ada izin
         getMyLocation()
 
-        // Batasi peta untuk wilayah Indonesia
         mMap.setLatLngBoundsForCameraTarget(indonesiaBounds)
         mMap.setMinZoomPreference(5f)
         mMap.setMaxZoomPreference(20f)
 
-        // Atur padding untuk tombol My Location
-        mMap.setOnMapLoadedCallback {
+        //fitur map load dari lokasi terakhir yang dipilih (bug)
+        /*mMap.setOnMapLoadedCallback {
             val padding = 200
             mMap.setPadding(0, 0, 0, padding)
 
-            // Tambahkan ini untuk memastikan lokasi terakhir dimuat
             viewModel.selectedLocation.value?.let { lastLocation ->
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastLocation, 15f))
                 currentMarker?.remove()
@@ -112,16 +129,25 @@ class StartLocationMapsFragment : Fragment(), OnMapReadyCallback {
                         .title("Lokasi Awal")
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
                 )
-                // Perbarui detail lokasi
                 updateLocationDetails(lastLocation)
+            }
+        }*/
+
+        mMap.setOnMapLoadedCallback {
+            val padding = 200
+            mMap.setPadding(0, 0, 0, padding)
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    android.Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                focusOnUserLocation()
             }
         }
 
-        // Tangani klik di peta
         mMap.setOnMapClickListener { latLng ->
             Log.d("StartLocationMapsFragment", "User memilih lokasi: $latLng")
 
-            // Hapus marker lama dan tambahkan marker baru
             currentMarker?.remove()
             currentMarker = mMap.addMarker(
                 MarkerOptions()
@@ -130,19 +156,17 @@ class StartLocationMapsFragment : Fragment(), OnMapReadyCallback {
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
             )
 
-            // Perbarui ViewModel
             viewModel.setSelectedLocation(latLng.latitude, latLng.longitude)
             updateLocationDetails(latLng)
         }
 
-        // Tombol konfirmasi untuk kembali ke activity
         binding.btnKonfirmasi.setOnClickListener {
             currentMarker?.let { marker ->
                 (activity as? PickRegionActivity)?.onLocationSelected(
                     marker.position.latitude,
                     marker.position.longitude
                 )
-                parentFragmentManager.popBackStack() // Tutup fragment
+                parentFragmentManager.popBackStack()
             } ?: run {
                 Log.e("StartLocationMapsFragment", "No marker selected.")
             }

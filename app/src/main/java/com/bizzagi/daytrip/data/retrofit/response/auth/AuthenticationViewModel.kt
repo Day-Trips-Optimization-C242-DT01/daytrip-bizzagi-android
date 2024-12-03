@@ -38,4 +38,10 @@ class AuthenticationViewModel(private val authRepository: AuthRepository) : View
     fun getSession(): LiveData<UserData> {
         return authRepository.getSession().asLiveData()
     }
+
+    fun logout() {
+        viewModelScope.launch {
+            authRepository.logout()
+        }
+    }
 }

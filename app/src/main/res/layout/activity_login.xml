@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    android:background="@color/md_theme_onPrimary"
     android:fillViewport="true">
 
     <LinearLayout
@@ -27,14 +26,14 @@
             android:id="@+id/email_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/hint_email"
-            android:background="@drawable/rounded_edittext_background"
-            android:inputType="textEmailAddress"
-            android:padding="12dp"
             android:layout_marginBottom="16dp"
             android:autofillHints="emailAddress"
+            android:background="@drawable/rounded_edittext_background"
             android:drawableLeft="@drawable/ic_baseline_person_24"
-            android:drawablePadding="10dp"/>
+            android:drawablePadding="10dp"
+            android:hint="@string/hint_email"
+            android:inputType="textEmailAddress"
+            android:padding="12dp" />
 
         <EditText
             android:id="@+id/password_input"

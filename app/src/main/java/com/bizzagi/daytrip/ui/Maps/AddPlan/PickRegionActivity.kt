@@ -31,12 +31,18 @@ class PickRegionActivity : AppCompatActivity() {
         binding = ActivityPickRegionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Initially disable the button
+        binding.buttonDestinasi.isEnabled = false
+        binding.buttonDestinasi.alpha = 0.5f
+
         binding.ntb.setOnClickListener {
             updateSelectedRegion("NTB", binding.ntb)
+            validateAllFields()
         }
 
         binding.bali.setOnClickListener {
             updateSelectedRegion("BALI", binding.bali)
+            validateAllFields()
         }
 
         binding.lokasiUSerCard.setOnClickListener {
@@ -49,20 +55,16 @@ class PickRegionActivity : AppCompatActivity() {
         }
 
         binding.buttonDestinasi.setOnClickListener {
-            if (selectedRegion != null) {
-                if (validateDates()) {
-                    val intent = Intent(this, AddDestinationsMapsActivity::class.java).apply {
-                        putExtra(AddDestinationsMapsActivity.EXTRA_REGION, selectedRegion)
-                        putExtra("EXTRA_START_DATE", DateUtils.formatDate(startDate!!))
-                        putExtra("EXTRA_END_DATE", DateUtils.formatDate(endDate!!))
-                        putExtra("EXTRA_NUM_DAYS", numDays )
-                        putExtra("EXTRA_START_LATITUDE", startLatitude)
-                        putExtra("EXTRA_START_LONGITUDE", startLongitude)
-                    }
-                    startActivity(intent)
+            if (validateAllFields()) {
+                val intent = Intent(this, AddDestinationsMapsActivity::class.java).apply {
+                    putExtra(AddDestinationsMapsActivity.EXTRA_REGION, selectedRegion)
+                    putExtra("EXTRA_START_DATE", DateUtils.formatDate(startDate!!))
+                    putExtra("EXTRA_END_DATE", DateUtils.formatDate(endDate!!))
+                    putExtra("EXTRA_NUM_DAYS", numDays)
+                    putExtra("EXTRA_START_LATITUDE", startLatitude)
+                    putExtra("EXTRA_START_LONGITUDE", startLongitude)
                 }
-            } else {
-                Toast.makeText(this, "Pilih region terlebih dahulu", Toast.LENGTH_SHORT).show()
+                startActivity(intent)
             }
         }
 
@@ -70,6 +72,7 @@ class PickRegionActivity : AppCompatActivity() {
             showDatePicker { date ->
                 startDate = date
                 binding.startDateText.text = DateUtils.formatDate(date)
+                validateAllFields()
             }
         }
 
@@ -77,6 +80,7 @@ class PickRegionActivity : AppCompatActivity() {
             showDatePicker { date ->
                 endDate = date
                 binding.endDateText.text = DateUtils.formatDate(date)
+                validateAllFields()
             }
         }
     }
@@ -98,8 +102,8 @@ class PickRegionActivity : AppCompatActivity() {
 
         binding.lokasiUserText2.text = addressText
         binding.fragmentContainer.visibility = View.GONE
+        validateAllFields()
     }
-
 
     private fun updateSelectedRegion(region: String, selectedCard: MaterialCardView) {
         selectedRegion = region
@@ -133,7 +137,6 @@ class PickRegionActivity : AppCompatActivity() {
 
     private fun validateDates(): Boolean {
         if (startDate == null || endDate == null) {
-            Toast.makeText(this, "Pilih start date dan end date", Toast.LENGTH_SHORT).show()
             return false
         }
         if (endDate!!.before(startDate)) {
@@ -142,6 +145,20 @@ class PickRegionActivity : AppCompatActivity() {
         }
         calculateNumDays()
         return true
+    }
+
+    private fun validateAllFields(): Boolean {
+        val isValid = selectedRegion != null &&
+                startDate != null &&
+                endDate != null &&
+                startLatitude != null &&
+                startLongitude != null &&
+                validateDates()
+
+        binding.buttonDestinasi.isEnabled = isValid
+        binding.buttonDestinasi.alpha = if (isValid) 1.0f else 0.5f
+
+        return isValid
     }
 
     private fun calculateNumDays() {
