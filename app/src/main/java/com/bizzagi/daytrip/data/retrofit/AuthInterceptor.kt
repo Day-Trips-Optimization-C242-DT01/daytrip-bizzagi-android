@@ -9,15 +9,19 @@ import okhttp3.Response
 
 class AuthInterceptor(private val userPreference: UserPreference): Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
-        val token = runBlocking {
-            userPreference.getSession().first().token
+        val userData = runBlocking {
+            userPreference.getSession().first()
         }
+
+        val token = userData?.token ?: ""
         Log.d("AuthInterceptor", "Using token: $token")
+
         if (token.isBlank()) {
             Log.e("AuthInterceptor", "Token is blank or empty")
         }
+
         val request = chain.request().newBuilder()
-            .addHeader("Authorization","Bearer $token")
+            .addHeader("Authorization", "Bearer $token")
             .build()
 
         return chain.proceed(request)

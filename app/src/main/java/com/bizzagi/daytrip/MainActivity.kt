@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         viewModel.getSession().observe(this) { user ->
-            if (user == null || user.token.isEmpty()) {
+            if (user == null) {
                 Log.d("login kah:", "gada token bjir")
                 startActivity(Intent(this, WelcomeActivity::class.java))
                 finish()

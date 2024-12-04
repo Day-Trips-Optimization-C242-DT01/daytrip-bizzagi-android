@@ -61,7 +61,7 @@ class AuthRepository(
         userPreference.saveSession(user)
     }
 
-    fun getSession(): Flow<UserData> {
+    fun getSession(): Flow<UserData?> {
         return userPreference.getSession()
     }
 

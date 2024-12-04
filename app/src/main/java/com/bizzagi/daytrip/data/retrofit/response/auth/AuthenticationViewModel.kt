@@ -35,7 +35,7 @@ class AuthenticationViewModel(private val authRepository: AuthRepository) : View
         authRepository.saveSession(userData)
     }
 
-    fun getSession(): LiveData<UserData> {
+    fun getSession(): LiveData<UserData?> {
         return authRepository.getSession().asLiveData()
     }
 

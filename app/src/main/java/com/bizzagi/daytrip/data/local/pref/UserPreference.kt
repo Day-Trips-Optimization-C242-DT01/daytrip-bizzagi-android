@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
 import com.bizzagi.daytrip.data.retrofit.response.auth.UserData
+import com.bizzagi.daytrip.utils.TokenValidator
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -25,16 +26,20 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
         }
     }
 
-    fun getSession(): Flow<UserData> {
+    fun getSession(): Flow<UserData?> {
         return dataStore.data.map { pref ->
-            val userData = UserData(
-                pref[UID_KEY] ?: "",
-                pref[EMAIL_KEY] ?: "",
-                pref[NAME_KEY] ?: "",
-                pref[TOKEN_KEY] ?: "",
-            )
-            Log.d("UserPreference", "Retrieved session: $userData")
-            userData
+            val token = pref[TOKEN_KEY] ?: ""
+            if (token.isEmpty() || !TokenValidator.isTokenValid(token)) {
+                logout()
+                null
+            } else {
+                UserData(
+                    pref[UID_KEY] ?: "",
+                    pref[EMAIL_KEY] ?: "",
+                    pref[NAME_KEY] ?: "",
+                    token
+                )
+            }
         }
     }
 
