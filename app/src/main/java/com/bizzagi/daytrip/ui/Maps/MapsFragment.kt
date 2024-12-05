@@ -18,6 +18,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
@@ -26,7 +27,6 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
-
 @Suppress("DEPRECATION")
 class MapsFragment : Fragment(), OnMapReadyCallback {
 
@@ -38,15 +38,24 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
     private val boundsBuilder = LatLngBounds.Builder()
 
-    private val viewModel: PlansViewModel by viewModels {
-        ViewModelFactory.getInstance(requireActivity())
-    }
-
     private val indonesiaBounds = LatLngBounds(
         LatLng(-11.007375, 95.007307),
         LatLng(6.076912, 141.019454)
     )
 
+    private val markerColors = listOf(
+        BitmapDescriptorFactory.HUE_RED,
+        BitmapDescriptorFactory.HUE_BLUE,
+        BitmapDescriptorFactory.HUE_GREEN,
+        BitmapDescriptorFactory.HUE_ORANGE,
+        BitmapDescriptorFactory.HUE_YELLOW,
+        BitmapDescriptorFactory.HUE_CYAN
+    )
+
+
+    private val viewModel: MapsViewModel by viewModels {
+        ViewModelFactory.getInstance(requireActivity())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -67,6 +76,8 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         val mapFragment = childFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        observeViewModel()
     }
 
     private fun setupAutocomplete() {
@@ -88,7 +99,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
             override fun onPlaceSelected(place: Place) {
                 place.latLng?.let { latLng ->
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
-
                     clearSearchField()
                 }
             }
@@ -105,7 +115,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-        getStoriesLocation()
 
         mMap.setLatLngBoundsForCameraTarget(indonesiaBounds)
 
@@ -131,59 +140,39 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
-    private fun getStoriesLocation() {
-        viewModel.fetchAllDestinations()
-
-        viewModel.destinations.observe(viewLifecycleOwner) { destinations ->
-            Log.d("MapsFragment", "Observer triggered with ${destinations?.size} destinations")
-
-            if (destinations == null) {
-                Log.d(TAG, "Loading destinations...")
-            } else if (destinations.isEmpty()) {
-                Log.d(TAG, "No destinations found")
-            } else {
-                Log.d("Map destinations", "Fetched destinations successfully: $destinations")
-                Log.d("MapsFragment", "Calling showMarkers with ${destinations.size} destinations")
-                showMarkers(destinations)
+    private fun observeViewModel() {
+        viewModel.destinationsPerDay.observe(viewLifecycleOwner) { destinationsPerDay ->
+            if (destinationsPerDay.isNotEmpty()) {
+                showMarkers(destinationsPerDay)
             }
         }
+
+        viewModel.fetchDestinationsPerDay()
     }
-    private fun showMarkers(plan: List<DataItem>) {
-        if (!::mMap.isInitialized) {
-            Log.e("showMarkers", "Map is not initialized yet")
-            return
-        }
-        Log.d("showMarkers", "Starting to add ${plan.size} markers")
 
-        plan.forEachIndexed { index, result ->
-            Log.d("showMarkers", "Processing marker ${index + 1}: ${result.name}")
-            try {
-                val latLng = LatLng(result.latitude, result.longitude)
-                val marker = mMap.addMarker(
-                    MarkerOptions()
-                        .position(latLng)
-                        .title(result.name)
-                )
-                Log.d("showMarkers", "Marker added successfully: ${marker != null}")
+    private fun showMarkers(destinationsPerDay: Map<String, List<DataItem>>) {
+        mMap.clear()  // Clear existing markers
+
+
+        var dayIndex = 0
+
+        destinationsPerDay.forEach { (day, destinations) ->
+            val color = markerColors[dayIndex % markerColors.size]
+            dayIndex++
+
+            destinations.forEach { destination ->
+                val latLng = LatLng(destination.latitude, destination.longitude)
+                val marker = MarkerOptions()
+                    .position(latLng)
+                    .title("${destination.name} (Day $day)")
+                    .icon(BitmapDescriptorFactory.defaultMarker(color))
+
+                mMap.addMarker(marker)
                 boundsBuilder.include(latLng)
-            } catch (e: Exception) {
-                Log.e("showMarkers", "Error adding marker for ${result.name}: ${e.message}")
             }
         }
 
-        try {
-            val bounds = boundsBuilder.build()
-            mMap.animateCamera(
-                CameraUpdateFactory.newLatLngBounds(
-                    bounds,
-                    resources.displayMetrics.widthPixels,
-                    resources.displayMetrics.heightPixels,
-                    300
-                )
-            )
-            Log.d("showMarkers", "Camera animation completed")
-        } catch (e: Exception) {
-            Log.e("showMarkers", "Error animating camera: ${e.message}")
-        }
+        val bounds = boundsBuilder.build()
+        mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100))
     }
 }

@@ -99,6 +99,28 @@ class PlansRepository(
         }
     }
 
+    suspend fun getDestinationsOfDay(): Map<String, List<String>> {
+        return try {
+            val response = apiService.getPlans()
+            if (!response.success) {
+                Log.e("getDestinationsOfDay", "API response unsuccessful: ${response.message}")
+                emptyMap()
+            } else {
+                val allDestinations = mutableMapOf<String, List<String>>()
+                response.data.forEach { plan ->
+                    plan.data.forEach { (day, destinations) ->
+                        allDestinations[day] = destinations
+                    }
+                }
+                allDestinations
+            }
+        } catch (e: Exception) {
+            Log.e("getDestinationsOfDay", "Error fetching destinations: ${e.message}")
+            emptyMap()
+        }
+    }
+
+
     suspend fun deletePlan(planId: String) : Result<DeletePlanResponse> {
         return try {
             val response = apiService.deletePlan(planId)

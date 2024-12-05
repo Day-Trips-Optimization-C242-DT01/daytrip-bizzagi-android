@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.bizzagi.daytrip.data.Result
 import com.bizzagi.daytrip.data.retrofit.repository.DestinationRepository
 import com.bizzagi.daytrip.data.retrofit.repository.PlansRepository
+import com.bizzagi.daytrip.data.retrofit.response.Destinations.DataItem
 import com.bizzagi.daytrip.data.retrofit.response.Destinations.DestinationPostResponse
 import com.bizzagi.daytrip.data.retrofit.response.Plans.CreatePlanRequest
 import com.bizzagi.daytrip.data.retrofit.response.Plans.LokasiUser
@@ -31,6 +32,40 @@ class MapsViewModel (
 
     private val _selectedLocation = MutableLiveData<LatLng?>()
     val selectedLocation: LiveData<LatLng?> get() = _selectedLocation
+
+    private val _destinationsPerDay = MutableLiveData<Map<String, List<DataItem>>>()
+    val destinationsPerDay: LiveData<Map<String, List<DataItem>>> get() = _destinationsPerDay
+
+    private val _loading = MutableLiveData<Boolean>()
+    val loading: LiveData<Boolean> = _loading
+
+    private val _errorMessage = MutableLiveData<String?>()
+    val errorMessage: LiveData<String?> = _errorMessage
+
+    fun fetchDestinationsPerDay() {
+        viewModelScope.launch {
+            try {
+                val destinationsByDay = plansRepository.getDestinationsOfDay()
+
+                val allDestinationIds = destinationsByDay.values.flatten()
+
+                val result = destinationRepository.getDestinations(allDestinationIds)
+                if (result is Result.Success) {
+                    val destinationData = result.data.data
+
+                    val mappedDestinations = destinationsByDay.mapValues { (_, destinationIds) ->
+                        destinationData.filter { it.id in destinationIds }
+                    }
+
+                    _destinationsPerDay.postValue(mappedDestinations)
+                } else if (result is Result.Error) {
+                    Log.e("MapViewModel", "Error fetching destination details: ${result.message}")
+                }
+            } catch (e: Exception) {
+                Log.e("MapViewModel", "Unexpected error: ${e.message}")
+            }
+        }
+    }
 
     fun setSelectedLocation(latitude: Double, longitude: Double) {
         val latLng = LatLng(latitude, longitude)
