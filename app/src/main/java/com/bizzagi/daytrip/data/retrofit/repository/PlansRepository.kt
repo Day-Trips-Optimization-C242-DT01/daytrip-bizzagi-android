@@ -5,9 +5,9 @@ import com.bizzagi.daytrip.data.Result
 import com.bizzagi.daytrip.data.retrofit.ApiService
 import com.bizzagi.daytrip.data.retrofit.response.Destinations.DestinationsResponse
 import com.bizzagi.daytrip.data.retrofit.response.Plans.CreatePlanRequest
+import com.bizzagi.daytrip.data.retrofit.response.Plans.DeletePlanResponse
 import com.bizzagi.daytrip.data.retrofit.response.Plans.Plan
 import com.bizzagi.daytrip.data.retrofit.response.Plans.PlanPostResponse
-import com.bizzagi.daytrip.data.retrofit.response.Plans.PlansResponse
 import com.google.gson.Gson
 import retrofit2.HttpException
 
@@ -96,6 +96,25 @@ class PlansRepository(
         } catch (e: Exception) {
             Log.e("getDays", "Error fetching days for Plan ID $planId: ${e.message}")
             emptyMap()
+        }
+    }
+
+    suspend fun deletePlan(planId: String) : Result<DeletePlanResponse> {
+        return try {
+            val response = apiService.deletePlan(planId)
+            if (!response.success) {
+                Result.Error(response.message)
+            } else {
+                Result.Success(response)
+            }
+        } catch (e: HttpException) {
+            try {
+                val errorBody = e.response()?.errorBody()?.string()
+                val errorResponse = Gson().fromJson(errorBody, DestinationsResponse::class.java)
+                Result.Error(errorResponse.message)
+            } catch (e: Exception) {
+                Result.Error(e.message.toString())
+            }
         }
     }
 

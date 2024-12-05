@@ -1,5 +1,6 @@
 package com.bizzagi.daytrip.ui.Trip.Detail
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -10,6 +11,7 @@ import com.bizzagi.daytrip.databinding.ActivityDetailTripBinding
 import com.bizzagi.daytrip.ui.Trip.PlansViewModel
 import com.bizzagi.daytrip.utils.ViewModelFactory
 import androidx.lifecycle.lifecycleScope
+import com.bizzagi.daytrip.ui.Trip.Edit.EditTripActivity
 import kotlinx.coroutines.launch
 
 class DetailTripActivity : AppCompatActivity() {
@@ -31,6 +33,14 @@ class DetailTripActivity : AppCompatActivity() {
             finish()
             return
         }
+
+        binding.editTripFab.setOnClickListener {
+            val intent = Intent(this, EditTripActivity::class.java)
+            intent.putExtra("TRIP_ID", tripId)
+            startActivity(intent)
+            finish()
+        }
+
 
         setupRecyclerView(tripId)
         observeViewModel()
@@ -79,9 +89,4 @@ class DetailTripActivity : AppCompatActivity() {
             }
         }
     }
-
-    companion object {
-        const val PLAN_EXTRA = "plan_extra"
-    }
-
 }

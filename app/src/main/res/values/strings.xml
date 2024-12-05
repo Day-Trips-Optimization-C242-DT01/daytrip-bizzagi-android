@@ -134,4 +134,13 @@
     <!-- Artikel 3 -->
     <string name="articles_title_3">10 Tempat Wisata Tersembunyi di Bali yang Harus Dikunjungi</string>
     <string name="article_content_3">Temukan keindahan Bali yang tersembunyi! Simak 10 tempat wisata rahasia yang wajib Anda kunjungi untuk pengalaman berbeda.</string>
+    <string name="edit_perjalanan">Edit Perjalanan</string>
+    <string name="hapus">Hapus</string>
+    <string name="hapus_perjalanan">Hapus Perjalanan ?</string>
+    <string name="kembali">Kembali</string>
+    <string name="logout">Logout</string>
+    <string name="logout_confirm">Apa anda yakin ingin logout?</string>
+    <string name="delete">Delete</string>
+    <string name="tidak">Tidak</string>
+    <string name="address">address</string>
 </resources>

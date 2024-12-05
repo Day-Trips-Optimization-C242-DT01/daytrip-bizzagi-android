@@ -1,17 +1,21 @@
 package com.bizzagi.daytrip.ui.Profile
 
+import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.Toast
-import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.bizzagi.daytrip.data.retrofit.response.auth.AuthenticationViewModel
+import com.bizzagi.daytrip.databinding.CustomLogoutDialogBinding
 import com.bizzagi.daytrip.databinding.FragmentProfileBinding
 import com.bizzagi.daytrip.ui.Welcome.WelcomeActivity
 import com.bizzagi.daytrip.utils.ViewModelFactory
@@ -28,7 +32,7 @@ class ProfileFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         return binding.root
@@ -70,17 +74,34 @@ class ProfileFragment : Fragment() {
     }
 
     private fun showLogoutConfirmationDialog() {
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setMessage("Are you sure you want to log out?")
-            .setCancelable(false)
-            .setPositiveButton("Yes") { dialog, id ->
-                logoutUser()
-            }
-            .setNegativeButton("No") { dialog, id ->
-                dialog.dismiss()
-            }
-        val alert = builder.create()
-        alert.show()
+        val dialog = Dialog(requireContext())
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+
+        val binding = CustomLogoutDialogBinding.inflate(layoutInflater)
+        dialog.setContentView(binding.root)
+
+        dialog.window?.apply {
+            setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            val width = (resources.displayMetrics.widthPixels * 0.8).toInt()
+            setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
+
+            setGravity(Gravity.CENTER)
+            setLayout(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+        }
+
+        binding.btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        binding.btnLogout.setOnClickListener {
+            logoutUser()
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
     private fun logoutUser() {

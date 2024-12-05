@@ -14,7 +14,6 @@ import com.bizzagi.daytrip.data.Result
 import com.bizzagi.daytrip.data.local.pref.UserPreference
 import com.bizzagi.daytrip.data.local.pref.dataStore
 import com.bizzagi.daytrip.databinding.ActivityAddDestinationsMapsBinding
-import com.bizzagi.daytrip.ui.Homepage.HomepageFragment
 import com.bizzagi.daytrip.ui.Maps.MapsViewModel
 import com.bizzagi.daytrip.utils.ViewModelFactory
 import com.google.android.gms.common.api.Status
@@ -75,7 +74,9 @@ class AddDestinationsMapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         lifecycleScope.launch {
             userPreference.getSession().collect { userData ->
-                uid = userData.uid
+                if (userData != null) {
+                    uid = userData.uid
+                }
                 Log.d("UIDTracking", "UID from UserPreference: $uid")
             }
         }

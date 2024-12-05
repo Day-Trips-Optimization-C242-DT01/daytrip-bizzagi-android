@@ -22,7 +22,7 @@ class DayPagerAdapter(
 
         @SuppressLint("SetTextI18n")
         fun bind(dayIndex: String) {
-            binding.tvHari.text = "Day ${dayIndex.replace("day", "")}"
+            binding.tvHari.text = "Hari ke- ${dayIndex.replace("day", "")}"
 
             binding.root.setOnClickListener {
                 val position = bindingAdapterPosition

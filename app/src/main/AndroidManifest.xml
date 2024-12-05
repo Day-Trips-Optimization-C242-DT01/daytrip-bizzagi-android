@@ -18,7 +18,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BizzagiDayTrip"
         tools:targetApi="31">
-
+        <activity
+            android:name=".ui.Trip.Edit.EditTripActivity"
+            android:exported="false" />
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
 
@@ -37,9 +39,7 @@
         <activity
             android:name=".ui.Welcome.WelcomeActivity"
             android:exported="true"
-            android:label="@string/title_activity_welcome">
-        </activity>
-
+            android:label="@string/title_activity_welcome"></activity>
         <activity
             android:name=".ui.Login.LoginActivity"
             android:exported="false"
@@ -66,9 +66,10 @@
         <activity android:name=".ui.Profile.EditProfileActivity" />
         <activity
             android:name=".MainActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
