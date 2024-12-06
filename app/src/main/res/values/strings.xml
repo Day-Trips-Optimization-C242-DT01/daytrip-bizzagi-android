@@ -143,4 +143,8 @@
     <string name="delete">Delete</string>
     <string name="tidak">Tidak</string>
     <string name="address">address</string>
+    <string name="title_activity_details_maps">DetailsMapsActivity</string>
+    <string name="destinasi">Destinasi</string>
+    <string name="type_wisata">Wisata</string>
+    <string name="perjalanan_kosong">Anda belum membuat perjalanan</string>
 </resources>

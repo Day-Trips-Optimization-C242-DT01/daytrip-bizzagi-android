@@ -24,4 +24,13 @@
         app:layout_constraintVertical_bias="0.0"
         tools:layout_editor_absoluteX="0dp" />
 
+    <TextView
+        android:id="@+id/text_nothing"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/perjalanan_kosong"
+        android:visibility="gone"
+        android:textSize="20sp" />
+
 </FrameLayout>

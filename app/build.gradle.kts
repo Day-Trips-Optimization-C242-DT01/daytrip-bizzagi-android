@@ -81,4 +81,5 @@ dependencies {
     implementation(libs.logging.interceptor)
     implementation(libs.retrofit2.converter.gson)
     implementation (libs.java.jwt)
+    implementation (libs.glide)
 }

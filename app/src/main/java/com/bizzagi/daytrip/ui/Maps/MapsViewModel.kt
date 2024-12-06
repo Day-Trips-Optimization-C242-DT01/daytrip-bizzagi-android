@@ -10,6 +10,7 @@ import com.bizzagi.daytrip.data.retrofit.repository.DestinationRepository
 import com.bizzagi.daytrip.data.retrofit.repository.PlansRepository
 import com.bizzagi.daytrip.data.retrofit.response.Destinations.DataItem
 import com.bizzagi.daytrip.data.retrofit.response.Destinations.DestinationPostResponse
+import com.bizzagi.daytrip.data.retrofit.response.Destinations.DestinationsResponse
 import com.bizzagi.daytrip.data.retrofit.response.Plans.CreatePlanRequest
 import com.bizzagi.daytrip.data.retrofit.response.Plans.LokasiUser
 import com.bizzagi.daytrip.data.retrofit.response.Plans.Place
@@ -42,6 +43,9 @@ class MapsViewModel (
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?> = _errorMessage
 
+    private val _destinationDetail = MutableLiveData<Result<DestinationsResponse>>()
+    val destinationDetail: LiveData<Result<DestinationsResponse>> = _destinationDetail
+
     fun fetchDestinationsPerDay() {
         viewModelScope.launch {
             try {
@@ -64,6 +68,12 @@ class MapsViewModel (
             } catch (e: Exception) {
                 Log.e("MapViewModel", "Unexpected error: ${e.message}")
             }
+        }
+    }
+
+    fun getDestinationDetail(id: String) {
+        viewModelScope.launch {
+            _destinationDetail.value = destinationRepository.getDestinations(listOf(id))
         }
     }
 
