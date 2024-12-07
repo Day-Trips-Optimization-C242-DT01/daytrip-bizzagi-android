@@ -331,5 +331,6 @@
     <string name="konfirmasi">Konfirmasi</string>
     <string name="pilih_lokasi">Pilih Lokasi</string>
     <string name="detail_lokasi">Detail lokasi</string>
-    <string name="title_article">Article</string>
+    <string name="title_articles">Article</string>
+
 </resources>
