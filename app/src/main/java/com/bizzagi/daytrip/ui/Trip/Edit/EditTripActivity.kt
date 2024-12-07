@@ -29,8 +29,7 @@ import kotlinx.coroutines.launch
 class EditTripActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEditTripBinding
 
-    private lateinit var destinationsAdapter: DestinationAdapter
-    private lateinit var daysAdapter: DayPagerAdapter
+    private lateinit var editAdapter: EditAdapter
 
     private val viewModel by viewModels <PlansViewModel> {
         ViewModelFactory.getInstance(this)
@@ -48,55 +47,52 @@ class EditTripActivity : AppCompatActivity() {
             return
         }
 
-        binding.deleteTripFab.setOnClickListener {
+        binding.btnHapus.setOnClickListener {
             showDeleteConfirmationDialog()
+        }
+
+        binding.editTripFab.setOnClickListener {
+            //save edit
         }
 
         Log.d("EditTripActivity", "Received Trip ID: $tripId")
 
-        setupRecyclerView(tripId)
+        setupRecyclerView()
         observeViewModel()
 
         viewModel.fetchDays(planId = tripId)
     }
 
-    private fun setupRecyclerView(tripId: String) {
-        daysAdapter = DayPagerAdapter { selectedDayIndex ->
-            lifecycleScope.launch {
-                Log.d("DetailTripActivity", "Selected day: $selectedDayIndex")
-                viewModel.fetchDestinationsForDay(tripId, selectedDayIndex)
-            }
+    private fun setupRecyclerView() {
+        editAdapter = EditAdapter()
+        binding.rvDays.apply {
+            layoutManager = LinearLayoutManager(this@EditTripActivity)
+            adapter = editAdapter
         }
-
-        binding.rvDay.apply {
-            layoutManager = LinearLayoutManager(this@EditTripActivity, LinearLayoutManager.HORIZONTAL, false)
-            adapter = daysAdapter
-        }
+        binding.rvDays.setHasFixedSize(false)
     }
 
     private fun observeViewModel() {
-        viewModel.planDeleteResult.observe(this) { result ->
-            when(result) {
-                is Result.Loading -> {
-                    binding.progressCircular.visibility = View.VISIBLE
-                }
-                is Result.Success -> {
-                    binding.progressCircular.visibility = View.GONE
-                    Toast.makeText(this,"Perjalanan berhasil dihapus", Toast.LENGTH_SHORT)
-                        .show()
-                    val intent = Intent(this,MainActivity::class.java)
-                    startActivity(intent)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    finish()
-                }
-                is Result.Error -> {
-                    binding.progressCircular.visibility = View.GONE
-                    Log.d("DeleteTrip", "Error: ${result.message}")
-                    this.showValidationDialog("Gagal menghapus perjalanan",result.message)
-                }
+        viewModel.days.observe(this) { daysMap ->
+            daysMap.forEach { (day, destinationIds) ->
+                viewModel.fetchDestinationsEditForDay(
+                    intent.getStringExtra("TRIP_ID") ?: return@forEach,
+                    day
+                )
             }
         }
+
+        viewModel.destinationsPerDay.observe(this) { destinationsMap ->
+            val daysMap = viewModel.days.value ?: return@observe
+
+            val dayDestinationPairs = daysMap.map { (day, _) ->
+                day to (destinationsMap[day] ?: emptyList())
+            }.sortedBy { it.first }
+
+            editAdapter.submitData(dayDestinationPairs)
+        }
     }
+
 
     private fun showDeleteConfirmationDialog() {
         val dialog = Dialog(this)

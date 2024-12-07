@@ -38,7 +38,6 @@ class DetailTripActivity : AppCompatActivity() {
             val intent = Intent(this, EditTripActivity::class.java)
             intent.putExtra("TRIP_ID", tripId)
             startActivity(intent)
-            finish()
         }
 
 

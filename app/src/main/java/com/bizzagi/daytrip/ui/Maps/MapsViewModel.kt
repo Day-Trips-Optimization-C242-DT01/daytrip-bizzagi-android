@@ -83,11 +83,6 @@ class MapsViewModel (
         Log.d("MapsViewModel", "setSelectedLocation: Data masuk -> $latLng")
     }
 
-
-    fun clearSelectedLocation() {
-        _selectedLocation.value = null
-    }
-
     fun addPlace(place: Place) {
         val updatedPlaces = _places.value?.toMutableList() ?: mutableListOf()
         updatedPlaces.add(place)

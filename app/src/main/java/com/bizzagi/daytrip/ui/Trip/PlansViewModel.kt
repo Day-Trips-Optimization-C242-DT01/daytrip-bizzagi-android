@@ -30,6 +30,9 @@ class PlansViewModel(
     private val _planDeleteResult = MutableLiveData<Result<DeletePlanResponse>>()
     val planDeleteResult: MutableLiveData<Result<DeletePlanResponse>> get() = _planDeleteResult
 
+    private val _destinationsPerDay = MutableLiveData<Map<String, List<DataItem>>>()
+    val destinationsPerDay: LiveData<Map<String, List<DataItem>>> get() = _destinationsPerDay
+
     fun fetchAllDestinations() {
         Log.d("PlansViewModel", "fetchAllDestinations called")
         viewModelScope.launch {
@@ -89,6 +92,30 @@ class PlansViewModel(
                 }
             } else {
                 _destinations.value = emptyList()
+            }
+        }
+    }
+
+    fun fetchDestinationsEditForDay(planId: String, dayId: String) {
+        viewModelScope.launch {
+            val daysData = plansRepository.getDays(planId)
+            val destinationIds = daysData[dayId] ?: emptyList()
+
+            if (destinationIds.isNotEmpty()) {
+                val result = destinationRepository.getDestinations(destinationIds)
+                when (result) {
+                    is Result.Success -> {
+                        val currentMap = _destinationsPerDay.value?.toMutableMap() ?: mutableMapOf()
+                        currentMap[dayId] = result.data.data
+                        _destinationsPerDay.value = currentMap
+                    }
+                    is Result.Error -> {
+                        Log.e("PlansViewModel", "Error fetching destinations: ${result.message}")
+                    }
+                    is Result.Loading -> {
+                        Log.d("PlansViewModel", "Fetching destinations...")
+                    }
+                }
             }
         }
     }

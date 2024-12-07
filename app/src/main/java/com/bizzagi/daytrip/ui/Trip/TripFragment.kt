@@ -61,6 +61,13 @@ class TripFragment : Fragment() {
     private fun observeViewModel() {
         viewModel.planIds.observe(viewLifecycleOwner) { plans ->
             tripAdapter.submitList(plans)
+            if (plans.isNotEmpty()) {
+                binding.textNothing.visibility = View.GONE
+                binding.rvTripPlan.visibility = View.VISIBLE
+            } else {
+                binding.textNothing.visibility = View.VISIBLE
+                binding.rvTripPlan.visibility = View.GONE
+            }
         }
     }
 

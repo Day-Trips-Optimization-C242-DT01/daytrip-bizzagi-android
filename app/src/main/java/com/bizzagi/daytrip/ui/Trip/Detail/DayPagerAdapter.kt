@@ -36,6 +36,7 @@ class DayPagerAdapter(
 
                     onDayClick(dayId)
                 }
+
             }
 
             val position = bindingAdapterPosition

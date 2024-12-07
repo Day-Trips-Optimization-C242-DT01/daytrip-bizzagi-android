@@ -1,5 +1,6 @@
 package com.bizzagi.daytrip.ui.Trip.Detail
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -7,14 +8,25 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bizzagi.daytrip.data.retrofit.response.Destinations.DataItem
 import com.bizzagi.daytrip.databinding.CardDestinationBinding
+import com.bizzagi.daytrip.ui.Maps.Details.DetailsMapsActivity
 
 class DestinationAdapter : ListAdapter<DataItem,DestinationAdapter.DestinationViewHolder>(
     DIFF_CALLBACK) {
     class DestinationViewHolder(private val binding: CardDestinationBinding) : RecyclerView.ViewHolder(binding.root) {
-
         fun bind(destination: DataItem) {
-            binding.tvDestinasi.text = destination.name
-            binding.tvAddress.text = destination.address
+            binding.apply {
+                tvDestinasi.text = destination.name
+                tvAddress.text = destination.address
+
+                root.setOnClickListener {
+                    val intent = Intent(root.context, DetailsMapsActivity::class.java).apply {
+                        putExtra(DetailsMapsActivity.EXTRA_LAT, destination.latitude)
+                        putExtra(DetailsMapsActivity.EXTRA_LONG, destination.longitude)
+                        putExtra(DetailsMapsActivity.EXTRA_ID, destination.id)
+                    }
+                    root.context.startActivity(intent)
+                }
+            }
         }
     }
 

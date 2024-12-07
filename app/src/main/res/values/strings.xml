@@ -147,4 +147,5 @@
     <string name="destinasi">Destinasi</string>
     <string name="type_wisata">Wisata</string>
     <string name="perjalanan_kosong">Anda belum membuat perjalanan</string>
+    <string name="simpan">Simpan</string>
 </resources>
