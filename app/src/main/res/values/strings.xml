@@ -25,7 +25,7 @@
     <string name="reenter_password">Re-enter password</string>
     <string name="update_password">Update Password</string>
     <string name="title_activity_maps">MapsActivity</string>
-    <string name="navbar_1">homepage</string>
+    <string name="navbar_1">home</string>
     <string name="navbar_2">map</string>
     <string name="navbar_3">perjalanan</string>
     <string name="navbar_4">saya</string>
@@ -125,15 +125,193 @@
     <!-- Article -->
     <!-- Artikel 1 -->
     <string name="articles_title_1">5 Tips Menikmati Destinasi Wisata yang Ramai Pengunjung</string>
-    <string name="article_content_1">Ingin menikmati destinasi wisata yang ramai? Temukan 5 tips jitu untuk menikmati liburan tanpa terjebak keramaian!</string>
+    <string name="article_description_1">Ingin menikmati destinasi wisata yang ramai? Temukan 5 tips jitu untuk menikmati liburan tanpa terjebak keramaian!</string>
+    <string name="article_content_1">
+    Menghabiskan waktu liburan adalah hal yang penting untuk dilakukan ketika memiliki waktu luang. Salah satu cara menikmati liburan adalah dengan mengunjungi berbagai tempat wisata menarik, mulai dari taman hiburan, pusat perbelanjaan, hingga lokasi alam lainnya. Menikmati berbagai tempat wisata tersebut tentu bisa memberikan rasa relaksasi dan kebahagiaan tersendiri. Meskipun dapat memberikan relaksasi, keramaian pengunjung bisa mengurangi kenyamanan. Berikut lima tips untuk menikmati tempat wisata yang ramai dengan aman dan nyaman.
+
+    1. Amati keadaan dengan baik<br/>
+    Langkah pertama yang perlu dilakukan adalah memeriksa keadaan sekitar. Hal ini sangat penting untuk memastikan apakah destinasi wisata tersebut aman atau sebaliknya. Dengan begitu, tidak akan memaksakan diri jika situasinya tidak mendukung. Pastikan keramaian yang ada masih dalam batas yang aman dan tidak membahayakan. Jika semuanya tampak baik-baik saja, aktivitas liburan dapat dilanjutkan dengan lebih nyaman.<br/><br/>
+
+    2. Carilah titik yang tak terlalu ramai<br/>
+    Banyak orang sering mengunjungi destinasi yang sama karena daya tariknya yang khas. Meskipun tempat tersebut ramai pengunjung, biasanya masih ada area-area tertentu yang tidak terlalu padat. Menemukan tempat-tempat tersebut untuk beristirahat sejenak dapat membantu menghindari kelelahan akibat kerumunan. Hal ini penting untuk menjaga kenyamanan dan keselamatan selama berkunjung, sehingga tidak merasa kepanasan atau tertekan.<br/><br/>
+
+    3. Perbanyak minum air putih<br/>
+    Saat mengunjungi destinasi wisata luar ruangan yang ramai pengunjung, penting untuk meningkatkan konsumsi air putih. Hal ini karena risiko dehidrasi menjadi lebih tinggi, terutama jika cuaca sangat panas dan kerumunan pengunjung semakin padat. Tanpa cukup asupan cairan, tubuh bisa cepat mengalami dehidrasi, yang dapat menyebabkan pusing atau bahkan pingsan.<br/><br/>
+
+    4. Beli tiket jalur fast track<br/>
+    Bagi yang memilih taman hiburan sebagai destinasi liburan, penting untuk berhati-hati terutama saat hari libur. Pada hari-hari tersebut, jumlah pengunjung cenderung meningkat, membuat taman hiburan terasa lebih padat. Jika memiliki anggaran lebih, membeli tiket dengan jalur fast track bisa menjadi pilihan yang tepat. Dengan cara ini, kamu bisa menikmati wahana tanpa harus menghabiskan waktu menunggu antrean, sehingga liburan tetap menyenangkan dan bebas dari rasa lelah.<br/><br/>
+
+    5. Hati-hati dengan barang bawaanmu<br/>
+    Mengunjungi tempat yang ramai tidak hanya dapat menimbulkan ketidaknyamanan, tetapi juga meningkatkan risiko bahaya, seperti pencopetan atau pencurian yang sering terjadi di lokasi-lokasi tersebut. Untuk mencegah hal ini, sebaiknya selalu waspada terhadap barang bawaan, seperti dengan menempatkan tas di bagian depan tubuh sebagai langkah preventif. Hal ini penting untuk menghindari menjadi korban kejahatan atau risiko lainnya.<br/><br/>
+
+    Memang, penting untuk tetap berhati-hati saat mengunjungi destinasi wisata yang ramai pengunjung. Dengan begitu, liburan dapat tetap dinikmati secara maksimal. Jangan lupa untuk selalu menjaga keamanan dan keselamatan bersama!
+    </string>
 
     <!-- Artikel 2 -->
     <string name="articles_title_2">Tips Berwisata Aman di Pantai</string>
-    <string name="article_content_2">Nikmati liburan pantai dengan aman! Temukan tips penting untuk berwisata dengan nyaman dan tanpa khawatir.</string>
+    <string name="article_description_2">Nikmati liburan pantai dengan aman! Temukan tips penting untuk berwisata dengan nyaman dan tanpa khawatir.</string>
+    <string name="article_content_2">
+    Mengunjungi pantai adalah pilihan populer bagi banyak wisatawan yang ingin menikmati keindahan alam, sinar matahari, dan aktivitas di tepi laut. Namun, keselamatan harus selalu menjadi perhatian utama. Berikut beberapa tips untuk menikmati liburan pantai dengan aman dan tanpa masalah.<br/><br/>
+
+    1. Cek Kondisi Cuaca<br/>
+    Sebelum berangkat, pastikan untuk mengecek prakiraan cuaca. Hindari pergi ke pantai jika cuaca buruk atau ombak terlalu besar. Hal ini akan membantu mengurangi risiko insiden atau keadaan darurat di laut.<br/><br/>
+
+    2. Perhatikan Peringatan dan Petunjuk<br/>
+    Pantai-pantai biasanya memiliki tanda peringatan yang menunjukkan area aman untuk berenang dan area berbahaya. Selalu patuhi petunjuk ini dan hindari berenang di zona berisiko tinggi, seperti daerah dengan arus kuat atau kedalaman yang berbahaya.<br/><br/>
+
+    3. Gunakan Perlengkapan Keselamatan<br/>
+    Selalu kenakan pelampung saat berenang, terutama jika Anda merasa kurang yakin dengan keterampilan berenang atau kondisi laut. Jika ingin mencoba aktivitas seperti snorkeling atau diving, pastikan peralatan yang digunakan dalam kondisi baik dan sesuai dengan kebutuhan.<br/><br/>
+
+    4. Amankan Barang Berharga<br/>
+    Jangan meninggalkan barang berharga tanpa pengawasan di pantai. Sebaiknya simpan barang berharga di brankas hotel atau tempat yang aman. Jika membawa barang berharga saat berenang, pastikan untuk menggunakan wadah tahan air atau tas kedap air.<br/><br/>
+
+    5. Lindungi Diri dari Sinar Matahari<br/>
+    Sinar matahari di Bali bisa sangat terik. Gunakan tabir surya dengan SPF tinggi, kenakan topi atau payung untuk melindungi diri dari panas matahari, dan pastikan untuk cukup mengonsumsi air untuk menghindari dehidrasi.<br/><br/>
+
+    Dengan mengikuti tips di atas, Anda dapat menikmati waktu di pantai Bali dengan aman dan nyaman. Ingatlah untuk selalu berhati-hati dan bertindak bijaksana demi keselamatan diri sendiri dan orang lain.
+    </string>
 
     <!-- Artikel 3 -->
     <string name="articles_title_3">10 Tempat Wisata Tersembunyi di Bali yang Harus Dikunjungi</string>
-    <string name="article_content_3">Temukan keindahan Bali yang tersembunyi! Simak 10 tempat wisata rahasia yang wajib Anda kunjungi untuk pengalaman berbeda.</string>
+    <string name="article_description_3">Temukan keindahan Bali yang tersembunyi! Simak 10 tempat wisata rahasia yang wajib Anda kunjungi untuk pengalaman berbeda.</string>
+    <string name="article_content_3">
+    Bali terkenal dengan keindahan alam dan budaya yang kaya, serta memiliki banyak tempat wisata tersembunyi yang menakjubkan. Selain destinasi populer, terdapat sejumlah lokasi yang menawarkan pengalaman unik dan berbeda. Berikut adalah beberapa tempat menarik di Bali yang layak untuk dikunjungi:<br/><br/>
+
+    1. Desa Penglipuran<br/>
+    Desa ini terkenal dengan arsitektur tradisional Bali dan kebersihannya yang luar biasa. Nikmati berjalan-jalan santai, mengunjungi pura, dan mencicipi makanan lokal di desa yang masih memegang erat tradisi ini.<br/><br/>
+
+    2. Air Terjun Sekumpul<br/>
+    Dikenal dengan pemandangannya yang menakjubkan, air terjun ini membutuhkan perjalanan yang menantang, tetapi menawarkan pemandangan yang memukau dan kesempatan berenang di kolam alami.<br/><br/>
+
+    3. Hidden Canyon Beji Guwang<br/>
+    Ngarai tersembunyi di Sukawati ini menawarkan pemandangan spektakuler dengan tebing-tebing tinggi dan jalur trekking yang seru. Tempat ini cocok untuk foto-foto dengan latar belakang alam yang menawan.<br/><br/>
+
+    4. Pantai Virgin Beach<br/>
+    Terletak di timur Candidasa, pantai ini menawarkan pasir putih yang halus dan air laut yang jernih, cocok untuk berenang atau snorkeling dengan suasana yang tenang.<br/><br/>
+
+    5. Bukit Campuhan<br/>
+    Tempat ini ideal untuk berjalan kaki atau bersepeda sambil menikmati pemandangan alam yang hijau. Bukit Campuhan juga merupakan spot terbaik untuk menikmati matahari terbit atau terbenam.<br/><br/>
+
+    6. Air Terjun Tukad Cepung<br/>
+    Dikelilingi tebing-tebing tinggi, air terjun ini menawarkan pemandangan dramatis. Akses menuju air terjun ini cukup menantang, namun hasilnya sangat memuaskan bagi pengunjung yang ingin menikmati keindahan alam Bali.<br/><br/>
+
+    7. Savana Caldera Batur<br/>
+    Terletak di area kaldera Batur, savana ini menawarkan pemandangan seperti padang rumput Afrika. Tempat ini sangat cocok untuk berfoto atau piknik sambil menikmati keindahan alam yang alami.<br/><br/>
+
+    8. Taman Edelweiss Besakih<br/>
+    Dekat dengan Pura Besakih, taman ini menawarkan pemandangan Gunung Agung yang megah serta bunga Edelweiss yang tumbuh subur. Tempat ini cocok untuk bersantai dan menikmati udara segar.<br/><br/>
+
+    9. Marigold Flower Field<br/>
+    Taman Bunga Gemitir di Desa Temukus ini terkenal dengan bunga marigold yang berwarna cerah, menciptakan pemandangan yang indah sepanjang tahun, sempurna untuk para penggemar fotografi.<br/><br/>
+
+    10. Gili Putih Sumberkima<br/>
+    Pulau pasir putih ini terletak di Bali Utara dan hanya bisa diakses dengan perahu. Nikmati air laut yang jernih dan aktivitas seperti berenang, berfoto, atau sekadar bersantai.<br/><br/>
+
+    Bali menawarkan banyak destinasi tersembunyi yang memiliki keindahan alam yang luar biasa. Mengunjungi tempat-tempat ini akan memberikan pengalaman liburan yang berbeda dan tak terlupakan, jauh dari keramaian turis. Jadi, jangan ragu untuk menjelajahi Bali lebih dalam dan temukan keajaiban alamnya!
+    </string>
+
+    <!-- Artikel 4 -->
+    <string name="articles_title_4">5 Tips Menghargai Kearifan Lokal saat Berwisata ke Tempat Kaya Budaya!</string>
+    <string name="article_description_4">Temukan lima tips menghargai kearifan lokal saat berwisata, dari memahami budaya hingga menjaga lingkungan, untuk pengalaman wisata yang lebih bermakna.</string>
+    <string name="article_content_4">
+    Saat berwisata, menikmati keindahan alam dan budaya lokal adalah pengalaman yang berharga. Namun, seringkali wisatawan tidak sepenuhnya memahami atau menghargai kearifan lokal di destinasi yang mereka kunjungi. Berikut adalah lima tips untuk lebih mengenal dan menghargai kearifan lokal:<br/><br/>
+
+    1. <b>Pelajari Sejarah dan Budaya Lokal</b><br/>
+    Sebelum berkunjung, kenali sejarah, tradisi, dan kebiasaan setempat. Ini bisa melalui buku, museum, atau pemandu wisata lokal, agar dapat menghormati budaya dan norma yang ada.<br/><br/>
+
+    2. <b>Bangun Hubungan dengan Penduduk Lokal</b><br/>
+    Berinteraksi dengan masyarakat setempat memberikan wawasan lebih dalam. Ikuti etika komunikasi dan hargai privasi mereka untuk menciptakan pengalaman yang lebih bermakna.<br/><br/>
+
+    3. <b>Dukung Produk dan Pengrajin Lokal</b><br/>
+    Belilah kerajinan tangan atau produk khas daerah dari pengrajin lokal. Ini membantu ekonomi setempat dan melestarikan warisan budaya.<br/><br/>
+
+    4. <b>Hormati Adat dan Upacara Lokal</b><br/>
+    Jika berkesempatan menyaksikan upacara adat, pastikan mengikuti etika yang berlaku. Hormati ritus dan jangan mengganggu jalannya acara.<br/><br/>
+
+    5. <b>Jaga Kelestarian Alam</b><br/>
+    Kearifan lokal juga mencakup pengetahuan tentang alam. Lindungi lingkungan sekitar, patuhi aturan perlindungan alam, dan hargai keanekaragaman hayati.<br/><br/>
+
+    Dengan mengenali dan menghargai kearifan lokal, Anda dapat meningkatkan pengalaman wisata dan berkontribusi pada keberlanjutan destinasi yang dikunjungi.
+    </string>
+
+    <!-- Artikel 5 -->
+    <string name="articles_title_5">Tips Belanja Oleh-Oleh Saat Liburan Agar Lebih Hemat</string>
+    <string name="article_description_5">Liburan seru tak lengkap tanpa membawa pulang oleh-oleh! Temukan tips jitu untuk berbelanja oleh-oleh dengan harga lebih hemat, tanpa mengorbankan kualitas dan kenangan indah dari perjalanan Anda.</string>
+    <string name="article_content_5">
+    Saat berbelanja oleh-oleh selama liburan, penting untuk tetap bijak agar pengeluaran tetap terkendali. Berikut beberapa tips hemat belanja oleh-oleh:<br/><br/>
+
+    1. <b>Buat Daftar Penerima</b><br/>
+    Tulis siapa saja yang akan menerima oleh-oleh untuk menghindari pembelian barang yang tidak perlu.<br/><br/>
+
+    2. <b>Belanja di Toko Kecil dan Menengah</b><br/>
+    Toko lokal sering menawarkan harga lebih terjangkau dengan pilihan barang yang beragam. Kualitasnya pun cukup baik untuk oleh-oleh.<br/><br/>
+
+    3. <b>Periksa Tanggal Kadaluarsa Makanan</b><br/>
+    Pastikan produk makanan atau minuman yang Anda beli masih aman untuk dibawa pulang, dengan memperhatikan tanggal kadaluarsa dan kemasan.<br/><br/>
+
+    4. <b>Hindari Pembelian Berlebihan</b><br/>
+    Tahan godaan membeli barang hanya karena menarik. Pilihlah yang memang berguna atau sesuai dengan kebutuhan penerima.<br/><br/>
+
+    5. <b>Sesuaikan dengan Kapasitas Bagasi</b><br/>
+    Pastikan jumlah oleh-oleh yang Anda beli sesuai dengan kapasitas bagasi agar tidak merepotkan saat membawa pulang.<br/><br/>
+
+    Dengan tips ini, Anda bisa berbelanja oleh-oleh dengan bijak, tetap hemat, dan praktis!
+    </string>
+
+    <!-- Artikel 6 -->
+    <string name="articles_title_6">Memilih Transportasi yang Tepat Saat Liburan</string>
+    <string name="article_description_6">Simak tips memilih opsi transportasi yang sesuai dengan tujuan, anggaran, dan kebutuhan perjalanan Anda agar liburan semakin menyenangkan.</string>
+    <string name="article_content_6">
+    Memilih transportasi yang tepat untuk liburan sangat penting agar perjalanan Anda lancar dan menyenangkan. Ada beberapa faktor yang perlu dipertimbangkan dalam memilih antara transportasi darat, udara, atau laut.<br/><br/>
+
+    1. <b>Jarak Perjalanan</b><br/>
+    Jika tujuan Anda jauh, seperti ke luar negeri atau pulau yang terpisah, transportasi udara adalah pilihan terbaik. Meskipun biayanya lebih tinggi, pesawat dapat menghemat waktu perjalanan dan tenaga.<br/><br/>
+
+    2. <b>Kenyamanan</b><br/>
+    Transportasi udara menawarkan kenyamanan lebih, dengan ruang ber-AC dan tempat duduk yang lebih nyaman. Anda juga tidak perlu khawatir soal barang bawaan karena bisa ditaruh di kabin atau bagasi.<br/><br/>
+
+    3. <b>Harga</b><br/>
+    Harga tiket pesawat memang lebih mahal dibandingkan dengan bus atau kapal. Jika anggaran terbatas, pertimbangkan transportasi yang lebih ekonomis, namun pastikan tetap sesuai dengan kenyamanan dan kebutuhan waktu Anda.<br/><br/>
+
+    4. <b>Pengalaman</b><br/>
+    Jika liburan Anda ingin memberi pengalaman baru, perjalanan darat dengan kereta atau mobil bisa menjadi pilihan menarik. Anda dapat menikmati pemandangan dan bertemu orang baru dalam perjalanan.<br/><br/>
+
+    5. <b>Kebersamaan</b><br/>
+    Jika bepergian dengan keluarga atau teman, kendaraan pribadi atau sewa bisa lebih menyenangkan. Anda bisa lebih fleksibel dan menghabiskan waktu bersama di perjalanan.<br/><br/>
+
+    6. <b>Keamanan</b><br/>
+    Setiap moda transportasi memiliki tingkat keamanan masing-masing. Untuk rasa aman, transportasi umum seringkali lebih baik karena sudah memenuhi standar keselamatan yang ketat.<br/><br/>
+
+    Dengan mempertimbangkan faktor-faktor ini, Anda bisa memilih transportasi yang sesuai dengan kebutuhan dan anggaran Anda. Jangan lupa untuk selalu mempersiapkan perjalanan dengan matang agar liburan semakin menyenangkan!
+    </string>
+
+    <!-- Artikel 7 -->
+    <string name="articles_title_7">Tips Mengatur Keuangan Saat Liburan Agar Pengeluaran Tidak Membengkak</string>
+    <string name="article_description_7">Liburan bisa menguras kantong jika tidak diatur dengan bijak. Pelajari tips mengatur keuangan saat liburan agar Anda tetap bisa menikmati perjalanan tanpa melebihi anggaran.</string>
+    <string name="article_content_7">
+    Liburan adalah waktu yang tepat untuk bersantai dan menikmati kebersamaan dengan orang-orang terdekat. Namun, tanpa perencanaan yang tepat, liburan bisa berakhir dengan pengeluaran yang lebih besar dari yang direncanakan. Terlebih lagi, liburan akhir tahun yang biasanya melibatkan perjalanan jauh atau staycation bersama keluarga. Agar pengeluaran tetap terkendali, berikut beberapa tips mengatur keuangan saat liburan:<br/><br/>
+
+    1. <b>Tentukan Anggaran Liburan</b><br/>
+    Sebelum berangkat, tentukan anggaran untuk setiap aspek liburan, mulai dari transportasi, akomodasi, makanan, hingga oleh-oleh. Dengan memiliki anggaran yang jelas, kamu bisa lebih bijak dalam pengeluaran.<br/><br/>
+
+    2. <b>Pesan Tiket dan Akomodasi Lebih Awal</b><br/>
+    Harga tiket pesawat atau akomodasi cenderung lebih murah jika dipesan jauh-jauh hari. Jangan tunggu sampai mendekati hari H karena harganya bisa melambung tinggi.<br/><br/>
+
+    3. <b>Gunakan Aplikasi Diskon</b><br/>
+    Manfaatkan aplikasi atau situs web yang menawarkan promo dan diskon untuk transportasi, penginapan, atau makan. Banyak aplikasi yang menyediakan voucher atau cashback yang bisa menghemat biaya liburan.<br/><br/>
+
+    4. <b>Buat Daftar Prioritas</b><br/>
+    Buat daftar kegiatan yang ingin dilakukan dan tentukan mana yang benar-benar penting. Hindari godaan untuk mengikuti semua tren atau kegiatan yang bisa membengkakkan biaya tanpa memberikan pengalaman berarti.<br/><br/>
+
+    5. <b>Makan di Tempat Lokal</b><br/>
+    Makan di restoran lokal bisa lebih murah dibandingkan makan di tempat wisata. Selain itu, kamu bisa menikmati masakan khas yang lebih autentik dan mendukung ekonomi setempat.<br/><br/>
+
+    6. <b>Jaga Pengeluaran Sehari-hari</b><br/>
+    Walaupun sedang liburan, jangan lupa untuk tetap memantau pengeluaran sehari-hari. Hindari belanja berlebihan, dan pastikan setiap pembelian memiliki tujuan yang jelas.<br/><br/>
+
+    Dengan mengikuti tips-tips ini, kamu dapat menikmati liburan yang menyenangkan tanpa khawatir overbudget.
+    </string>
+
     <string name="edit_perjalanan">Edit Perjalanan</string>
     <string name="hapus">Hapus</string>
     <string name="hapus_perjalanan">Hapus Perjalanan ?</string>
@@ -148,4 +326,6 @@
     <string name="type_wisata">Wisata</string>
     <string name="perjalanan_kosong">Anda belum membuat perjalanan</string>
     <string name="simpan">Simpan</string>
+    <string name="article_image_description">Article Image</string>
+    <string name="title_activity_detail_article">Detail Article</string>
 </resources>

@@ -70,6 +70,10 @@
             android:label="@string/title_activity_maps" />
         <activity android:name=".ui.Profile.EditProfileActivity" />
         <activity
+            android:name=".ui.Homepage.DetailArticleActivity"
+            android:exported="false"
+            android:label="@string/title_activity_detail_article" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
