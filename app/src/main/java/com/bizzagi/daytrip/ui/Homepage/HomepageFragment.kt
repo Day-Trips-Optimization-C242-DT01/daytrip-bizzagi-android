@@ -30,16 +30,27 @@ class HomepageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val articles = listOf(
-            Article(R.string.articles_title_1, R.string.article_content_1, R.drawable.image_article_1),
-            Article(R.string.articles_title_2, R.string.article_content_2, R.drawable.image_article_2),
-            Article(R.string.articles_title_3, R.string.article_content_3, R.drawable.image_article_3)
+            Article(R.string.articles_title_1, R.string.article_description_1, R.drawable.image_article_1, R.string.article_content_1),
+            Article(R.string.articles_title_2, R.string.article_description_2, R.drawable.image_article_2, R.string.article_content_2),
+            Article(R.string.articles_title_3, R.string.article_description_3, R.drawable.image_article_3, R.string.article_content_3)
         )
 
         Log.d("HomepageFragment", "Articles: $articles")
 
         val adapter = ArticleAdapter(articles)
+
         binding.rvTripPlan.layoutManager = LinearLayoutManager(requireContext())
         binding.rvTripPlan.adapter = adapter
+
+        adapter.setOnItemClickListener { article ->
+            val intent = Intent(requireContext(), DetailArticleActivity::class.java).apply {
+                putExtra("article_title", getString(article.titlearticleResId))
+                putExtra("article_description", getString(article.descriptionarticleResId))
+                putExtra("article_image", article.imagearticleResId)
+                putExtra("article_content", getString(article.contentarticleResId))
+            }
+            startActivity(intent)
+        }
 
         binding.addTripFab.setOnClickListener {
             val intent = Intent(requireContext(), PickRegionActivity::class.java)

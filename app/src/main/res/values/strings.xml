@@ -25,7 +25,7 @@
     <string name="reenter_password">Re-enter password</string>
     <string name="update_password">Update Password</string>
     <string name="title_activity_maps">MapsActivity</string>
-    <string name="navbar_1">homepage</string>
+    <string name="navbar_1">home</string>
     <string name="navbar_2">map</string>
     <string name="navbar_3">perjalanan</string>
     <string name="navbar_4">saya</string>
@@ -125,15 +125,19 @@
     <!-- Article -->
     <!-- Artikel 1 -->
     <string name="articles_title_1">5 Tips Menikmati Destinasi Wisata yang Ramai Pengunjung</string>
-    <string name="article_content_1">Ingin menikmati destinasi wisata yang ramai? Temukan 5 tips jitu untuk menikmati liburan tanpa terjebak keramaian!</string>
+    <string name="article_description_1">Ingin menikmati destinasi wisata yang ramai? Temukan 5 tips jitu untuk menikmati liburan tanpa terjebak keramaian!</string>
+    <string name="article_content_1">tes</string>
 
     <!-- Artikel 2 -->
     <string name="articles_title_2">Tips Berwisata Aman di Pantai</string>
-    <string name="article_content_2">Nikmati liburan pantai dengan aman! Temukan tips penting untuk berwisata dengan nyaman dan tanpa khawatir.</string>
+    <string name="article_description_2">Nikmati liburan pantai dengan aman! Temukan tips penting untuk berwisata dengan nyaman dan tanpa khawatir.</string>
+    <string name="article_content_2">tes</string>
 
     <!-- Artikel 3 -->
     <string name="articles_title_3">10 Tempat Wisata Tersembunyi di Bali yang Harus Dikunjungi</string>
-    <string name="article_content_3">Temukan keindahan Bali yang tersembunyi! Simak 10 tempat wisata rahasia yang wajib Anda kunjungi untuk pengalaman berbeda.</string>
+    <string name="article_description_3">Temukan keindahan Bali yang tersembunyi! Simak 10 tempat wisata rahasia yang wajib Anda kunjungi untuk pengalaman berbeda.</string>
+    <string name="article_content_3">tes</string>
+
     <string name="edit_perjalanan">Edit Perjalanan</string>
     <string name="hapus">Hapus</string>
     <string name="hapus_perjalanan">Hapus Perjalanan ?</string>
@@ -148,4 +152,6 @@
     <string name="type_wisata">Wisata</string>
     <string name="perjalanan_kosong">Anda belum membuat perjalanan</string>
     <string name="simpan">Simpan</string>
+    <string name="article_image_description">Article Image</string>
+    <string name="title_activity_detail_article">Detail Article</string>
 </resources>
