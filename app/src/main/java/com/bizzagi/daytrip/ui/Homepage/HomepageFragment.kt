@@ -32,7 +32,11 @@ class HomepageFragment : Fragment() {
         val articles = listOf(
             Article(R.string.articles_title_1, R.string.article_description_1, R.drawable.image_article_1, R.string.article_content_1),
             Article(R.string.articles_title_2, R.string.article_description_2, R.drawable.image_article_2, R.string.article_content_2),
-            Article(R.string.articles_title_3, R.string.article_description_3, R.drawable.image_article_3, R.string.article_content_3)
+            Article(R.string.articles_title_3, R.string.article_description_3, R.drawable.image_article_3, R.string.article_content_3),
+            Article(R.string.articles_title_4, R.string.article_description_4, R.drawable.image_article_4, R.string.article_content_4),
+            Article(R.string.articles_title_5, R.string.article_description_5, R.drawable.image_article_5, R.string.article_content_5),
+            Article(R.string.articles_title_6, R.string.article_description_6, R.drawable.image_article_6, R.string.article_content_6),
+            Article(R.string.articles_title_7, R.string.article_description_7, R.drawable.image_article_7, R.string.article_content_7),
         )
 
         Log.d("HomepageFragment", "Articles: $articles")
