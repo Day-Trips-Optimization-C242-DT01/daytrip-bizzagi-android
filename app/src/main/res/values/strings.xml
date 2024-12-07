@@ -328,4 +328,7 @@
     <string name="simpan">Simpan</string>
     <string name="article_image_description">Article Image</string>
     <string name="title_activity_detail_article">Detail Article</string>
+    <string name="konfirmasi">Konfirmasi</string>
+    <string name="pilih_lokasi">Pilih Lokasi</string>
+    <string name="detail_lokasi">Detail lokasi</string>
 </resources>

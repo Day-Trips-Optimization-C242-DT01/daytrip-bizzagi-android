@@ -43,26 +43,6 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tvNotification"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/rounded_edittext_background"
-            android:padding="16dp"
-            android:text="Notifikasi"
-            android:textColor="@color/md_theme_onBackground"
-            android:layout_marginBottom="32dp"/>
-
-        <TextView
-            android:id="@+id/tvLanguage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/rounded_edittext_background"
-            android:padding="16dp"
-            android:text="Bahasa"
-            android:textColor="@color/md_theme_onBackground"
-            android:layout_marginBottom="32dp"/>
-
-        <TextView
             android:id="@+id/tvLogout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
