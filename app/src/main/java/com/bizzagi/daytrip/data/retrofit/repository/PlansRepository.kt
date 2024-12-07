@@ -8,6 +8,8 @@ import com.bizzagi.daytrip.data.retrofit.response.Plans.CreatePlanRequest
 import com.bizzagi.daytrip.data.retrofit.response.Plans.DeletePlanResponse
 import com.bizzagi.daytrip.data.retrofit.response.Plans.Plan
 import com.bizzagi.daytrip.data.retrofit.response.Plans.PlanPostResponse
+import com.bizzagi.daytrip.data.retrofit.response.Plans.UpdatePlanRequest
+import com.bizzagi.daytrip.data.retrofit.response.Plans.UpdatePlanResponse
 import com.google.gson.Gson
 import retrofit2.HttpException
 
@@ -133,6 +135,26 @@ class PlansRepository(
             try {
                 val errorBody = e.response()?.errorBody()?.string()
                 val errorResponse = Gson().fromJson(errorBody, DestinationsResponse::class.java)
+                Result.Error(errorResponse.message)
+            } catch (e: Exception) {
+                Result.Error(e.message.toString())
+            }
+        }
+    }
+
+    suspend fun updatePlan(planId: String, updatedData: Map<String, List<String>>): Result<UpdatePlanResponse> {
+        return try {
+            val request = UpdatePlanRequest(updatedData)
+            val response = apiService.updatePlan(planId, request)
+            if (!response.success) {
+                Result.Error(response.message)
+            } else {
+                Result.Success(response)
+            }
+        } catch (e: HttpException) {
+            try {
+                val errorBody = e.response()?.errorBody()?.string()
+                val errorResponse = Gson().fromJson(errorBody, UpdatePlanResponse::class.java)
                 Result.Error(errorResponse.message)
             } catch (e: Exception) {
                 Result.Error(e.message.toString())

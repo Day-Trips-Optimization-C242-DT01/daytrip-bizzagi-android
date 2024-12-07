@@ -1,35 +1,30 @@
 package com.bizzagi.daytrip.ui.Trip.Edit
 
 import android.app.Dialog
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
-import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bizzagi.daytrip.MainActivity
 import com.bizzagi.daytrip.data.Result
+import com.bizzagi.daytrip.data.retrofit.response.Destinations.DataItem
 import com.bizzagi.daytrip.databinding.ActivityEditTripBinding
 import com.bizzagi.daytrip.databinding.CustomDeleteDialogBinding
-import com.bizzagi.daytrip.ui.Trip.Detail.DayPagerAdapter
-import com.bizzagi.daytrip.ui.Trip.Detail.DestinationAdapter
 import com.bizzagi.daytrip.ui.Trip.PlansViewModel
 import com.bizzagi.daytrip.utils.ViewModelFactory
-import com.bizzagi.daytrip.utils.showValidationDialog
-import kotlinx.coroutines.launch
 
 class EditTripActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEditTripBinding
 
     private lateinit var editAdapter: EditAdapter
+
+    private var currentDestinationsMap = mutableMapOf<String, List<DataItem>>()
 
     private val viewModel by viewModels <PlansViewModel> {
         ViewModelFactory.getInstance(this)
@@ -52,7 +47,11 @@ class EditTripActivity : AppCompatActivity() {
         }
 
         binding.editTripFab.setOnClickListener {
-            //save edit
+            if (validateDestinations()) {
+                saveChanges()
+            } else {
+                Toast.makeText(this, "Each day must have at least one destination", Toast.LENGTH_SHORT).show()
+            }
         }
 
         Log.d("EditTripActivity", "Received Trip ID: $tripId")
@@ -63,13 +62,31 @@ class EditTripActivity : AppCompatActivity() {
         viewModel.fetchDays(planId = tripId)
     }
 
+    private fun validateDestinations(): Boolean {
+        return currentDestinationsMap.values.all { it.isNotEmpty() }
+    }
+
+
     private fun setupRecyclerView() {
         editAdapter = EditAdapter()
+        editAdapter.setOnDaysUpdatedListener { updatedMap ->
+            currentDestinationsMap = updatedMap.toMutableMap()
+        }
+
         binding.rvDays.apply {
             layoutManager = LinearLayoutManager(this@EditTripActivity)
             adapter = editAdapter
         }
-        binding.rvDays.setHasFixedSize(false)
+    }
+
+    private fun saveChanges() {
+        val tripId = intent.getStringExtra("TRIP_ID") ?: return
+
+        val updatedData = currentDestinationsMap.mapValues { (_, destinations) ->
+            destinations.map { it.id }
+        }
+
+        viewModel.updatePlan(tripId, updatedData)
     }
 
     private fun observeViewModel() {
@@ -90,6 +107,21 @@ class EditTripActivity : AppCompatActivity() {
             }.sortedBy { it.first }
 
             editAdapter.submitData(dayDestinationPairs)
+        }
+
+        viewModel.updatePlanResult.observe(this) { result ->
+            when (result) {
+                is Result.Success -> {
+                    Toast.makeText(this, "Plan updated successfully", Toast.LENGTH_SHORT).show()
+                    finish()
+                }
+                is Result.Error -> {
+                    Toast.makeText(this, "Failed to update plan: ${result.message}", Toast.LENGTH_SHORT).show()
+                }
+                is Result.Loading -> {
+                    // handle loading
+                }
+            }
         }
     }
 

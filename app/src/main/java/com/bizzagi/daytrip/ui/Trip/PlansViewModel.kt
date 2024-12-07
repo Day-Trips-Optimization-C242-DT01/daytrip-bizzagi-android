@@ -11,6 +11,7 @@ import com.bizzagi.daytrip.data.retrofit.repository.PlansRepository
 import com.bizzagi.daytrip.data.retrofit.response.Destinations.DataItem
 import com.bizzagi.daytrip.data.retrofit.response.Plans.DeletePlanResponse
 import com.bizzagi.daytrip.data.retrofit.response.Plans.Plan
+import com.bizzagi.daytrip.data.retrofit.response.Plans.UpdatePlanResponse
 import kotlinx.coroutines.launch
 
 class PlansViewModel(
@@ -32,6 +33,9 @@ class PlansViewModel(
 
     private val _destinationsPerDay = MutableLiveData<Map<String, List<DataItem>>>()
     val destinationsPerDay: LiveData<Map<String, List<DataItem>>> get() = _destinationsPerDay
+
+    private val _updatePlanResult = MutableLiveData<Result<UpdatePlanResponse>>()
+    val updatePlanResult: LiveData<Result<UpdatePlanResponse>> = _updatePlanResult
 
     fun fetchAllDestinations() {
         Log.d("PlansViewModel", "fetchAllDestinations called")
@@ -117,6 +121,14 @@ class PlansViewModel(
                     }
                 }
             }
+        }
+    }
+
+    fun updatePlan(planId: String, updatedData: Map<String, List<String>>) {
+        viewModelScope.launch {
+            _updatePlanResult.value = Result.Loading(true)
+            val result = plansRepository.updatePlan(planId, updatedData)
+            _updatePlanResult.value = result
         }
     }
 
