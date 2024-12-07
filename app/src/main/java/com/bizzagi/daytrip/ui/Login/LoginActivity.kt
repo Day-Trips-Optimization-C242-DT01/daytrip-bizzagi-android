@@ -17,6 +17,7 @@ import com.bizzagi.daytrip.data.retrofit.model.LoginRequest
 import com.bizzagi.daytrip.ui.Register.RegisterActivity
 import android.text.TextWatcher
 import android.text.Editable
+import com.bizzagi.daytrip.ui.Password.ResetPasswordActivity
 
 
 class LoginActivity : AppCompatActivity() {
@@ -31,6 +32,11 @@ class LoginActivity : AppCompatActivity() {
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.forgotPassword.setOnClickListener {
+            val intent = Intent(this, ResetPasswordActivity::class.java)
+            startActivity(intent)
+        }
 
         binding.createAccount.setOnClickListener {
             val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
