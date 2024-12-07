@@ -16,7 +16,7 @@ class DetailArticleActivity : AppCompatActivity() {
         setContentView(R.layout.activity_detail_article)
 
         val articleTitle = intent.getStringExtra("article_title")
-        val articleImage = intent.getIntExtra("article_image", -1)  // Menggunakan nilai default jika tidak ditemukan
+        val articleImage = intent.getIntExtra("article_image", -1)
         val articleContent = intent.getStringExtra("article_content")
 
         if (articleTitle != null && articleImage != -1  && articleContent != null) {
