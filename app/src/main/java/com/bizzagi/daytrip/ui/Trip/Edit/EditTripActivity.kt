@@ -152,11 +152,11 @@ class EditTripActivity : AppCompatActivity() {
         binding.btnLogout.setOnClickListener {
             intent.getStringExtra("TRIP_ID")?.let { id ->
                 viewModel.deletePlan(id)
-                Log.d("DeleteTrip", "Deleting trip with ID: $id")
+                Log.d("DeleteTrip", "Deleting trip ID: $id")
                 dialog.dismiss()
                 finish()
             } ?: run {
-                Toast.makeText(this, "Trip ID not found", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Trip ID tidak ditemukan", Toast.LENGTH_SHORT).show()
             }
         }
 

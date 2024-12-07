@@ -112,6 +112,11 @@ class AddDestinationsMapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     return@setOnClickListener
                 }
 
+                if (selectedDestinationsDetails.size < numDays) {
+                    showSnackbar("Destinasi terlalu sedikit untuk jumlah hari yang direncanakan")
+                    return@setOnClickListener
+                }
+
                 viewModel.clearPlaces()
                 selectedDestinationsDetails.forEach { place ->
                     viewModel.addPlace(place)
@@ -136,6 +141,7 @@ class AddDestinationsMapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     }
                 }
             }
+
             setupPlanResultObserver()
         }
     }
@@ -353,9 +359,14 @@ class AddDestinationsMapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     showSnackbar("Creating plan...")
                 }
                 is Result.Success -> {
+                    val plan = result.data
+                    val days = plan.data.data
                     binding.buttonPlan.isEnabled = true
                     showSnackbar("Berhasil membuat plan!")
                     Log.d("PostPlans", "Success response: ${result.data}")
+                    days.forEach { (day, places) ->
+                        Log.d("PostPlans", "Day: $day, Places: $places")
+                    }
                     val intent = Intent(this,MainActivity::class.java)
                     startActivity(intent)
                     finish()

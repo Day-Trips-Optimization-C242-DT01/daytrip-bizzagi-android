@@ -55,13 +55,6 @@ class ProfileFragment : Fragment() {
             openEditProfile()
         }
 
-        binding.tvNotification.setOnClickListener {
-            Toast.makeText(requireContext(), "Notification clicked!", Toast.LENGTH_SHORT).show()
-        }
-
-        binding.tvLanguage.setOnClickListener {
-            Toast.makeText(requireContext(), "Language clicked!", Toast.LENGTH_SHORT).show()
-        }
 
         binding.tvLogout.setOnClickListener {
             showLogoutConfirmationDialog()
