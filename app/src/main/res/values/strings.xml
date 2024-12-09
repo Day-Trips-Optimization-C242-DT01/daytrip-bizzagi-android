@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BizzagiDayTrip</string>
+    <string name="app_name">BizzaTrip</string>
     <string name="login">Login</string>
     <string name="hint_name">Full Name</string>
     <string name="hint_email">Email</string>

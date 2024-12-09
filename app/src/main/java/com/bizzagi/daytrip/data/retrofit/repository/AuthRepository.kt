@@ -7,8 +7,11 @@ import com.bizzagi.daytrip.data.retrofit.response.auth.LoginResponse
 import com.bizzagi.daytrip.data.retrofit.response.auth.RegisterResponse
 import com.bizzagi.daytrip.data.Result
 import com.bizzagi.daytrip.data.local.pref.UserPreference
+import com.bizzagi.daytrip.data.retrofit.response.auth.RegisterBody
 import com.bizzagi.daytrip.data.retrofit.response.auth.UserData
+import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
+import retrofit2.HttpException
 
 class AuthRepository(
     private val apiService: ApiService,
@@ -30,8 +33,14 @@ class AuthRepository(
             } else {
                 Result.Error("Error: ${response.message()}")
             }
-        } catch (e: Exception) {
-            Result.Error("Exception occurred: ${e.message}")
+        } catch (e: HttpException) {
+            try {
+                val errorBody = e.response()?.errorBody()?.string()
+                val errorResponse = Gson().fromJson(errorBody, RegisterBody::class.java)
+                Result.Error(errorResponse.message)
+            } catch (e: Exception) {
+                Result.Error(e.message.toString())
+            }
         }
     }
 
@@ -52,8 +61,14 @@ class AuthRepository(
             } else {
                 Result.Error("Error: ${response.message() ?: "Unknown error"}")
             }
-        } catch (e: Exception) {
-            Result.Error("Exception occurred: ${e.message}")
+        } catch (e: HttpException) {
+            try {
+                val errorBody = e.response()?.errorBody()?.string()
+                val errorResponse = Gson().fromJson(errorBody, LoginResponse::class.java)
+                Result.Error(errorResponse.message)
+            } catch (e: Exception) {
+                Result.Error(e.message.toString())
+            }
         }
     }
 

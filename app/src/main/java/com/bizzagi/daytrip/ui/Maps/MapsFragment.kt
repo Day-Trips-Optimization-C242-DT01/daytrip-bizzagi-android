@@ -151,7 +151,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun showMarkers(destinationsPerDay: Map<String, List<DataItem>>) {
-        mMap.clear()  // Clear existing markers
+        mMap.clear()
 
 
         var dayIndex = 0
@@ -164,7 +164,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                 val latLng = LatLng(destination.latitude, destination.longitude)
                 val marker = MarkerOptions()
                     .position(latLng)
-                    .title("${destination.name} (Day $day)")
+                    .title("${destination.name} ($day)")
                     .icon(BitmapDescriptorFactory.defaultMarker(color))
 
                 mMap.addMarker(marker)

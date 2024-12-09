@@ -3,6 +3,7 @@ package com.bizzagi.daytrip.ui.Trip.Edit
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bizzagi.daytrip.data.retrofit.response.Destinations.DataItem
 import com.bizzagi.daytrip.databinding.CardDestinationBinding
@@ -35,7 +36,12 @@ class DestinationDragAdapter(
             tvAddress.text = destination.address
 
             root.setOnLongClickListener { view ->
-                onItemLongClick?.invoke(destination, view) ?: false
+                if (destinations.size == 1) {
+                    Toast.makeText(view.context, "Hari tidak boleh kosong", Toast.LENGTH_SHORT).show()
+                    false
+                } else {
+                    onItemLongClick?.invoke(destination, view) ?: false
+                }
             }
         }
     }
