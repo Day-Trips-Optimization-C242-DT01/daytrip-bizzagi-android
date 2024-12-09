@@ -6,13 +6,14 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.bizzagi.daytrip.MainActivity
 import com.bizzagi.daytrip.data.retrofit.response.auth.AuthenticationViewModel
 import com.bizzagi.daytrip.databinding.ActivityRegisterBinding
 import com.bizzagi.daytrip.utils.ViewModelFactory
 import com.bizzagi.daytrip.data.Result
 import android.content.Intent
 import com.bizzagi.daytrip.ui.Login.LoginActivity
+import android.text.Editable
+import android.text.TextWatcher
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -34,6 +35,30 @@ class RegisterActivity : AppCompatActivity() {
 
         setupView()
         setupAction()
+
+        binding.nameInput.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
+                checkFields()
+            }
+            override fun afterTextChanged(editable: Editable?) {}
+        })
+
+        binding.emailInput.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
+                checkFields()
+            }
+            override fun afterTextChanged(editable: Editable?) {}
+        })
+
+        binding.passwordInput.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
+                checkFields()
+            }
+            override fun afterTextChanged(editable: Editable?) {}
+        })
     }
 
     private fun setupView() {
@@ -49,6 +74,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun setupAction() {
+
         binding.registerButton.setOnClickListener {
             val name = binding.nameInput.text.toString()
             val email = binding.emailInput.text.toString()
@@ -61,6 +87,11 @@ class RegisterActivity : AppCompatActivity() {
 
             if (!isValidEmail(email)) {
                 showMaterialDialog(this@RegisterActivity, "Invalid Email", "Please enter a valid email address", "OK")
+                return@setOnClickListener
+            }
+
+            if (password.length < 6) {
+                showMaterialDialog(this@RegisterActivity, "Invalid Password", "Password must be at least 6 characters long", "OK")
                 return@setOnClickListener
             }
 
@@ -99,5 +130,13 @@ class RegisterActivity : AppCompatActivity() {
             .setPositiveButton(buttonText) { dialog, _ -> dialog.dismiss() }
             .create()
         dialog.show()
+    }
+
+    private fun checkFields() {
+        val name = binding.nameInput.text.toString()
+        val email = binding.emailInput.text.toString()
+        val password = binding.passwordInput.text.toString()
+
+        binding.registerButton.isEnabled = name.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty() && password.length >= 6
     }
 }

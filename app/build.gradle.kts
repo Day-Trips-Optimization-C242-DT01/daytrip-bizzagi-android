@@ -7,12 +7,12 @@ plugins {
 
 android {
     namespace = "com.bizzagi.daytrip"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.bizzagi.daytrip"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -61,6 +61,8 @@ dependencies {
     implementation(libs.play.services.maps)
     implementation (libs.androidx.navigation.fragment.ktx)
     implementation (libs.androidx.navigation.ui.ktx)
+    implementation(libs.junit.junit)
+    implementation(libs.junit.jupiter)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -82,4 +84,24 @@ dependencies {
     implementation(libs.retrofit2.converter.gson)
     implementation (libs.java.jwt)
     implementation (libs.glide)
+
+    androidTestImplementation(libs.androidx.core.testing)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
+
+    testImplementation(libs.androidx.core.testing)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockitoCore)
+    testImplementation(libs.mockitoKotlin)
+    testImplementation(libs.mockitoInline)
+    testImplementation(libs.junit.junit)
+    testImplementation(libs.truth)
+
+    testImplementation(libs.junitJupiterApi)
+    testImplementation(libs.junitJupiterEngine)
+    testRuntimeOnly(libs.junitJupiterEngine)
+
+    testImplementation(libs.mockk)
+
+    implementation(libs.coroutinesCore)
+    implementation(libs.coroutinesAndroid)
 }

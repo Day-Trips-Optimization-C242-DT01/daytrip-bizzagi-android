@@ -13,9 +13,11 @@ import com.bizzagi.daytrip.data.Result
 import android.app.AlertDialog
 import android.content.Context
 import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
 import com.bizzagi.daytrip.data.retrofit.model.LoginRequest
 import com.bizzagi.daytrip.ui.Register.RegisterActivity
+import android.text.TextWatcher
+import android.text.Editable
+import com.bizzagi.daytrip.ui.Password.ResetPasswordActivity
 
 
 class LoginActivity : AppCompatActivity() {
@@ -31,6 +33,11 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.forgotPassword.setOnClickListener {
+            val intent = Intent(this, ResetPasswordActivity::class.java)
+            startActivity(intent)
+        }
+
         binding.createAccount.setOnClickListener {
             val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
             startActivity(intent)
@@ -38,6 +45,22 @@ class LoginActivity : AppCompatActivity() {
         }
 
         setupAction()
+
+        binding.emailInput.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
+                checkFields()
+            }
+            override fun afterTextChanged(editable: Editable?) {}
+        })
+
+        binding.passwordInput.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
+                checkFields()
+            }
+            override fun afterTextChanged(editable: Editable?) {}
+        })
     }
 
     private fun setupAction() {
@@ -57,6 +80,10 @@ class LoginActivity : AppCompatActivity() {
 
             if (password.isEmpty()) {
                 showMaterialDialog(this@LoginActivity, "Error", "Password cannot be empty", "OK")
+                return@setOnClickListener
+            }
+            if (password.length < 6) {
+                showMaterialDialog(this@LoginActivity, "Invalid Password", "Password must be at least 6 characters long", "OK")
                 return@setOnClickListener
             }
 
@@ -88,6 +115,13 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun checkFields() {
+        val email = binding.emailInput.text.toString()
+        val password = binding.passwordInput.text.toString()
+
+        binding.loginButton.isEnabled = email.isNotEmpty() && password.isNotEmpty() && password.length >= 6
     }
 
     private fun isValidEmail(email: String): Boolean {
