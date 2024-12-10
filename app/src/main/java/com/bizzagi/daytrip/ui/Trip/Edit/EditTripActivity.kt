@@ -21,12 +21,11 @@ import com.bizzagi.daytrip.utils.ViewModelFactory
 
 class EditTripActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEditTripBinding
-
     private lateinit var editAdapter: EditAdapter
-
     private var currentDestinationsMap = mutableMapOf<String, List<DataItem>>()
+    private var initialDestinationsMap = mutableMapOf<String, List<DataItem>>()
 
-    private val viewModel by viewModels <PlansViewModel> {
+    private val viewModel by viewModels<PlansViewModel> {
         ViewModelFactory.getInstance(this)
     }
 
@@ -41,6 +40,9 @@ class EditTripActivity : AppCompatActivity() {
             finish()
             return
         }
+
+        binding.editTripFab.isEnabled = false
+        binding.editTripFab.alpha = 0.5f
 
         binding.btnHapus.setOnClickListener {
             showDeleteConfirmationDialog()
@@ -66,16 +68,35 @@ class EditTripActivity : AppCompatActivity() {
         return currentDestinationsMap.values.all { it.isNotEmpty() }
     }
 
-
     private fun setupRecyclerView() {
         editAdapter = EditAdapter()
         editAdapter.setOnDaysUpdatedListener { updatedMap ->
             currentDestinationsMap = updatedMap.toMutableMap()
+            checkForChanges()
         }
 
         binding.rvDays.apply {
             layoutManager = LinearLayoutManager(this@EditTripActivity)
             adapter = editAdapter
+        }
+    }
+
+    private fun checkForChanges() {
+        val hasChanges = hasDestinationsChanged()
+        binding.editTripFab.isEnabled = hasChanges
+        binding.editTripFab.alpha = if (hasChanges) 1.0f else 0.5f
+    }
+
+    private fun hasDestinationsChanged(): Boolean {
+        if (initialDestinationsMap.keys != currentDestinationsMap.keys) return true
+
+        return initialDestinationsMap.any { (day, initialDestinations) ->
+            val currentDestinations = currentDestinationsMap[day] ?: return true
+            if (initialDestinations.size != currentDestinations.size) return true
+
+            !initialDestinations.zip(currentDestinations).all { (initial, current) ->
+                initial.id == current.id
+            }
         }
     }
 
@@ -106,7 +127,13 @@ class EditTripActivity : AppCompatActivity() {
                 day to (destinationsMap[day] ?: emptyList())
             }.sortedBy { it.first }
 
+            if (initialDestinationsMap.isEmpty()) {
+                initialDestinationsMap = destinationsMap.toMutableMap()
+                currentDestinationsMap = destinationsMap.toMutableMap()
+            }
+
             editAdapter.submitData(dayDestinationPairs)
+            checkForChanges()
         }
 
         viewModel.updatePlanResult.observe(this) { result ->
@@ -124,7 +151,6 @@ class EditTripActivity : AppCompatActivity() {
             }
         }
     }
-
 
     private fun showDeleteConfirmationDialog() {
         val dialog = Dialog(this)
@@ -162,5 +188,4 @@ class EditTripActivity : AppCompatActivity() {
 
         dialog.show()
     }
-
 }
