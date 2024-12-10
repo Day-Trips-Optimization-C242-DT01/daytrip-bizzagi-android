@@ -15,10 +15,8 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.bizzagi.daytrip.R
-import com.bizzagi.daytrip.databinding.FragmentMapsBinding
 import com.bizzagi.daytrip.databinding.FragmentStartLocationMapsBinding
 import com.bizzagi.daytrip.ui.Maps.MapsViewModel
-import com.bizzagi.daytrip.ui.Trip.PlansViewModel
 import com.bizzagi.daytrip.utils.ViewModelFactory
 import com.google.android.gms.common.api.Status
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -114,24 +112,6 @@ class StartLocationMapsFragment : Fragment(), OnMapReadyCallback {
         mMap.setLatLngBoundsForCameraTarget(indonesiaBounds)
         mMap.setMinZoomPreference(5f)
         mMap.setMaxZoomPreference(20f)
-
-        //fitur map load dari lokasi terakhir yang dipilih (bug)
-        /*mMap.setOnMapLoadedCallback {
-            val padding = 200
-            mMap.setPadding(0, 0, 0, padding)
-
-            viewModel.selectedLocation.value?.let { lastLocation ->
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastLocation, 15f))
-                currentMarker?.remove()
-                currentMarker = mMap.addMarker(
-                    MarkerOptions()
-                        .position(lastLocation)
-                        .title("Lokasi Awal")
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
-                )
-                updateLocationDetails(lastLocation)
-            }
-        }*/
 
         mMap.setOnMapLoadedCallback {
             val padding = 200

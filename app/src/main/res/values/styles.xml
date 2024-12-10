@@ -14,4 +14,6 @@
         <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
     </style>
 
+    <dimen name="bottom_sheet_peek_height">100dp</dimen>
+
 </resources>
