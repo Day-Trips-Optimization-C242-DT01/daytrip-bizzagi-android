@@ -283,7 +283,19 @@ class AddDestinationsMapsActivity : AppCompatActivity(), OnMapReadyCallback {
             val request = FetchPlaceRequest.newInstance(pointOfInterest.placeId, placeFields)
             val placeResponse = placesClient.fetchPlace(request).await()
 
-            if (placeResponse.place.types?.contains(Place.Type.TOURIST_ATTRACTION) == true) {
+            val allowedTypes = setOf(
+                Place.Type.TOURIST_ATTRACTION,
+                Place.Type.POINT_OF_INTEREST,
+                Place.Type.AMUSEMENT_PARK,
+                Place.Type.ZOO,
+                Place.Type.MUSEUM,
+                Place.Type.PARK,
+                Place.Type.AQUARIUM,
+                Place.Type.ART_GALLERY,
+                Place.Type.NATURAL_FEATURE
+            )
+
+            if (placeResponse.place.types?.any { it in allowedTypes } == true) {
                 withContext(Dispatchers.Main) {
                     addMarker(pointOfInterest.latLng, pointOfInterest.name, "")
                 }
