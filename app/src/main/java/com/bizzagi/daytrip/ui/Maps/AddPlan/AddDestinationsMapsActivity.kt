@@ -435,7 +435,7 @@ class AddDestinationsMapsActivity : AppCompatActivity(), OnMapReadyCallback {
             val place = placeResponse.place
 
             val latLng = place.latLng
-            val rating = place.rating
+            val rating: Double? = place.rating
             val openingHours = place.openingHours?.weekdayText
 
             val openTime = mutableListOf<String>()
@@ -465,7 +465,7 @@ class AddDestinationsMapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     place_id = place.id ?: "",
                     latitude = latLng.latitude,
                     longitude = latLng.longitude,
-                    rating = rating,
+                    rating = rating ?: 0.0,
                     open_time = openTime.firstOrNull() ?: "00:00",
                     close_time = closeTime.firstOrNull() ?: "00:00"
                 )
@@ -477,6 +477,8 @@ class AddDestinationsMapsActivity : AppCompatActivity(), OnMapReadyCallback {
             Log.e("PlaceDetails", "Error fetching place details: ${e.message}")
         }
     }
+
+
 
     private fun logSelectedDestinations() {
         Log.d("SelectedDestinations", "Total selected: ${selectedDestinationsDetails.size}")
