@@ -29,12 +29,10 @@ class WelcomeActivity : AppCompatActivity() {
     private fun navigateToLoginActivity() {
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
-        finish()
     }
 
     private fun navigateToRegisterActivity() {
         val intent = Intent(this, RegisterActivity::class.java)
         startActivity(intent)
-        finish()
     }
 }

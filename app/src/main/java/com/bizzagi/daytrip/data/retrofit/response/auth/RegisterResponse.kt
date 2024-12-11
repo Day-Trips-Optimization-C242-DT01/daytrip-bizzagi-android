@@ -34,3 +34,22 @@ data class RegisterData(
     @SerializedName("token")
     val token: String
 )
+
+data class RegisterErrorResponse(
+    @SerializedName("success")
+    val success: Boolean,
+
+    @SerializedName("message")
+    val message: String,
+
+    @SerializedName("data")
+    val data: RegisterErrorData
+)
+
+data class RegisterErrorData(
+    @SerializedName("error")
+    val error: String,
+
+    @SerializedName("path")
+    val path: String
+)

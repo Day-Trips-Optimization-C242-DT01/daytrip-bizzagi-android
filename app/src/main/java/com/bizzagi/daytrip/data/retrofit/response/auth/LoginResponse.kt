@@ -29,3 +29,22 @@ data class UserData(
     @SerializedName("token")
     val token: String
 )
+
+data class LoginErrorResponse(
+    @SerializedName("success")
+    val success: Boolean,
+
+    @SerializedName("message")
+    val message: String,
+
+    @SerializedName("data")
+    val data: LoginErrorData
+)
+
+data class LoginErrorData(
+    @SerializedName("error")
+    val error: String,
+
+    @SerializedName("path")
+    val path: String
+)

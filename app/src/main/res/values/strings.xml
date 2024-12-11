@@ -25,10 +25,10 @@
     <string name="reenter_password">Re-enter password</string>
     <string name="update_password">Update Password</string>
     <string name="title_activity_maps">MapsActivity</string>
-    <string name="navbar_1">home</string>
-    <string name="navbar_2">map</string>
-    <string name="navbar_3">perjalanan</string>
-    <string name="navbar_4">saya</string>
+    <string name="navbar_1">Home</string>
+    <string name="navbar_2">Map</string>
+    <string name="navbar_3">Perjalanan</string>
+    <string name="navbar_4">Saya</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="headline_homepage">Explore Indonesia!</string>

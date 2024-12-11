@@ -17,6 +17,7 @@ import com.bizzagi.daytrip.data.retrofit.model.LoginRequest
 import com.bizzagi.daytrip.ui.Register.RegisterActivity
 import android.text.TextWatcher
 import android.text.Editable
+import android.util.Log
 import com.bizzagi.daytrip.ui.Password.ResetPasswordActivity
 
 
@@ -100,6 +101,7 @@ class LoginActivity : AppCompatActivity() {
                     }
                     is Result.Error -> {
                         binding.loginLoading.visibility = View.GONE
+                        Log.d("ErrorMessage", "Error: ${result.message}")
                         showMaterialDialog(this@LoginActivity, "Login Failed", result.message, "OK")
                     }
                     is Result.Success -> {
