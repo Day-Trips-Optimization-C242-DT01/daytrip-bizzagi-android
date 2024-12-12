@@ -285,7 +285,6 @@ class AddDestinationsMapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
             val allowedTypes = setOf(
                 Place.Type.TOURIST_ATTRACTION,
-                Place.Type.POINT_OF_INTEREST,
                 Place.Type.AMUSEMENT_PARK,
                 Place.Type.ZOO,
                 Place.Type.MUSEUM,
