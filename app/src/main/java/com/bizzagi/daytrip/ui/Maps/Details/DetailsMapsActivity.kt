@@ -130,6 +130,7 @@ class DetailsMapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun updateUI(destination: DataItem) {
         binding.apply {
             tvName.text = destination.name
+            tvRate.text = destination.rating.toString()
             tvType.text = destination.primaryType
 
             val openHours = if (destination.opens.isNotEmpty() && destination.closes.isNotEmpty()) {
