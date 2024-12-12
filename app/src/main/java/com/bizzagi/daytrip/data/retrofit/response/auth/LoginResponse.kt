@@ -37,14 +37,6 @@ data class LoginErrorResponse(
     @SerializedName("message")
     val message: String,
 
-    @SerializedName("data")
-    val data: LoginErrorData
-)
-
-data class LoginErrorData(
     @SerializedName("error")
-    val error: String,
-
-    @SerializedName("path")
-    val path: String
+    val error: String
 )

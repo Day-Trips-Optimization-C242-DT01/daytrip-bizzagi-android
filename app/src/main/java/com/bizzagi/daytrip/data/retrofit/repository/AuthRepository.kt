@@ -59,13 +59,13 @@ class AuthRepository(
             } else {
                 val errorBody = response.errorBody()?.string()
                 val errorResponse = Gson().fromJson(errorBody, LoginErrorResponse::class.java)
-                Result.Error(errorResponse.data.error)
+                Result.Error(errorResponse.error)
             }
         } catch (e: HttpException) {
             try {
                 val errorBody = e.response()?.errorBody()?.string()
                 val errorResponse = Gson().fromJson(errorBody, LoginErrorResponse::class.java)
-                Result.Error(errorResponse.data.error)
+                Result.Error(errorResponse.error)
             } catch (e: Exception) {
                 Result.Error(e.message ?: "Authentication failed")
             }

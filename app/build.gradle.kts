@@ -9,6 +9,20 @@ android {
     namespace = "com.bizzagi.daytrip"
     compileSdk = 35
 
+    packaging {
+        resources {
+            excludes.add("META-INF/LICENSE.md")
+            excludes.add("META-INF/LICENSE-notice.md")
+            excludes.addAll(listOf(
+                "META-INF/LICENSE.md",
+                "META-INF/LICENSE-notice.md",
+                "META-INF/LICENSE.txt",
+                "META-INF/NOTICE.txt",
+                "META-INF/DEPENDENCIES"
+            ))
+        }
+    }
+
     defaultConfig {
         applicationId = "com.bizzagi.daytrip"
         minSdk = 24
@@ -20,10 +34,10 @@ android {
 
         buildTypes {
             debug {
-                buildConfigField("String", "BASE_URL", "\"https://c242-dt01-api-304525226938.asia-southeast2.run.app/v1/\"")
+                buildConfigField("String", "BASE_URL", "\"https://c242-dt01-api-service-304525226938.asia-southeast2.run.app/v1/\"")
             }
             release {
-                buildConfigField("String", "BASE_URL", "\"https://c242-dt01-api-304525226938.asia-southeast2.run.app/v1/\"")
+                buildConfigField("String", "BASE_URL", "\"https://c242-dt01-api-service-304525226938.asia-southeast2.run.app/v1/\"")
             }
         }
     }
@@ -73,6 +87,10 @@ dependencies {
     //places detail api
     implementation (libs.places)
     implementation (libs.places.ktx)
+    implementation (libs.play.services.maps)
+    implementation (libs.play.services.location)
+    implementation (libs.google.maps.services)
+    implementation (libs.android.maps.utils)
 
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)

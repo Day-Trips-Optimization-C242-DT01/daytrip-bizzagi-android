@@ -1,9 +1,11 @@
 [versions]
 activityKtx = "1.9.3"
 agp = "8.3.2"
+androidMapsUtils = "2.3.0"
 converterGson = "2.11.0"
 datastorePreferences = "1.1.1"
 glide = "4.16.0"
+googleMapsServices = "2.1.2"
 javaJwt = "4.4.0"
 kotlin = "1.9.0"
 coreKtx = "1.15.0"
@@ -21,6 +23,7 @@ googleAndroidLibrariesMapsplatformSecretsGradlePlugin = "2.0.1"
 navigationFragmentKtx = "2.8.4"
 places = "4.1.0"
 placesKtx = "3.1.1"
+playServicesLocation = "21.3.0"
 playServicesMaps = "19.0.0"
 retrofit = "2.11.0"
 threetenabp = "1.4.7"
@@ -41,6 +44,7 @@ coroutines = "1.7.0"
 mockk = "1.13.3"
 
 [libraries]
+android-maps-utils = { module = "com.google.maps.android:android-maps-utils", version.ref = "androidMapsUtils" }
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtx" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
@@ -51,6 +55,7 @@ androidx-navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx",
 androidx-viewpager2 = { module = "androidx.viewpager2:viewpager2", version.ref = "viewpager2" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+google-maps-services = { module = "com.google.maps:google-maps-services", version.ref = "googleMapsServices" }
 java-jwt = { module = "com.auth0:java-jwt", version.ref = "javaJwt" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -62,6 +67,7 @@ androidx-activity = { group = "androidx.activity", name = "activity", version.re
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 places = { module = "com.google.android.libraries.places:places", version.ref = "places" }
 places-ktx = { module = "com.google.maps.android:places-ktx", version.ref = "placesKtx" }
+play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
 play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 threetenabp = { module = "com.jakewharton.threetenabp:threetenabp", version.ref = "threetenabp" }
